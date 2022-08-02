@@ -1,0 +1,55 @@
+@import "../var/var.less";
+
+.container_login {
+  height: 100%;
+
+  .t-form__label.t-form__label--required.t-form__label--right {
+    display: none;
+  }
+  .login__inputwrap {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: @col-white;
+    width: 406px;
+    box-shadow: @boxsha-small;
+    text-align: center;
+    padding-bottom: 14px;
+
+ 
+    .inputwrap__title {
+      height: 27px;
+      margin: 40px auto 30px;
+      text-decoration: none;
+      font-family: TencentSansW7;
+      font-size: 24px;
+      line-height: 24px;
+      color: @col-theme;
+    }
+
+    .inputwrap__input {
+      position: relative;
+      margin: 0 auto;
+      width: 320px;
+      margin-bottom: 24px;
+      img{
+        height: 32px;
+        cursor:pointer
+      }
+      button.t-button.t-size-m.t-button--variant-base.t-button--theme-primary {
+        width: 320px;
+        margin-right: 0!important;
+        border-radius: 0;
+    }
+  
+    }
+    .t-form:not(.t-form-inline) .t-form__item:last-of-type{
+      width: 100%;
+    }
+    .t-is-error .t-input__extra {
+        text-align: left;
+    }
+}
+
+}

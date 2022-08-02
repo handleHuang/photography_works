@@ -1,0 +1,71 @@
+@import "../var/var.less";
+.box {
+    width: 100vw;
+    height: 100vh;
+  }
+  .t-layout__sider {
+    width: auto;
+  }
+  /deep/.t-menu__logo {
+    justify-content: center;
+    font-family: TencentSansW7;
+    font-size: 16px;
+    color: @col-theme;
+  }
+  .t-layout__header {
+    height: 72px;
+    display: flex;
+    justify-content: flex-end;
+    background-color: #0052d9;
+    color: #fff;
+    .user {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      height: 100%;
+      padding-right: 48px;
+      /deep/ span {
+        display: flex;
+      }
+      .username {
+        user-select: none;
+        margin-right: 20px;
+      }
+      .avatar {
+        width: 24px;
+        height: 24px;
+        background-color: #fff;
+        border-radius: 50%;
+      }
+    }
+  }
+  .content{
+    height: calc(100% - 72px);
+  }
+  .t_main{
+    width: calc(100% - 88px);
+      height: 100%;
+      background-color: #f6f6f6;
+      // padding: 24px;
+      // width: 100%;
+  }
+  .t-default-menu.t-menu--light {
+    margin-right: 0 !important;
+  }
+  /deep/.t-menu__operations {
+    height: 49px;
+  }
+  
+  .t-popup__content ul li {
+    width: 68px;
+    height: 38px;
+    text-align: center;
+    line-height: 38px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.8);
+    cursor: pointer;
+    &:hover {
+      background-color: rgba(0, 72, 212, 0.1);
+    }
+  }
+ 
