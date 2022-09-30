@@ -11,6 +11,7 @@
             top: 50%;
             transform: translate(-50%, -50%);
             .item_box{
+                margin-right: 28px;
                 transition: all 0.9s;
                 padding-top: 34px;
                 text-align: center;
@@ -30,10 +31,10 @@
                    line-height: 22px;
                    color: rgba(0,0,0,.4);
                 }
-                &:nth-child(1){
-                    margin-right: 28px;
-                }
-                &:hover{
+                // &:nth-child(1){
+                //     margin-right: 28px;
+                // }
+                &:nth-child(n+2):hover{
                     box-shadow: 0px 6px 30px 5px rgba(0, 0, 0, 0.05), 0px 16px 24px 2px rgba(0, 0, 0, 0.04), 0px 8px 10px -5px rgba(0, 0, 0, 0.08);
                     transform: translateY(-8px); //向上浮动了8个像素
                 }

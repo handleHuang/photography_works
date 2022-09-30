@@ -87,8 +87,7 @@
             >
               <t-upload
                 v-model="files"
-                :auto-upload="autoUpload"
-                :theme="display"
+                theme="file"
                 :data="{ extra_data: 123, file_name: 'certificate' }"
                 draggable
                 action="https://service-bv448zsw-1257786608.gz.apigw.tencentcs.com/api/upload-demo"
@@ -198,9 +197,7 @@ const steps = [
   { title: '预览信息', value: 2 },
   { title: '完成', value: 3 }
 ]
-const autoUpload = ref(true)
 const files = ref([])
-const display = ref('file')
 const rules = reactive({
   title: [{ required: true, message: '论文标题必填', type: 'error' }],
   author: [{ required: true, message: '论文作者必填', type: 'error' }],
