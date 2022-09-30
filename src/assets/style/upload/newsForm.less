@@ -1,0 +1,190 @@
+.containerForm{
+    height: 100%;
+    width: calc(100% - 440px);
+    max-width: 1000px;
+    margin: auto;
+    .containerForm_box{
+        height: calc(100% - 104px );
+       .containerForm_header{
+           display: flex;
+           align-items: center;
+           height: 96px;
+           background-color: #fff;
+           margin-bottom: 24px;
+           padding-left: 40px;
+           /deep/.t-steps .t-steps-item {
+            width: 183px;
+        }
+        /deep/.t-steps-item__icon{
+            margin-right: 16px;
+        }
+       }
+       .containerForm_body{
+           background-color: #fff;
+           height: calc(100% - 120px );
+           padding: 40px 200px;
+           overflow-y: scroll;
+           .t-date-picker, .t-date-range-picker{
+               width: 100%;
+           }
+           .delLabel{
+               /deep/.t-form__label {
+                display: none;
+               }
+               .flex_box{
+                   display: flex;
+                   .t-select__wrap{
+                       width: 112px;
+                       margin-right: 10px;
+                   }
+                   .t-time-picker, .t-time-range-picker{
+                       width: 200px;
+                   }
+               }
+           }
+           .t-button{
+               margin-right: 16px;
+           }
+           .step_2{
+                .controls_237{
+                    /deep/.t-form__controls {
+                        height: 196px;
+                    }
+                }
+                .controls_238{
+                    /deep/.t-form__controls {
+                        height: 112px;
+                    }
+                }
+                .previewNews{
+                    transform: scale(0.5);
+                    transform-origin: left top;
+                    color: #fff;
+                    width: 1200px;
+                    height: 220px;
+                    padding: 22px 32px 48px;
+                    background-color: #000;
+                    display: flex;
+                    justify-content: space-between;
+                    .previewNews_N1{
+                        width: 770px;
+                        padding-top: 20px;
+                        border-top: 1px solid rgba(243,243,243,1);
+                        .time{
+                            font-family: TRX;
+                            font-size: 13px;
+                            line-height: 30px;
+                        }
+                        .title{
+                            font-family: HYQiHeiY2;
+                            font-style: normal;
+                            font-weight: 400;
+                            font-size: 40px;
+                            line-height: 50px;
+                            color: #fefffe;
+                        }
+                    }
+                    .previewNews_N2{
+                        border-top: 1px solid rgba(243,243,243,1);
+                        width: 370px;
+                        padding-top: 64px;
+                        display: flex;
+                        justify-content: flex-end;
+                        .introduce{
+                            font-family: HYQiHeiY2;
+                            font-style: normal;
+                            font-weight: 400;
+                            font-size: 16px;
+                            line-height: 16px;
+                            color: #fefffe;
+                            opacity: .6;
+                        }
+                    }
+                }
+                .previewHome{
+                    display: flex;
+                    align-items: center;
+                    color: #fff;
+                    transform: scale(0.33);
+                    transform-origin: left top;
+                    .preview_H1{
+                        background: #001b71;
+                        color: #fff;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
+                        padding: 22px 32px 48px;
+                        width: 439px;
+                        height: 588px;
+                        .time{
+                            font-family: TRX;
+                            font-size: 13px;
+                            line-height: 30px;
+                        }
+                        .title{
+                            font-family: HYQiHeiY2;
+                            font-size: 40px;
+                            line-height: 50px;
+                            font-weight: 400;
+                        }
+                        .introduce{
+                            font-family: HYQiHeiY2;
+                            font-size: 18px;
+                            line-height: 26px;
+                            font-weight: 400;
+                            opacity: .6;
+                            color: rgba(254,255,254,1);
+                        }
+                    }
+                    .preview_H2{
+                        width: 752px;
+                        height: 420px;
+                        img{
+                            width: 100%;
+                            height: 100%;
+                        }
+                    }
+                }
+           }
+           .step_3{
+               margin: auto;
+               .icon_box{
+                   text-align: center;
+                   height: 64px;
+                   svg.t-icon.t-icon-check-circle{
+                       width: 64px;
+                       height: 64px;
+                       color: #00A870;
+                   }
+               }
+               h4{
+                  font-weight: 600;
+                  font-size: 20px;
+                  line-height: 28px;
+                  text-align: center;
+                  margin-top: 24px;
+               }
+               h6{
+                font-weight: 400;
+                font-size: 14px;
+                line-height: 22px;
+                color:rgba(0,0,0,.6);
+                text-align: center;
+                margin-top: 8px;
+               }
+               .operation{
+                   margin-top: 32px;
+                   text-align: center;
+                   .t-button{
+                       margin-right: 8px;
+                   }
+               }
+           }
+           .bg_eee{
+               /deep/.t-textarea__inner{
+                   background-color: #eee;
+               }
+           }
+       }
+    }
+}

@@ -1,69 +1,6 @@
-.t-form__controls{
-    margin-left: 0!important;
-  }
-.t-default-menu .t-menu__item{
-    margin: 12px 0;
-    height: 40px;
-    border-radius: 0;
-    .t-menu__content{
-        margin-left: 14px;
-    }
-}
-.t-table__header{
-    background-color: #f6f6f6;
-}
-.t-table tr {
-    background-color: transparent;
-    color: rgba(0,0,0,.6);
-    font-size: 14px;
-}
-.t-table th {
-    color: rgba(0,0,0,.9);
-}
-.state__sign {
-    width: 8px;
-    height: 8px;
-    margin-right: 8px;
-    border-radius: 100%;
-    display: inline-block;
-  }
-.state {
-    &0 {
-      .state__sign {
-        background-color: #c0c0c0;
-      }
-    }
-
-    &1 {
-      .state__sign {
-        background-color: #3ecc36;
-      }
-    }
-
-    &2 {
-      .state__sign {
-        background-color: #ffa700;
-      }
-    }
-  }
-  .t-table {
-    height: 100%;
-    .operat__btn{
-        font-size: 14px;
-        color: #0052d9;
-        margin-right: 16px;
-        cursor: pointer;
-    }
-}
-.t-input--focused{
-  box-shadow: none;
-}
-.t-select-option + .t-select-option {
-  margin-top: 14px;
-}
 .page__breadcrumb {
   width: 100%;
-  padding: 12px 0;
+  padding: 24px 0;
   box-sizing: border-box;
 
   .t-breadcrumb {
@@ -81,13 +18,16 @@
   }
 
   .goback {
-    // width: 95px;
+    width: 112px;
+    height: 32px;
     display: flex;
     align-items: center;
-    color:#0052D9;
+    background-color: #E7E7E7;
+    color: rgba(0, 0, 0, 0.9);
+    padding-left: 10px;
     cursor: pointer;
 
-    svg.t-icon.t-icon-arrow-left {
+    svg.t-icon.t-icon-chevron-left {
       width: 24px;
       height: 24px;
       margin-right: 4px;
@@ -102,9 +42,14 @@
     }
   }
 }
-.t-button{
-  width: 88px;
-  height: 32px;
-  border-radius: 0;
-  margin-right: 16px;
+/*滚动条样式*/
+::-webkit-scrollbar {
+  width: 3px;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: rgba(0,0,0,0.3);
+}
+::-webkit-scrollbar-track {
+  border-radius: 10;
 }

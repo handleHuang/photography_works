@@ -12,10 +12,10 @@ const instance = axios.create({
 instance.interceptors.request.use(
   config => {
     // 请求头添加token
-    const userInfo = JSON.parse(localStorage.getItem('user_info'))
+    const token = JSON.parse(localStorage.getItem('access_token'))
     const newConfig = config
-    if (userInfo) {
-      newConfig.headers.authorization = `Bearer ${userInfo.token}`
+    if (token) {
+      newConfig.headers.authorization = `Bearer ${token}`
     }
     if (
       newConfig.method === 'post' ||
@@ -55,8 +55,8 @@ instance.interceptors.response.use(
     switch (error.response.status) {
       case 403:
       case 401:
-        localStorage.clear()
-        window.location.reload()
+        // localStorage.clear()
+        // window.location.reload()
         break
       default:
         Message.error({ message: error.response.data.message, offset: 150 })
