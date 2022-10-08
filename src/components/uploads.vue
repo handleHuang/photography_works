@@ -1,18 +1,32 @@
 <template>
   <div>
     <t-upload
-    v-model="aaa"
-      :request-method="requestSuccessMethod"
-      theme="file"
+      v-model="files.arr"
+      :before-upload="beforeUpload"
+      :theme="props.theme"
+      :accept="props.accept"
       draggable
     />
   </div>
 </template>
 <script setup>
 /* eslint-disable camelcase */
-import { ref } from 'vue'
+import { MessagePlugin } from 'tdesign-vue-next'
+import { reactive, ref, defineProps } from 'vue'
 import axios from 'axios'
-const aaa = ref([])
+const props = defineProps({
+  theme: {
+    type: String,
+    default: 'file'
+  },
+  accept: {
+    type: String,
+    default: 'application/pdf'
+  }
+})
+const files = reactive({
+  arr: []
+})
 const token = JSON.parse(localStorage.getItem('access_token'))
 let uploadFileData = {
   LENGTH: 1024 * 1024 * 2,
@@ -26,22 +40,30 @@ let uploadFileData = {
   size: 0,
   mime: ''
 }
-const requestSuccessMethod = (file) => {
+const uploadCount = ref(0)
+const totalBlob = ref(0)
+const fileSize = ref(0)
+// const requestSuccessMethod = (file) => {
+//   console.log(file)
+//   fileSlice(file.raw)
+//   return new Promise((resolve) => {
+//     resolve({
+//       status: 'success',
+//       response: { url: String }
+//     })
+//   })
+// }
+function beforeUpload (file) {
+  uploadCount.value = 0
+  totalBlob.value = 0
+  fileSize.value = file.size
   console.log(file)
-  fileSlice(file.raw)
-  return new Promise((resolve) => {
-    // resolve({
-    //   status: 'success',
-    //   response: { url: 'https://tdesign.gtimg.com/site/avatar.jpg' }
-    // })
-    resolve({
-      status: 'fail',
-      response: { url: 'https://tdesign.gtimg.com/site/avatar.jpg' }
-    })
-  })
+  fileSlice(file)
 }
 function fileSlice (file) {
   const LENGTH = 1024 * 1024 * 2
+
+  totalBlob.value = Math.ceil(file.size / LENGTH)
   const startNum = uploadFileData.start
     ? uploadFileData.start
     : 0
@@ -88,8 +110,57 @@ function sendFile () {
   })
     .then((res) => {
       console.log(res)
+      if (res.status === 200) {
+        files.arr = [{
+          name: res.data.original_name,
+          status: 'success',
+          size: fileSize.value,
+          url: res.data.url
+        }]
+      }
+      if (res.status === 204) {
+        uploadCount.value++
+        if (uploadCount.value === totalBlob.value) {
+          const formData_2 = new FormData()
+          formData_2.append('required_id', uploadFileData.required_id)
+          formData_2.append(
+            'original_name',
+            uploadFileData.original_name
+          )
+          console.log('done')
+          axios({
+            method: 'POST',
+            url: 'https://robot.zjtntd.com/admin/slice-upload/merge',
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${token}`
+            },
+            data: formData_2
+          }).then((res) => {
+            console.log(res)
+            files.arr = [{
+              name: res.data.original_name,
+              status: 'success',
+              size: fileSize.value,
+              url: res.data.url
+            }]
+          }).catch(err => {
+            files.arr = [{
+              name: res.data.original_name,
+              status: 'fail',
+              size: fileSize.value,
+              url: res.data.url
+            }]
+            MessagePlugin.error('上传失败,请检查文件是否符合上传规范')
+            console.log(err.response)
+          })
+        }
+      }
     })
     .catch((err) => {
+      console.log(1)
+      files.arr = []
+      MessagePlugin.error('上传失败,请检查文件是否符合上传规范')
       console.log(err.response)
     })
 }

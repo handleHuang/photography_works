@@ -53,14 +53,7 @@
               label="新闻封面上传"
               help="请选择JPG/PNG格式图片，大小 * ， M以内"
             >
-              <t-upload
-                v-model="files"
-                :auto-upload="autoUpload"
-                :theme="display"
-                :data="{ extra_data: 123, file_name: 'certificate' }"
-                draggable
-                action="https://service-bv448zsw-1257786608.gz.apigw.tencentcs.com/api/upload-demo"
-              />
+            <uploads theme="image" accept="image/jpeg,image/png"></uploads>
             </t-form-item>
             <t-form-item class="delLabel">
               <t-button theme="primary" @click="nextStep">下一步</t-button>
@@ -142,6 +135,7 @@
 </template>
 <script setup>
 /* eslint-disable camelcase */
+import uploads from '../../components/uploads.vue'
 import { DialogPlugin, MessagePlugin } from 'tdesign-vue-next'
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
@@ -157,9 +151,6 @@ const steps = [
   { title: '预览信息', value: 2 },
   { title: '完成', value: 3 }
 ]
-const autoUpload = ref(true)
-const files = ref([])
-const display = ref('file')
 const rules = reactive({
   officialUrl: [{ required: true, message: '公众号链接必填', type: 'error' }],
   title: [{ required: true, message: '论文标题必填', type: 'error' }],

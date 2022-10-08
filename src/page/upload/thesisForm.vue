@@ -85,13 +85,7 @@
               label="论文PDF上传"
               help="额外提示语，文字过多时宽度折行"
             >
-              <t-upload
-                v-model="files"
-                theme="file"
-                :data="{ extra_data: 123, file_name: 'certificate' }"
-                draggable
-                action="https://service-bv448zsw-1257786608.gz.apigw.tencentcs.com/api/upload-demo"
-              />
+            <uploads></uploads>
             </t-form-item>
             <t-form-item class="delLabel">
               <t-button theme="primary" @click="nextStep">下一步</t-button>
@@ -175,6 +169,7 @@
 </template>
 <script setup>
 /* eslint-disable camelcase */
+import uploads from '../../components/uploads.vue'
 import { DialogPlugin, MessagePlugin } from 'tdesign-vue-next'
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
@@ -197,7 +192,6 @@ const steps = [
   { title: '预览信息', value: 2 },
   { title: '完成', value: 3 }
 ]
-const files = ref([])
 const rules = reactive({
   title: [{ required: true, message: '论文标题必填', type: 'error' }],
   author: [{ required: true, message: '论文作者必填', type: 'error' }],
