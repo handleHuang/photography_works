@@ -4,11 +4,12 @@
       <div class="goback" @click="goBack">
         <t-icon name="chevron-left" />
         返回首页
-      </div>
+      </div>thesisFormData{{thesisFormData}}
     </div>
     <div class="containerForm_box">
       <div class="containerForm_header">
-        <t-steps v-model="activeStep" :options="steps" :readonly="true" />
+        <t-steps v-model="activeStep" :options="steps" />
+        <!-- :readonly="true"  -->
       </div>
       <div class="containerForm_body">
         <t-form
@@ -37,26 +38,26 @@
                 v-model="thesisFormData.author"
               ></t-textarea>
             </t-form-item>
-            <t-form-item label="投稿会议/期刊名称" name="meeting">
+            <t-form-item label="投稿会议/期刊名称" name="journal">
               <t-input
                 type="text"
                 placeholder="请输入内容"
-                v-model="thesisFormData.meeting"
+                v-model="thesisFormData.journal"
               ></t-input>
             </t-form-item>
-            <t-form-item label="发布时间" name="releaseTime">
+            <t-form-item label="发布时间" name="publish_date">
               <t-date-picker
                 clearable
                 theme="primary"
                 mode="date"
-                v-model="thesisFormData.releaseTime"
+                v-model="thesisFormData.publish_date"
               />
             </t-form-item>
-            <t-form-item label="论文摘要" name="digest">
+            <t-form-item label="论文摘要" name="description">
               <t-textarea
                 type="text"
                 placeholder="请输入更多内容"
-                v-model="thesisFormData.digest"
+                v-model="thesisFormData.description"
                 :maxlength="300"
               ></t-textarea>
             </t-form-item>
@@ -82,10 +83,11 @@
               />
             </t-form-item> -->
             <t-form-item
+            name="pdf_url"
               label="论文PDF上传"
               help="额外提示语，文字过多时宽度折行"
             >
-            <uploads></uploads>
+            <test @fileSuccessData="fileSuccessData" @clearData="clearData"></test>
             </t-form-item>
             <t-form-item class="delLabel">
               <t-button theme="primary" @click="nextStep">下一步</t-button>
@@ -97,14 +99,21 @@
               <t-form-item label="论文中心预览">
                 <div class="previewNews">
                   <div class="previewNews_N1">
-                    <span class="time">2022 / 06 / 28</span>
+                    <span class="time">{{
+                      thesisFormData.publish_date || '2022 / 06 / 28'
+                    }}</span>
                     <h4 class="title">
-                      {{ellipsis_1('Gain Scheduled Controller Design for Balancing an Autonomous Bicycle')}}
+                      {{
+                        ellipsis_1(
+                          thesisFormData.title ||
+                          'Gain Scheduled Controller Design for Balancing an Autonomous Bicycle'
+                        )
+                      }}
                     </h4>
                   </div>
                   <div class="previewNews_N2">
                     <div class="introduce">
-                      Haoyu Wang, Jiaqi Wang, Kunming Yao, Jingjing Fu, Xin Xia,Ruirui Zhang, Jiyu Li,Guoqiang Xu, Lingyun Wang, JingchaoYang, Jie Lai, Yuan Dai*, Zhengyou Zhang, Anyin Li, Yuyan Zhu,sXinge Yu, Zhong Lin Wang*, Yunlong Zi*
+                      {{thesisFormData.author ||'Haoyu Wang, Jiaqi Wang, Kunming Yao, Jingjing Fu, Xin Xia,Ruirui Zhang, Jiyu Li,Guoqiang Xu, Lingyun Wang, JingchaoYang, Jie Lai, Yuan Dai*, Zhengyou Zhang, Anyin Li, Yuyan Zhu,sXinge Yu, Zhong Lin Wang*, Yunlong Zi*'}}
                       </div>
                       <div class="introduce_end">
                         IEEE IROS 2020<br/>
@@ -118,9 +127,16 @@
               <t-form-item label="首页预览">
                 <div class="previewHome">
                   <div class="preview_H1">
-                    <span class="time">2022 / 06 / 28</span>
-                    <h4 class="title">
-                      Gain Scheduled Controller Design for Balancing an Autonomous Bicycle
+                    <span class="time">{{
+                      thesisFormData.publish_date || '2022 / 06 / 28'
+                    }}</span>
+                   <h4 class="title">
+                      {{
+                        ellipsis_1(
+                          thesisFormData.title ||
+                          'Gain Scheduled Controller Design for Balancing an Autonomous Bicycle'
+                        )
+                      }}
                     </h4>
                     <span class="introduce">
                       IEEE IROS 2020<br/>
@@ -132,7 +148,7 @@
               </t-form-item>
             </div>
             <t-form-item label="定时发布" help="可以选择今明任意时间发布">
-              <t-switch v-model="switchChecked" size="large"></t-switch>
+              <t-switch v-model="is_timing" size="large"></t-switch>
             </t-form-item>
             <t-form-item class="delLabel">
               <div class="flex_box">
@@ -141,7 +157,11 @@
                   :options="dayOptions"
                   placeholder="请选择"
                 />
-                <t-time-picker format="HH:mm" />
+                <t-time-picker
+                  v-model="publishTime"
+                  format="HH:mm:ss"
+                  :steps="[1, 60, 60]"
+                />
               </div>
             </t-form-item>
             <t-form-item class="delLabel">
@@ -169,13 +189,15 @@
 </template>
 <script setup>
 /* eslint-disable camelcase */
-import uploads from '../../components/uploads.vue'
+import { getDay } from '../../utils /transfertime'
+import test from '../../components/test.vue'
 import { DialogPlugin, MessagePlugin } from 'tdesign-vue-next'
-import { ref, reactive } from 'vue'
+import { ref, reactive, watch } from 'vue'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 const activeStep = ref(1)
 const selected = ref('')
+const publishTime = ref('')
 // const options = [
 //   { label: '无', value: '0' },
 //   { label: 'Max', value: '1' },
@@ -195,24 +217,32 @@ const steps = [
 const rules = reactive({
   title: [{ required: true, message: '论文标题必填', type: 'error' }],
   author: [{ required: true, message: '论文作者必填', type: 'error' }],
-  meeting: [
-    { required: true, message: '投稿会议/期刊名称必填', type: 'error' }
-  ],
-  releaseTime: [{ required: true, message: '发布时间必选', type: 'error' }],
-  digest: [{ required: true, message: '论文摘要必填', type: 'error' }],
-  // keyword: [{ required: true, message: '论文关键词必填', type: 'error' }],
-  effect: [{ required: true, message: '社会价值必填', type: 'error' }],
-  cover: [{ required: true, message: '封面图必传', type: 'error' }],
-  files: [{ required: true, message: '图片/视频必传', type: 'error' }]
+  journal: [{ required: true, message: '投稿会议/期刊名称必填', type: 'error' }],
+  publish_date: [{ required: true, message: '发布时间必选', type: 'error' }],
+  description: [{ required: true, message: '论文摘要必填', type: 'error' }],
+  pdf_url: [{ required: true, message: '论文PDF必传', type: 'error' }]
 })
+watch(
+  () => [selected.value, publishTime.value],
+  e => {
+    console.log(e)
+    if (e[0] === '今天') {
+      thesisFormData.publish_at = getDay(0) + ' ' + publishTime.value
+    } else {
+      thesisFormData.publish_at = getDay(1) + ' ' + publishTime.value
+    }
+  }
+)
 const thesisFormData = reactive({
   title: '',
   author: '',
-  meeting: '',
-  releaseTime: '',
-  digest: '',
-  keyword: ''
+  journal: '',
+  description: '',
+  pdf_url: '',
+  publish_date: '' // 论文发布日期
+  // keyword: ''
 })
+const is_timing = ref(true)
 function goBack () {
   const confirmDia = DialogPlugin.confirm({
     header: '确定要离开吗',
@@ -232,7 +262,21 @@ function goBack () {
     }
   })
 }
-const switchChecked = ref(true)
+const pdfData = reactive({ obj: {} })
+function fileSuccessData (data) {
+  pdfData.obj = data
+  thesisFormData.pdf_url = data.url
+  console.log(data, 'data')
+}
+watch(
+  () => pdfData.obj,
+  e => {
+    thesisFormData.pdf_url = e.url
+  }
+)
+function clearData () {
+  pdfData.obj = {}
+}
 
 function nextStep () {
   activeStep.value += 1

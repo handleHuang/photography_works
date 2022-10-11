@@ -4,11 +4,13 @@
       <div class="goback" @click="goBack">
         <t-icon name="chevron-left" />
         返回首页
-      </div>newsFormData{{newsFormData}}
+      </div>
+      <!-- newsFormData{{ newsFormData }} -->
     </div>
     <div class="containerForm_box">
       <div class="containerForm_header">
-        <t-steps v-model="activeStep" :options="steps" :readonly="true" />
+        <t-steps v-model="activeStep" :options="steps" />
+        <!-- :readonly="true"  -->
       </div>
       <div class="containerForm_body">
         <t-form
@@ -16,6 +18,7 @@
           :rules="rules"
           :data="newsFormData"
           label-align="top"
+          @submit="onSubmit"
         >
           <div class="step_1" v-show="activeStep == 1">
             <t-form-item label="公众号链接" name="tweet_url">
@@ -57,11 +60,16 @@
               label="新闻封面上传"
               help="请选择JPG/PNG格式图片，大小 * ， M以内"
             >
-              <test theme="image" accept="image/jpeg,image/png" @fileSuccessData="fileSuccessData" @clearData="clearData"></test>
+              <test
+                theme="image"
+                accept="image/jpeg,image/png"
+                @fileSuccessData="fileSuccessData"
+                @clearData="clearData"
+              ></test>
             </t-form-item>
             <t-form-item class="delLabel">
               <t-button theme="primary" @click="nextStep">下一步</t-button>
-              <t-button theme="default" @click="saveClick">保存草稿</t-button>
+              <t-button theme="default" type="submit">保存草稿</t-button>
             </t-form-item>
           </div>
           <div class="step_2" v-show="activeStep == 2">
@@ -69,11 +77,14 @@
               <t-form-item label="新闻中心预览">
                 <div class="previewNews">
                   <div class="previewNews_N1">
-                    <span class="time">{{ newsFormData.publish_date||'2022 / 06 / 28'}}</span>
+                    <span class="time">{{
+                      newsFormData.publish_date || '2022 / 06 / 28'
+                    }}</span>
                     <h4 class="title">
                       {{
-                        ellipsis_1(newsFormData.title||
-                          '利用AI和游戏技术，腾讯Robotics X Max机器人加速智能学习'
+                        ellipsis_1(
+                          newsFormData.title ||
+                            '利用AI和游戏技术，腾讯Robotics X Max机器人加速智能学习'
                         )
                       }}
                     </h4>
@@ -81,8 +92,9 @@
                   <div class="previewNews_N2">
                     <span class="introduce">
                       {{
-                        ellipsis_2(newsFormData.abstract||
-                          '本文介绍腾讯 Robotics X实验室与腾讯游戏学堂、腾讯互娱旗下START团队联合宣布发起游戏驱动机器人加速智能学习项目。'
+                        ellipsis_2(
+                          newsFormData.abstract ||
+                            '本文介绍腾讯 Robotics X实验室与腾讯游戏学堂、腾讯互娱旗下START团队联合宣布发起游戏驱动机器人加速智能学习项目。'
                         )
                       }}
                     </span>
@@ -94,16 +106,24 @@
               <t-form-item label="首页预览">
                 <div class="previewHome">
                   <div class="preview_H1">
-                    <span class="time">{{ newsFormData.publish_date||'2022 / 06 / 28'}}</span>
+                    <span class="time">{{
+                      newsFormData.publish_date || '2022 / 06 / 28'
+                    }}</span>
                     <h4 class="title">
-                      {{newsFormData.title|| '利用AI和游戏技术，腾讯Robotics X Max机器人加速智能学习'}}
+                      {{
+                        newsFormData.title ||
+                          '利用AI和游戏技术，腾讯Robotics X Max机器人加速智能学习'
+                      }}
                     </h4>
                     <span class="introduce">
-                      {{newsFormData.abstract||'本文介绍腾讯 Robotics X实验室与腾讯游戏学堂、腾讯互娱旗下START团队联合宣布发起游戏驱动机器人加速智能学习项目。'}}
+                      {{
+                        newsFormData.abstract ||
+                          '本文介绍腾讯 Robotics X实验室与腾讯游戏学堂、腾讯互娱旗下START团队联合宣布发起游戏驱动机器人加速智能学习项目。'
+                      }}
                     </span>
                   </div>
                   <div class="preview_H2">
-                    <img :src="imageData.obj.url||robotPng" alt="" />
+                    <img :src="imageData.obj.url || robotPng" alt="" />
                   </div>
                 </div>
               </t-form-item>
@@ -118,28 +138,34 @@
                   :options="dayOptions"
                   placeholder="请选择"
                 />
-                <t-time-picker v-model="publishTime" format="HH:mm:ss" :steps=[1,60,60] />
+                <t-time-picker
+                  v-model="publishTime"
+                  format="HH:mm:ss"
+                  :steps="[1, 60, 60]"
+                />
               </div>
             </t-form-item>
             <t-form-item class="delLabel">
               <t-button @click="preStep">上一步</t-button>
-              <t-button theme="primary" type="submit" @click="submit"
+              <t-button theme="primary" @click="onSubmit('发布')" type="submit"
                 >发布</t-button
-              >{{newsFormData.publish_at}}
+              >{{ newsFormData.publish_at }}
             </t-form-item>
           </div>
-          <div class="step_3" v-show="activeStep == 3">
+        </t-form>
+        <div class="step_3" v-show="activeStep == 3">
+          <div class="step_3Box">
             <div class="icon_box">
               <t-icon name="check-circle" style="color: green" />
             </div>
-            <h4>发布成功</h4>
-            <h6>恭喜，新闻已发布成功</h6>
+            <h4>{{is_timing?'定时发布成功':'发布成功'}}</h4>
+            <h6>{{is_timing?'新闻将在预定的时间发布':'恭喜，新闻已发布成功'}}</h6>
             <div class="operation">
               <t-button theme="default">查看状态</t-button>
               <t-button theme="primary">去官网</t-button>
             </div>
           </div>
-        </t-form>
+        </div>
       </div>
     </div>
   </div>
@@ -169,12 +195,12 @@ const steps = [
 ]
 const rules = reactive({
   tweet_url: [
-    { required: true, message: '公众号链接必填', type: 'error' },
-    {
-      pattern: /(^((https|ftp|http|file):\/\/)|www\.)*([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+&%$#=~_-]+))*$/gm,
-      message: '必须是一个链接',
-      type: 'error'
-    }
+    { required: true, message: '公众号链接必填', type: 'error' }
+    // {
+    //   pattern: /(^((https|ftp|http|file):\/\/)|www\.)*([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+&%$#=~_-]+))*$/gm,
+    //   message: '必须是一个链接',
+    //   type: 'error'
+    // }
   ],
   title: [{ required: true, message: '论文标题必填', type: 'error' }],
   publish_date: [{ required: true, message: '发布时间必填', type: 'error' }],
@@ -199,9 +225,7 @@ const newsFormData = reactive({
   publish_at: getDay(0),
   publish_date: '', // 推文发布日期
   abstract: '',
-  cover: '',
-  is_published: 0,
-  is_timing: 1
+  cover: ''
 })
 const is_timing = ref(true)
 function goBack () {
@@ -229,7 +253,12 @@ function onBlur () {
       .dispatch('resolveTweet', { tweet_url: newsFormData.tweet_url })
       .then(res => {
         newsFormData.title = res.title
-        newsFormData.publish_date = res.publish_date.substr(0, 4) + ' / ' + res.publish_date.substr(5, 2) + ' / ' + res.publish_date.substr(8, 2)
+        newsFormData.publish_date =
+          res.publish_date.substr(0, 4) +
+          ' / ' +
+          res.publish_date.substr(5, 2) +
+          ' / ' +
+          res.publish_date.substr(8, 2)
         console.log(res)
       })
   }
@@ -239,6 +268,42 @@ function fileSuccessData (data) {
   imageData.obj = data
   newsFormData.cover = data.url
   console.log(data, 'data')
+}
+function onSubmit (e) {
+  const params = {
+    title: newsFormData.title,
+    tweet_url: newsFormData.tweet_url,
+    abstract: newsFormData.abstract,
+    cover: imageData.obj.path
+  }
+  console.log(e)
+  if (e.validateResult === true) {
+    if (e.e.submitter.innerText === '保存草稿') {
+      params.is_published = 0
+      params.is_timing = 0
+    } else if (e.e.submitter.innerText === '发布' && is_timing.value) {
+      params.is_published = 0
+      params.is_timing = 1
+      params.published_at = newsFormData.publish_at
+    } else {
+      params.is_published = 1
+      params.is_timing = 0
+    }
+    store.dispatch('addNews', params).then(res => {
+      const myDate = new Date()
+      if (e.e.submitter.innerText === '保存草稿') {
+        MessagePlugin.success(
+          `${myDate.getHours() + ':' + myDate.getMinutes() + '已保存草稿'}`
+        )
+      } else activeStep.value += 1
+      console.log(res)
+    }).catch(err => {
+      console.log(err)
+    })
+  }
+  if (e.firstError !== '') {
+    MessagePlugin.warning(e.firstError)
+  }
 }
 watch(
   () => imageData.obj,
@@ -255,16 +320,7 @@ function nextStep () {
 function preStep () {
   activeStep.value -= 1
 }
-function submit () {
-  console.log('发布')
-  activeStep.value += 1
-}
-function saveClick () {
-  const myDate = new Date() // 实例一个时间对象；
-  const h = myDate.getHours() // 获取系统时，
-  const m = myDate.getMinutes() // 分
-  MessagePlugin.success(`${h + ':' + m + '已保存草稿'}`)
-}
+
 function ellipsis_1 (value) {
   if (!value) return ''
   if (value.length > 32) {

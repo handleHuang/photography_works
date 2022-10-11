@@ -32,21 +32,22 @@
             :key="index"
           >
             <div class="item_left" v-if="checkedThesis == 'news'">
-              <img src="../../assets/icon/robot.png" alt="" />
+              <img :src="'https://robot-1252839081.cos.ap-guangzhou.myqcloud.com/'+item.cover||robotPng" alt="" />
             </div>
             <div class="item_right">
               <div class="description_text">{{ item.title }}</div>
               <div class="record">
                 <div style="height:24px">
                   {{ item.username }}
-                  <span v-if="tabValue == '1'"> &nbsp;发布于&nbsp; </span
+                  <span v-if="tabValue == 0"> &nbsp;发布于&nbsp; </span
                   ><span v-else> &nbsp;保存于&nbsp; </span>
-                  {{ item.updated_at }}
+                  <span v-if="tabValue == 0">{{ item.published_at }}</span>
+                  <span v-else>{{item.updated_at}}</span>
                 </div>
                 <span v-if="tabValue == 0" class="tag_span">已发布</span>
               </div>
             </div>
-            <div class="del_icon">
+            <div v-if="tabValue == 0" class="del_icon" @click="delNews(item.id)">
               <t-icon name="delete" />
             </div>
           </div>
@@ -59,35 +60,13 @@
 </template>
 <script setup>
 /* eslint-disable camelcase */
+import robotPng from '../../assets/icon/robot.png'
+import { MessagePlugin, DialogPlugin } from 'tdesign-vue-next'
 import { reactive, ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
 const store = useStore()
 const Data = reactive({
   arr: [
-    {
-      description:
-        'Gain Scheduled Controller Design for Balancing an Autonomous Bicycle',
-      author: 'ukashou',
-      operationTime: '2022/06/28'
-    },
-    {
-      description:
-        'Gain Scheduled Controller Design for Balancing an Autonomous Bicycle',
-      author: 'ukashou',
-      operationTime: '2022/06/28'
-    },
-    {
-      description:
-        'Gain Scheduled Controller Design for Balancing an Autonomous Bicycle',
-      author: 'ukashou',
-      operationTime: '2022/06/28'
-    },
-    {
-      description:
-        'Gain Scheduled Controller Design for Balancing an Autonomous Bicycle',
-      author: 'ukashou',
-      operationTime: '2022/06/28'
-    }
   ]
 })
 // 论文/新闻筛选
@@ -96,67 +75,8 @@ const checkedThesis = ref('thesis')
 function changeThesisOrNews (e) {
   console.log(e)
   if (e === 'thesis') {
-    // Data.arr = [
-    //   {
-    //     description:
-    //       'Gain Scheduled Controller Design for Balancing an Autonomous Bicycle',
-    //     author: 'ukashou',
-    //     operationTime: '2022/06/28'
-    //   },
-    //   {
-    //     description:
-    //       'Gain Scheduled Controller Design for Balancing an Autonomous Bicycle',
-    //     author: 'ukashou',
-    //     operationTime: '2022/06/28'
-    //   },
-    //   {
-    //     description:
-    //       'Gain Scheduled Controller Design for Balancing an Autonomous Bicycle',
-    //     author: 'ukashou',
-    //     operationTime: '2022/06/28'
-    //   },
-    //   {
-    //     description:
-    //       'Gain Scheduled Controller Design for Balancing an Autonomous Bicycle',
-    //     author: 'ukashou',
-    //     operationTime: '2022/06/28'
-    //   }
-    // ]
     requestType.value = 'papersList'
   } else {
-    // Data.arr = [
-    //   {
-    //     cover: require('../../assets/icon/robot.png'),
-    //     description: '利用AI和游戏技术，腾讯Robotics X Max机器人加速智能学习',
-    //     author: 'ukashou',
-    //     operationTime: '2022/06/28'
-    //   },
-    //   {
-    //     cover: require('../../assets/icon/新闻.svg'),
-    //     description:
-    //       '利用AI和游戏技术，腾讯Robotics X Max机器人加速智能学习，利用AI和游戏技术，腾讯Robotics X Max机器人加速智能学习',
-    //     author: 'ukashou',
-    //     operationTime: '2022/06/28'
-    //   },
-    //   {
-    //     cover: require('../../assets/icon/robot.png'),
-    //     description: '利用AI和游戏技术，腾讯Robotics X Max机器人加速智能学习',
-    //     author: 'ukashou',
-    //     operationTime: '2022/06/28'
-    //   },
-    //   {
-    //     cover: require('../../assets/icon/论文.svg'),
-    //     description: '利用AI和游戏技术，腾讯Robotics X Max机器人加速智能学习',
-    //     author: 'ukashou',
-    //     operationTime: '2022/06/28'
-    //   },
-    //   {
-    //     cover: require('../../assets/icon/robot.png'),
-    //     description: '利用AI和游戏技术，腾讯Robotics X Max机器人加速智能学习',
-    //     author: 'ukashou',
-    //     operationTime: '2022/06/28'
-    //   }
-    // ]
     requestType.value = 'newsList'
   }
   dataList()
@@ -182,6 +102,27 @@ const tabValue = ref(0)
 function handleChange (e) {
   dataList()
   console.log(e)
+}
+// 删除新闻
+function delNews (id) {
+  const confirmDia = DialogPlugin.confirm({
+    header: '确定要删除这篇新闻吗',
+    body: '删除后数据将不能恢复',
+    confirmBtn: '确认',
+    cancelBtn: '取消',
+    theme: 'warning',
+    onConfirm: ({ e }) => {
+      store.dispatch('delNews', id).then(res => {
+        console.log(res)
+        MessagePlugin.success('删除成功')
+        dataList()
+      })
+      confirmDia.destroy()
+    },
+    onClose: () => {
+      confirmDia.hide()
+    }
+  })
 }
 </script>
 <style lang="less" scoped src="../../assets/style/manage/manage.less"></style>

@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 import baseURL from './apiUrl.js'
-import { Message } from 'tdesign-vue-next'
+import { MessagePlugin } from 'tdesign-vue-next'
 const http = {}
 const instance = axios.create({
   baseURL: baseURL + '/admin',
@@ -42,9 +42,6 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   response => {
     const res = response.data
-    if (response.status === 204) {
-      Message.success({ message: '操作成功！', offset: 150 })
-    }
     return Promise.resolve(res)
   },
   error => {
@@ -59,7 +56,7 @@ instance.interceptors.response.use(
         // window.location.reload()
         break
       default:
-        Message.error({ message: error.response.data.message, offset: 150 })
+        MessagePlugin.error({ message: error.response.data.message, offset: 150 })
         break
     }
     return Promise.reject(error)

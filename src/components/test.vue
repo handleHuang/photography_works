@@ -137,94 +137,10 @@ const requestMethod = file => {
         })
         .catch(err => {
           console.log(err.response)
-          resolve({
-            status: 'fail',
-            response: { url: 'ssad' }
-          })
         })
     }
   })
 }
-
-// function fileSlice (file) {
-//   const LENGTH = 1024 * 1024 * 2
-//   totalBlob.value = Math.ceil(file.size / LENGTH)
-//   const startNum = uploadFileData.start
-//     ? uploadFileData.start
-//     : 0
-//   uploadFileData = {
-//     LENGTH,
-//     start: 0,
-//     end: startNum + LENGTH,
-//     blob: '',
-//     blob_num: 0,
-//     total_blob_num: Math.ceil(file.size / LENGTH),
-//     required_id: generaterequired_id(),
-//     original_name: file.name,
-//     size: file.size,
-//     mime: file.type
-//   }
-//   for (let i = 0; i < uploadFileData.total_blob_num; i++) {
-//     uploadFileData.blob =
-//             uploadFileData.total_blob_num > 1 ? cutFile(file) : file
-//     // sendFile()
-//   }
-// }
-// function sendFile () {
-//   uploadFileData.blob_num++
-//   const formData = new FormData()
-//   formData.append('file', uploadFileData.blob)
-//   formData.append('required_id', uploadFileData.required_id)
-//   formData.append('blob_num', Number(uploadFileData.blob_num))
-//   formData.append(
-//     'total_blob_num',
-//     Number(uploadFileData.total_blob_num)
-//   )
-//   formData.append('original_name', uploadFileData.original_name)
-//   formData.append('size', Number(uploadFileData.size))
-//   formData.append('mime', uploadFileData.mime)
-//   console.log(formData)
-//   axios({
-//     method: 'POST',
-//     url: 'https://robot.zjtntd.com/admin/slice-upload',
-//     headers: {
-//       'Content-Type': 'multipart/form-data',
-//       Authorization: `Bearer ${token}`
-//     },
-//     data: formData
-//   })
-//     .then((res) => {
-//       console.log(res)
-//       if (res.status === 204) {
-//         uploadCount.value++
-//         if (uploadCount.value === totalBlob.value) {
-//           const formData_2 = new FormData()
-//           formData_2.append('required_id', uploadFileData.required_id)
-//           formData_2.append(
-//             'original_name',
-//             uploadFileData.original_name
-//           )
-//           console.log('done')
-//           axios({
-//             method: 'POST',
-//             url: 'https://robot.zjtntd.com/admin/slice-upload/merge',
-//             headers: {
-//               'Content-Type': 'multipart/form-data',
-//               Authorization: `Bearer ${token}`
-//             },
-//             data: formData_2
-//           }).then((res) => {
-//             console.log(res)
-//           }).catch(err => {
-//             console.log(err.response)
-//           })
-//         }
-//       }
-//     })
-//     .catch((err) => {
-//       console.log(err.response)
-//     })
-// }
 // 生成唯一字段
 function generaterequired_id () {
   let d = new Date().getTime()
