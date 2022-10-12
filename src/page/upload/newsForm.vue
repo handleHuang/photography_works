@@ -147,7 +147,7 @@
             </t-form-item>
             <t-form-item class="delLabel">
               <t-button @click="preStep">上一步</t-button>
-              <t-button theme="primary" @click="onSubmit('发布')" type="submit"
+              <t-button theme="primary" @click="onSubmit" type="submit"
                 >发布</t-button
               >{{ newsFormData.publish_at }}
             </t-form-item>
@@ -269,6 +269,7 @@ function fileSuccessData (data) {
   newsFormData.cover = data.url
   console.log(data, 'data')
 }
+// 提交上传
 function onSubmit (e) {
   const params = {
     title: newsFormData.title,

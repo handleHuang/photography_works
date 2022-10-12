@@ -4,7 +4,7 @@
       <div class="goback" @click="goBack">
         <t-icon name="chevron-left" />
         返回首页
-      </div>thesisFormData{{thesisFormData}}
+      </div>
     </div>
     <div class="containerForm_box">
       <div class="containerForm_header">
@@ -16,6 +16,7 @@
           :label-width="95"
           :rules="rules"
           :data="thesisFormData"
+          @submit="onSubmit"
           label-align="top"
         >
           <div class="step_1" v-if="activeStep == 1">
@@ -83,7 +84,7 @@
               />
             </t-form-item> -->
             <t-form-item
-            name="pdf_url"
+              name="pdf_url"
               label="论文PDF上传"
               help="额外提示语，文字过多时宽度折行"
             >
@@ -91,7 +92,7 @@
             </t-form-item>
             <t-form-item class="delLabel">
               <t-button theme="primary" @click="nextStep">下一步</t-button>
-              <t-button theme="default" @click="saveClick">保存草稿</t-button>
+              <t-button theme="default" type="submit">保存草稿</t-button>
             </t-form-item>
           </div>
           <div class="step_2" v-if="activeStep == 2">
@@ -116,8 +117,7 @@
                       {{thesisFormData.author ||'Haoyu Wang, Jiaqi Wang, Kunming Yao, Jingjing Fu, Xin Xia,Ruirui Zhang, Jiyu Li,Guoqiang Xu, Lingyun Wang, JingchaoYang, Jie Lai, Yuan Dai*, Zhengyou Zhang, Anyin Li, Yuyan Zhu,sXinge Yu, Zhong Lin Wang*, Yunlong Zi*'}}
                       </div>
                       <div class="introduce_end">
-                        IEEE IROS 2020<br/>
-                        Measurement Science and Technology
+                        {{thesisFormData.journal||'IEEE IROS 2020 Measurement Science and Technology'}}
                       </div>
                   </div>
                 </div>
@@ -139,9 +139,7 @@
                       }}
                     </h4>
                     <span class="introduce">
-                      IEEE IROS 2020<br/>
-                      Measurement Science and<br/>
-                      Technology
+                      {{thesisFormData.journal||'IEEE IROS 2020 Measurement Science and Technology'}}
                     </span>
                   </div>
                 </div>
@@ -166,23 +164,25 @@
             </t-form-item>
             <t-form-item class="delLabel">
               <t-button @click="preStep">上一步</t-button>
-              <t-button theme="primary" type="submit" @click="submit"
+              <t-button theme="primary" type="submit" @click="onSubmit"
                 >发布</t-button
               >
             </t-form-item>
           </div>
-          <div class="step_3" v-if="activeStep == 3">
+        </t-form>
+        <div class="step_3" v-show="activeStep == 3">
+          <div class="step_3Box">
             <div class="icon_box">
               <t-icon name="check-circle" style="color: green" />
             </div>
-            <h4>发布成功</h4>
-            <h6>恭喜，论文已发布成功</h6>
+            <h4>{{is_timing?'定时发布成功':'发布成功'}}</h4>
+            <h6>{{is_timing?'论文将在预定的时间发布':'恭喜，论文已发布成功'}}</h6>
             <div class="operation">
               <t-button theme="default">查看状态</t-button>
               <t-button theme="primary">去官网</t-button>
             </div>
           </div>
-        </t-form>
+        </div>
       </div>
     </div>
   </div>
@@ -194,9 +194,11 @@ import test from '../../components/test.vue'
 import { DialogPlugin, MessagePlugin } from 'tdesign-vue-next'
 import { ref, reactive, watch } from 'vue'
 import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+const store = useStore()
 const router = useRouter()
 const activeStep = ref(1)
-const selected = ref('')
+const selected = ref('今天')
 const publishTime = ref('')
 // const options = [
 //   { label: '无', value: '0' },
@@ -206,8 +208,8 @@ const publishTime = ref('')
 //   { label: 'Jamoca', value: '4' }
 // ]
 const dayOptions = [
-  { label: '今天', value: '0' },
-  { label: '明天', value: '1' }
+  { label: '今天', value: '今天' },
+  { label: '明天', value: '明天' }
 ]
 const steps = [
   { title: '基本信息', value: 1 },
@@ -238,6 +240,7 @@ const thesisFormData = reactive({
   author: '',
   journal: '',
   description: '',
+  publish_at: getDay(0),
   pdf_url: '',
   publish_date: '' // 论文发布日期
   // keyword: ''
@@ -268,6 +271,44 @@ function fileSuccessData (data) {
   thesisFormData.pdf_url = data.url
   console.log(data, 'data')
 }
+// 提交上传
+function onSubmit (e) {
+  console.log(e)
+  const params = {
+    title: thesisFormData.title,
+    journal: thesisFormData.journal,
+    author: thesisFormData.author,
+    description: thesisFormData.description,
+    pdf_url: pdfData.obj.path
+  }
+  if (e.validateResult === true) {
+    if (e.e.submitter.innerText === '保存草稿') {
+      params.is_published = 0
+      params.is_timing = 0
+    } else if (e.e.submitter.innerText === '发布' && is_timing.value) {
+      params.is_published = 0
+      params.is_timing = 1
+      params.published_at = thesisFormData.publish_at
+    } else {
+      params.is_published = 1
+      params.is_timing = 0
+    }
+    store.dispatch('addPapers', params).then(res => {
+      const myDate = new Date()
+      if (e.e.submitter.innerText === '保存草稿') {
+        MessagePlugin.success(
+          `${myDate.getHours() + ':' + myDate.getMinutes() + '已保存草稿'}`
+        )
+      } else activeStep.value += 1
+      console.log(res)
+    }).catch(err => {
+      console.log(err)
+    })
+  }
+  if (e.firstError !== '') {
+    MessagePlugin.warning(e.firstError)
+  }
+}
 watch(
   () => pdfData.obj,
   e => {
@@ -284,16 +325,7 @@ function nextStep () {
 function preStep () {
   activeStep.value -= 1
 }
-function submit () {
-  console.log('发布')
-  activeStep.value += 1
-}
-function saveClick () {
-  const myDate = new Date() // 实例一个时间对象；
-  const h = myDate.getHours() // 获取系统时，
-  const m = myDate.getMinutes() // 分
-  MessagePlugin.success(`${h + ':' + m + '已保存草稿'}`)
-}
+
 function ellipsis_1 (value) {
   if (!value) return ''
   if (value.length > 68) {

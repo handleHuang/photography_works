@@ -32,7 +32,7 @@
             :key="index"
           >
             <div class="item_left" v-if="checkedThesis == 'news'">
-              <img :src="'https://robot-1252839081.cos.ap-guangzhou.myqcloud.com/'+item.cover||robotPng" alt="" />
+              <img :src="(item.cover?'https://robot-1252839081.cos.ap-guangzhou.myqcloud.com/'+item.cover:robotPng)" alt="" />
             </div>
             <div class="item_right">
               <div class="description_text">{{ item.title }}</div>
@@ -41,20 +41,22 @@
                   {{ item.username }}
                   <span v-if="tabValue == 0"> &nbsp;发布于&nbsp; </span
                   ><span v-else> &nbsp;保存于&nbsp; </span>
-                  <span v-if="tabValue == 0">{{ item.published_at }}</span>
-                  <span v-else>{{item.updated_at}}</span>
+                  <span>{{ item.published_at }}</span>
                 </div>
                 <span v-if="tabValue == 0" class="tag_span">已发布</span>
               </div>
             </div>
-            <div v-if="tabValue == 0" class="del_icon" @click="delNews(item.id)">
+            <div v-if="tabValue == 0" class="del_icon" @click="delListItem(item.cover?'新闻':'论文',item.id)">
               <t-icon name="delete" />
             </div>
           </div>
         </div>
         <div class="empty" v-else>暂无数据</div>
       </div>
-      <div class="more">加载更多</div>
+      <div class="more"  v-if="isHasMore">
+        <span @click="moreData">加载更多</span>
+      </div>
+      <t-divider  v-else>没有更多了</t-divider>
     </div>
   </div>
 </template>
@@ -81,38 +83,52 @@ function changeThesisOrNews (e) {
   }
   dataList()
 }
+const isHasMore = ref('')
+const tabValue = ref(0)
 const by_date = ref('all')
 const requestType = ref('papersList')
+const params = reactive({
+  per_page: 4,
+  page: 1,
+  is_draft: tabValue.value,
+  by_date: by_date.value
+})
 function dataList () {
-  const params = {
-    per_page: 5,
-    page: 1,
-    is_draft: tabValue.value,
-    by_date: by_date.value
-  }
+  // const params = {
+  //   per_page: 5,
+  //   page: 1,
+  //   is_draft: tabValue.value,
+  //   by_date: by_date.value
+  // }
   store.dispatch(requestType.value, params).then(res => {
     console.log(res)
     Data.arr = res.data
+    isHasMore.value = res.links.next
   })
 }
 onMounted(() => {
   dataList()
 })
-const tabValue = ref(0)
+
 function handleChange (e) {
   dataList()
   console.log(e)
 }
 // 删除新闻
-function delNews (id) {
+function delListItem (target, id) {
+  console.log(target)
+  let requestMode = null
+  if (target === '论文') requestMode = 'delPpapers'
+  else requestMode = 'delNews'
+
   const confirmDia = DialogPlugin.confirm({
-    header: '确定要删除这篇新闻吗',
+    header: `确定要删除这篇${target}吗`,
     body: '删除后数据将不能恢复',
     confirmBtn: '确认',
     cancelBtn: '取消',
     theme: 'warning',
     onConfirm: ({ e }) => {
-      store.dispatch('delNews', id).then(res => {
+      store.dispatch(requestMode, id).then(res => {
         console.log(res)
         MessagePlugin.success('删除成功')
         dataList()
@@ -123,6 +139,14 @@ function delNews (id) {
       confirmDia.hide()
     }
   })
+}
+// 加载更多
+function moreData () {
+  params.per_page += 4
+  dataList()
+  if (!isHasMore.value) {
+    console.log('no')
+  }
 }
 </script>
 <style lang="less" scoped src="../../assets/style/manage/manage.less"></style>
