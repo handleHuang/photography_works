@@ -3,8 +3,6 @@
     <div class="page__breadcrumb back__breadcrumb"></div>
     <div class="upload_box">
       <div class="layout_box">
-        uploads:  <uploads></uploads>
-        test:  <test></test>
         <div  class="item_box" @click="toUploadThesis">
           <img src="../../assets/icon/论文.svg"/>
           <div class="item_text1">论文上传</div>
@@ -21,8 +19,6 @@
   </div>
 </template>
 <script setup>
-import uploads from '../../components/uploads.vue'
-import test from '../../components/test.vue'
 import axios from 'axios'
 import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
@@ -37,9 +33,6 @@ function simulationOn () {
   axios({
     method: 'POST',
     url: 'https://robot.zjtntd.com/admin/login',
-    // headers: {
-    //   'Content-Type': 'multipart/form-data'
-    // },
     data: {
       username: 'robot',
       password: 'robot@2022'

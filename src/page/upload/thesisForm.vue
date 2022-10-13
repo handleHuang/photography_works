@@ -19,7 +19,7 @@
           @submit="onSubmit"
           label-align="top"
         >
-          <div class="step_1" v-if="activeStep == 1">
+          <div class="step_1" v-show="activeStep == 1">
             <t-form-item label="论文标题" name="title">
               <t-textarea
                 v-model="thesisFormData.title"
@@ -95,7 +95,7 @@
               <t-button theme="default" type="submit">保存草稿</t-button>
             </t-form-item>
           </div>
-          <div class="step_2" v-if="activeStep == 2">
+          <div class="step_2" v-show="activeStep == 2">
             <div class="controls_238">
               <t-form-item label="论文中心预览">
                 <div class="previewNews">
@@ -269,7 +269,6 @@ const pdfData = reactive({ obj: {} })
 function fileSuccessData (data) {
   pdfData.obj = data
   thesisFormData.pdf_url = data.url
-  console.log(data, 'data')
 }
 // 提交上传
 function onSubmit (e) {
@@ -302,10 +301,12 @@ function onSubmit (e) {
       } else activeStep.value += 1
       console.log(res)
     }).catch(err => {
-      console.log(err)
+      if (err.response.data.message === 'validation.date_format') {
+        MessagePlugin.error('定时发布的时间必须选择完整')
+      }
     })
   }
-  if (e.firstError !== '') {
+  if (e.firstError && e.firstError !== '') {
     MessagePlugin.warning(e.firstError)
   }
 }

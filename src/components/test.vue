@@ -7,13 +7,11 @@
       draggable
       @change="onChange"
     />
-    <!-- uploadCount{{uploadCount}}
-    totalBlob{{totalBlob}} -->
   </div>
 </template>
 <script setup>
 /* eslint-disable camelcase */
-import { ref, defineProps, defineEmits } from 'vue'
+import { ref, defineProps, defineEmits, reactive } from 'vue'
 import axios from 'axios'
 const emits = defineEmits()
 const props = defineProps({
@@ -26,14 +24,7 @@ const props = defineProps({
     default: 'application/pdf'
   }
 })
-function onChange (trigger) {
-  console.log(trigger)
-  if (trigger.length === 0) {
-    emits('clearData')
-  }
-}
-const token = JSON.parse(localStorage.getItem('access_token'))
-let uploadFileData = {
+let uploadFileData = reactive({
   LENGTH: 1024 * 1024 * 2,
   start: 0,
   end: 0,
@@ -44,7 +35,27 @@ let uploadFileData = {
   original_name: '',
   size: 0,
   mime: ''
+})
+function onChange (trigger) {
+  console.log(trigger)
+  if (trigger.length === 0) {
+    emits('clearData')
+    uploadFileData = {
+      LENGTH: 1024 * 1024 * 2,
+      start: 0,
+      end: 0,
+      blob: '',
+      blob_num: 0,
+      total_blob_num: 0,
+      required_id: '',
+      original_name: '',
+      size: 0,
+      mime: ''
+    }
+  }
 }
+const token = JSON.parse(localStorage.getItem('access_token'))
+
 const uploadCount = ref(0)
 const totalBlob = ref(0)
 const requestMethod = file => {
@@ -77,8 +88,8 @@ const requestMethod = file => {
       formData.append('original_name', uploadFileData.original_name)
       formData.append('size', Number(uploadFileData.size))
       formData.append('mime', uploadFileData.mime)
-      //   uploadCount.value = 0
       file.progress = 100
+      console.log(uploadFileData.blob)
       axios({
         method: 'POST',
         url: 'https://robot.zjtntd.com/admin/slice-upload',
@@ -123,7 +134,6 @@ const requestMethod = file => {
                       response: { url: res.data.url }
                     })
                   }
-                  // console.log(res)
                 })
                 .catch(err => {
                   console.log(err.response)
