@@ -4,6 +4,8 @@ const { ElementPlusResolver } = require('unplugin-vue-components/resolvers')
 
 module.exports = {
   lintOnSave: false,
+  publicPath: './',
+  outputDir: 'dist',
   configureWebpack: {
     // ...
     plugins: [
