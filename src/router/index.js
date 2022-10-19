@@ -1,4 +1,4 @@
-import { createWebHistory, createRouter } from 'vue-router'
+import { createWebHashHistory, createRouter } from 'vue-router'
 const routes = [
   {
     path: '/',
@@ -35,8 +35,8 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory('/'),
-  routes // `routes: routes` 的缩写
+  history: createWebHashHistory(process.env.VUE_APP_URL_BASE),
+  routes
 })
 
 // router.beforeEach((to, from, next) => {
