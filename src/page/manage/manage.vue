@@ -2,7 +2,7 @@
   <div class="manage">
     <div class="placeholder_box"></div>
     <div class="manage_box">
-      <t-tabs v-model="tabValue" @change="handleChange">
+      <t-tabs v-model="params.is_draft" @change="handleChange">
         <t-tab-panel :value="0" label="已发布"> </t-tab-panel>
         <t-tab-panel :value="1" label="草稿箱"> </t-tab-panel>
       </t-tabs>
@@ -17,7 +17,7 @@
         </t-radio-group>
       </div>
       <div class="filtrate">
-        <t-radio-group v-model="by_date" @change="handleChange">
+        <t-radio-group v-model="params.by_date" @change="handleChange">
           <t-radio-button value="all">全部</t-radio-button>
           <t-radio-button value="recent_month">近一月</t-radio-button>
           <t-radio-button value="half_a_year">近半年</t-radio-button>
@@ -39,14 +39,15 @@
               <div class="record">
                 <div style="height:24px">
                   {{ item.username }}
-                  <span v-if="tabValue == 0"> &nbsp;发布于&nbsp; </span
+                  <span v-if="params.is_draft == 0"> &nbsp;发布于&nbsp; </span
                   ><span v-else> &nbsp;保存于&nbsp; </span>
-                  <span>{{ item.published_at }}</span>
+                  <span  v-if="params.is_draft == 0">{{ item.published_at }}</span>
+                  <span  v-else>{{ item.updated_at }}</span>
                 </div>
-                <span v-if="tabValue == 0" class="tag_span">已发布</span>
+                <span v-if="params.is_draft == 0" class="tag_span">已发布</span>
               </div>
             </div>
-            <div v-if="tabValue == 0" class="del_icon" @click="delListItem(item.cover?'新闻':'论文',item.id)">
+            <div v-if="params.is_draft == 0" class="del_icon" @click="delListItem(item.cover?'新闻':'论文',item.id)">
               <t-icon name="delete" />
             </div>
           </div>
@@ -84,22 +85,16 @@ function changeThesisOrNews (e) {
   dataList()
 }
 const isHasMore = ref('')
-const tabValue = ref(0)
-const by_date = ref('all')
+// const params.is_draft = ref(0)
+// const by_date = ref('all')
 const requestType = ref('papersList')
 const params = reactive({
   per_page: 4,
   page: 1,
-  is_draft: tabValue.value,
-  by_date: by_date.value
+  is_draft: 0,
+  by_date: 'all'
 })
 function dataList () {
-  // const params = {
-  //   per_page: 5,
-  //   page: 1,
-  //   is_draft: tabValue.value,
-  //   by_date: by_date.value
-  // }
   store.dispatch(requestType.value, params).then(res => {
     console.log(res)
     Data.arr = res.data
