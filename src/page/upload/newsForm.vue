@@ -131,7 +131,7 @@
             <t-form-item label="定时发布" help="可以选择今明任意时间发布">
               <t-switch v-model="is_timing" size="large"></t-switch>
             </t-form-item>
-            <t-form-item class="delLabel">
+            <t-form-item class="delLabel" v-if="is_timing">
               <div class="flex_box">
                 <t-select
                   v-model="selected"
@@ -140,7 +140,7 @@
                 />
                 <t-time-picker
                   v-model="publishTime"
-                  format="HH:mm:ss"
+                  format="HH:mm"
                   :steps="[1, 60, 60]"
                 />
               </div>
@@ -149,7 +149,7 @@
               <t-button @click="preStep">上一步</t-button>
               <t-button theme="primary" @click="onSubmit" type="submit"
                 >发布</t-button
-              >{{ newsFormData.publish_at }}
+              >
             </t-form-item>
           </div>
         </t-form>

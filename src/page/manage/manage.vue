@@ -25,14 +25,22 @@
         </t-radio-group>
       </div>
       <div class="content">
-        <div v-if="Data.arr.length !== 0">
+        <div v-if="Data.arr.length !== 0" class="positionDiv">
           <div
             class="content_item"
             v-for="(item, index) in Data.arr"
             :key="index"
           >
             <div class="item_left" v-if="checkedThesis == 'news'">
-              <img :src="(item.cover?'https://robot-1252839081.cos.ap-guangzhou.myqcloud.com/'+item.cover:robotPng)" alt="" />
+              <img
+                :src="
+                  item.cover
+                    ? 'https://robot-1252839081.cos.ap-guangzhou.myqcloud.com/' +
+                      item.cover
+                    : robotPng
+                "
+                alt=""
+              />
             </div>
             <div class="item_right">
               <div class="description_text">{{ item.title }}</div>
@@ -41,23 +49,33 @@
                   {{ item.username }}
                   <span v-if="params.is_draft == 0"> &nbsp;发布于&nbsp; </span
                   ><span v-else> &nbsp;保存于&nbsp; </span>
-                  <span  v-if="params.is_draft == 0">{{ item.published_at }}</span>
-                  <span  v-else>{{ item.updated_at }}</span>
+                  <span v-if="params.is_draft == 0">{{
+                    item.published_at
+                  }}</span>
+                  <span v-else>{{ item.updated_at }}</span>
                 </div>
                 <span v-if="params.is_draft == 0" class="tag_span">已发布</span>
               </div>
             </div>
-            <div v-if="params.is_draft == 0" class="del_icon" @click="delListItem(item.cover?'新闻':'论文',item.id)">
+            <div
+              v-if="params.is_draft == 0"
+              class="del_icon"
+              @click="delListItem(item.cover ? '新闻' : '论文', item.id)"
+            >
               <t-icon name="delete" />
             </div>
           </div>
+            <div class="more" v-if="isHasMore">
+              <span @click="moreData">加载更多</span>
+            </div>
+            <t-divider v-if="!isHasMore">没有更多了</t-divider>
         </div>
         <div class="empty" v-else>暂无数据</div>
       </div>
-      <div class="more"  v-if="isHasMore">
+      <!-- <div class="more"  v-if="isHasMore">
         <span @click="moreData">加载更多</span>
       </div>
-      <t-divider  v-else>没有更多了</t-divider>
+      <t-divider  v-else>没有更多了</t-divider> -->
     </div>
   </div>
 </template>
@@ -69,8 +87,7 @@ import { reactive, ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
 const store = useStore()
 const Data = reactive({
-  arr: [
-  ]
+  arr: []
 })
 // 论文/新闻筛选
 const checkedThesis = ref('thesis')
