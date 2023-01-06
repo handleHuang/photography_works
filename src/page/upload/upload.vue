@@ -19,7 +19,7 @@
   </div>
 </template>
 <script setup>
-import axios from 'axios'
+// import axios from 'axios'
 import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 const router = useRouter()
@@ -29,20 +29,20 @@ function toUploadThesis () {
 function toUploadnews () {
   router.push('upload/newsForm')
 }
-function simulationOn () {
-  axios({
-    method: 'POST',
-    url: 'https://robot.zjtntd.com/admin/login',
-    data: {
-      username: 'robot',
-      password: 'robot@2022'
-    }
-  }).then(res => {
-    localStorage.setItem('access_token', JSON.stringify(res.data.access_token))
-  })
-}
+// function simulationOn () {
+//   axios({
+//     method: 'POST',
+//     url: 'https://robot.zjtntd.com/admin/login',
+//     data: {
+//       username: 'robot',
+//       password: 'robot@2022'
+//     }
+//   }).then(res => {
+//     localStorage.setItem('access_token', JSON.stringify(res.data.access_token))
+//   })
+// }
 onMounted(() => {
-  simulationOn()
+  // simulationOn()
 })
 </script>
 

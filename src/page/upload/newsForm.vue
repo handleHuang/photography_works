@@ -9,11 +9,12 @@
     </div>
     <div class="containerForm_box">
       <div class="containerForm_header">
-        <t-steps v-model="activeStep" :options="steps" />
+        <t-steps v-model="activeStep" :options="steps" :readonly="true" />
         <!-- :readonly="true"  -->
       </div>
       <div class="containerForm_body">
         <t-form
+          ref="resetFormData"
           :label-width="95"
           :rules="rules"
           :data="newsFormData"
@@ -21,24 +22,43 @@
           @submit="onSubmit"
         >
           <div class="step_1" v-show="activeStep == 1">
-            <t-form-item label="公众号链接" name="tweet_url">
+            <t-form-item label="新闻内容" class="contentFormItem" :name="contentMode==1?'content':'tweet_url'">
+               <t-radio-group v-model="contentMode" @change="contentModeChange">
+                <t-radio :value="1">富文本</t-radio>
+                <t-radio :value="2">公众号链接</t-radio>
+              </t-radio-group>
+              <RichText
+               v-if="contentMode == 1"
+                :widthHeight="[400, 597]"
+                :value="newsFormData.content"
+                @input="inputRich"
+              />
+              <t-input
+                v-if="contentMode == 2"
+                v-model="newsFormData.tweet_url"
+                type="text"
+                placeholder="请粘贴已在公众号发布的文章链接，官网将直接跳转公众号链接"
+                @blur="onBlur"
+              ></t-input>
+            </t-form-item>
+            <!-- <t-form-item label="公众号链接" name="tweet_url" help="请粘贴已在公众号发布的文章链接，官网将直接跳转公众号链接">
               <t-input
                 v-model="newsFormData.tweet_url"
                 type="text"
                 placeholder="请输入内容"
                 @blur="onBlur"
               ></t-input>
-            </t-form-item>
-            <t-form-item class="bg_eee" label="新闻标题" name="title">
+            </t-form-item> -->
+            <t-form-item :class="{bg_eee:contentMode == 2}" label="新闻标题" name="title">
               <t-textarea
                 autosize
                 v-model="newsFormData.title"
                 type="text"
-                disabled
-                placeholder="自动抓取标题会展示在这里"
+                :disabled="contentMode == 2"
+                :placeholder="contentMode == 2?'自动抓取标题会展示在这里':'请输入内容'"
               ></t-textarea>
             </t-form-item>
-            <t-form-item class="bg_eee" label="发布日期" name="publish_date">
+            <t-form-item v-if="contentMode == 2" :class="{bg_eee:contentMode == 2}"  label="发布日期" name="publish_date">
               <t-textarea
                 autosize
                 disabled
@@ -46,6 +66,7 @@
                 type="text"
                 placeholder="自动抓取日期会展示在这里"
               ></t-textarea>
+              <!-- <t-date-picker v-model="newsFormData.publish_date" v-else/> -->
             </t-form-item>
             <t-form-item label="新闻摘要" name="abstract">
               <t-textarea
@@ -78,7 +99,7 @@
                 <div class="previewNews">
                   <div class="previewNews_N1">
                     <span class="time">{{
-                      newsFormData.publish_date || '2022 / 06 / 28'
+                      contentMode == 2&&newsFormData.publish_date?newsFormData.publish_date:contentMode == 1&&is_timing==0?getDay(0):newsFormData.publish_at.substr(0,10)
                     }}</span>
                     <h4 class="title">
                       {{
@@ -107,7 +128,7 @@
                 <div class="previewHome">
                   <div class="preview_H1">
                     <span class="time">{{
-                      newsFormData.publish_date || '2022 / 06 / 28'
+                      contentMode == 2&&newsFormData.publish_date?newsFormData.publish_date:contentMode == 1&&is_timing==0?getDay(0):newsFormData.publish_at.substr(0,10)
                     }}</span>
                     <h4 class="title">
                       {{
@@ -172,6 +193,7 @@
 </template>
 <script setup>
 /* eslint-disable camelcase */
+import RichText from '../../components/RichText.vue'
 import { getDay } from '../../utils /transfertime'
 import robotPng from '../../assets/icon/robot.png'
 import test from '../../components/test.vue'
@@ -193,28 +215,38 @@ const steps = [
   { title: '预览信息', value: 2 },
   { title: '完成', value: 3 }
 ]
+const resetFormData = ref(null)
+const contentMode = ref(1)
+const inputRich = emit => {
+  newsFormData.content = emit
+}
+const contentModeChange = (e) => {
+  if (e === 2 && newsFormData.tweet_url !== '') {
+    onBlur()
+  }
+  console.log(resetFormData.value)
+  // newsFormData.title = ''
+  // newsFormData.publish_date = ''
+  resetFormData.value.reset()
+}
 const rules = reactive({
   tweet_url: [
-    { required: true, message: '公众号链接必填', type: 'error' }
-    // {
-    //   pattern: /(^((https|ftp|http|file):\/\/)|www\.)*([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+&%$#=~_-]+))*$/gm,
-    //   message: '必须是一个链接',
-    //   type: 'error'
-    // }
+    { required: true, message: '公众号链接必填', type: 'error', trigger: 'change' }
   ],
-  title: [{ required: true, message: '论文标题必填', type: 'error' }],
-  publish_date: [{ required: true, message: '发布时间必填', type: 'error' }],
-  abstract: [{ required: true, message: '论文摘要必填', type: 'error' }],
-  cover: [{ required: true, message: '新闻封面必传', type: 'error' }]
+  content: [{ required: true, message: '新闻内容必填', type: 'error', trigger: 'change' }],
+  title: [{ required: true, message: '论文标题必填', type: 'error', trigger: 'change' }],
+  publish_date: [{ required: true, message: '发布时间必填', type: 'error', trigger: 'change' }],
+  abstract: [{ required: true, message: '论文摘要必填', type: 'error', trigger: 'change' }],
+  cover: [{ required: true, message: '新闻封面必传', type: 'error', trigger: 'change' }]
 })
 watch(
   () => [selected.value, publishTime.value],
   e => {
     console.log(e)
     if (e[0] === '今天') {
-      newsFormData.publish_at = getDay(0) + ' ' + publishTime.value
+      newsFormData.publish_at = getDay(0) + ' ' + publishTime.value + ':00'
     } else {
-      newsFormData.publish_at = getDay(1) + ' ' + publishTime.value
+      newsFormData.publish_at = getDay(1) + ' ' + publishTime.value + ':00'
     }
   }
 )
@@ -225,7 +257,8 @@ const newsFormData = reactive({
   publish_at: getDay(0),
   publish_date: '', // 推文发布日期
   abstract: '',
-  cover: ''
+  cover: '',
+  content: ''
 })
 const is_timing = ref(true)
 function goBack () {
@@ -268,37 +301,50 @@ function fileSuccessData (data) {
   imageData.obj = data
   newsFormData.cover = data.url
 }
+const myDate = new Date()
 // 提交上传
 function onSubmit (e) {
   const params = {
     title: newsFormData.title,
-    tweet_url: newsFormData.tweet_url,
+    // tweet_url: newsFormData.tweet_url,
     abstract: newsFormData.abstract,
     cover: imageData.obj.path
+    // content: newsFormData.content
   }
   console.log(e)
   if (e.validateResult === true) {
     if (e.e.submitter.innerText === '保存草稿') {
       params.is_published = 0
       params.is_timing = 0
-    } else if (e.e.submitter.innerText === '发布' && is_timing.value) {
+    }
+    if (e.e.submitter.innerText === '发布' && is_timing.value) {
       params.is_published = 0
       params.is_timing = 1
       params.published_at = newsFormData.publish_at
-    } else {
+    }
+    if (e.e.submitter.innerText === '发布' && !is_timing.value) {
       params.is_published = 1
       params.is_timing = 0
+      params.published_at = newsFormData.publish_at + ' ' + myDate.getHours() + ':' + myDate.getMinutes() + ':00'
+    }
+    if (contentMode.value === 1) {
+      params.content = newsFormData.content
+    } else {
+      params.tweet_url = newsFormData.tweet_url
     }
     store.dispatch('addNews', params).then(res => {
-      const myDate = new Date()
       if (e.e.submitter.innerText === '保存草稿') {
         MessagePlugin.success(
           `${myDate.getHours() + ':' + myDate.getMinutes() + '已保存草稿'}`
         )
-      } else activeStep.value += 1
+      } else {
+        activeStep.value += 1
+        resetFormData.value.reset()
+      }
       console.log(res)
     }).catch(err => {
-      if (err.response.data.message === 'validation.date_format') {
+      console.log(err.response.data)
+      if (err.response.data.message === 'validation.date_format' && is_timing.value) {
         MessagePlugin.error('定时发布的时间必须选择完整')
       }
     })
@@ -313,6 +359,15 @@ watch(
     newsFormData.cover = e.url
   }
 )
+// watch(
+//   () => contentMode.value,
+//   e => {
+//     resetFormData.value.reset()
+//   },
+//   {
+//     deep: true
+//   }
+// )
 function clearData () {
   imageData.obj = {}
 }

@@ -94,6 +94,7 @@ const checkedThesis = ref('thesis')
 
 function changeThesisOrNews (e) {
   console.log(e)
+  params.per_page = 4
   if (e === 'thesis') {
     requestType.value = 'papersList'
   } else {
@@ -156,9 +157,6 @@ function delListItem (target, id) {
 function moreData () {
   params.per_page += 4
   dataList()
-  if (!isHasMore.value) {
-    console.log('no')
-  }
 }
 </script>
 <style lang="less" scoped src="../../assets/style/manage/manage.less"></style>

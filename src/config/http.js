@@ -12,11 +12,11 @@ const instance = axios.create({
 instance.interceptors.request.use(
   config => {
     // 请求头添加token
-    const token = JSON.parse(localStorage.getItem('access_token'))
+    // const token = JSON.parse(localStorage.getItem('access_token'))
     const newConfig = config
-    if (token) {
-      newConfig.headers.authorization = `Bearer ${token}`
-    }
+    // if (token) {
+    //   newConfig.headers.authorization = `Bearer ${token}`
+    // }
     if (
       newConfig.method === 'post' ||
       newConfig.method === 'put' ||
