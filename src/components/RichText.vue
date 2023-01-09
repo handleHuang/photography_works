@@ -38,42 +38,39 @@ const { myValue, setting } = toRefs(
       toolbar_drawer: 'sliding',
       resize: false,
       toolbar:
-      'undo redo |stylescreen fullscreen | styleselect  | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | link unlink openlink image charmap pastetext print preview | numlist bullist | image media table | fontselect fontsizeselect forecolor backcolor | indent outdent | superscript subscript | removeformat |',
+      'undo redo | fullscreen | styleselect  | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | link   charmap pastetext print preview | numlist bullist | image media table | fontselect fontsizeselect forecolor backcolor | indent outdent | superscript subscript | removeformat |',
       language_url:
       'https://unpkg.com/@jsdawn/vue3-tinymce@1.1.6/dist/tinymce/langs/zh_CN.js',
       language: 'zh_CN',
       font_formats:
-      "微软雅黑='微软雅黑';宋体='宋体';黑体='黑体';仿宋='仿宋';PingFang SC;Microsoft YaHei,sans-serif;楷体='楷体';隶书='隶书';幼圆='幼圆';Andale Mono=andale mono,times;Arial=arial,helvetica,sans-serif;Arial Black=arial black,avant garde;Book Antiqua=book antiqua,palatino;Comic Sans MS=comic sans ms,sans-serif;Courier New=courier new,courier;Georgia=georgia,palatino;Helvetica=helvetica;Impact=impact,chicago;Symbol=symbol;Tahoma=tahoma,arial,helvetica,sans-serif;Terminal=terminal,monaco;Times New Roman=times new roman,times;Trebuchet MS=trebuchet ms,geneva;Verdana=verdana,geneva;Webdings=webdings;Wingdings=wingdings",
+      "微软雅黑='微软雅黑';宋体='宋体';黑体='黑体';仿宋='仿宋';汉仪旗黑='HYQiHei';PingFang SC;Microsoft YaHei,sans-serif;楷体='楷体';隶书='隶书';幼圆='幼圆';Andale Mono=andale mono,times;Arial=arial,helvetica,sans-serif;Arial Black=arial black,avant garde;Book Antiqua=book antiqua,palatino;Comic Sans MS=comic sans ms,sans-serif;Courier New=courier new,courier;Georgia=georgia,palatino;Helvetica=helvetica;Impact=impact,chicago;Symbol=symbol;Tahoma=tahoma,arial,helvetica,sans-serif;Terminal=terminal,monaco;Times New Roman=times new roman,times;Trebuchet MS=trebuchet ms,geneva;Verdana=verdana,geneva;Webdings=webdings;Wingdings=wingdings",
       statusbar: false, // 底部的状态栏
       style_formats: [
         {
-          title: '文字大小',
-          items: [
-            { title: '12px', inline: 'span', styles: { 'font-size': '12px' } },
-            { title: '14px', inline: 'span', styles: { 'font-size': '14px' } },
-            { title: '15px', inline: 'span', styles: { 'font-size': '15px' } },
-            { title: '16px', inline: 'span', styles: { 'font-size': '16px' } },
-            { title: '18px', inline: 'span', styles: { 'font-size': '18px' } },
-            { title: '20px', inline: 'span', styles: { 'font-size': '20px' } },
-            { title: '22px', inline: 'span', styles: { 'font-size': '22px' } },
-            { title: '24px', inline: 'span', styles: { 'font-size': '24px' } }
-          ]
+          title: '大标题', block: 'h1', styles: { 'font-family': 'HYQiHei', 'font-size': '40px', 'font-weight': '850', 'line-height': '40px', color: '#fff' }
         },
         {
-          title: '字体',
-          items: [
-            { title: '微软雅黑', inline: 'span', styles: { 'font-family': "微软雅黑='微软雅黑'" } },
-            { title: '苹果苹方', inline: 'span', styles: { 'font-family': 'PingFang SC' } }
-          ]
+          title: 'H1正文标题1', block: 'h1', styles: { 'font-family': 'HYQiHei', 'font-size': '32px', 'font-weight': '850', 'line-height': '1.2', color: '#fff' }
         },
         {
-          title: '预先格式化的', inline: 'span', styles: { 'font-family': 'PingFang SC', 'font-size': '15px' }
+          title: 'H2正文标题2', block: 'h2', styles: { 'font-family': 'HYQiHei', 'font-size': '24px', 'font-weight': '850', 'line-height': '1.2', color: '#fff' }
         },
-        { title: '首行缩进', block: 'p', styles: { 'text-indent': '2em' } }
+        {
+          title: '正文', inline: 'span', styles: { 'font-family': 'HYQiHei', 'font-size': '16px', 'line-height': '24px', opacity: '0.6', color: '#fff' }
+        },
+        {
+          title: '高亮文字', inline: 'span', styles: { 'font-family': 'HYQiHei', 'font-size': '24px', 'line-height': '36px', color: '#fff' }
+        },
+        {
+          title: '链接文字', inline: 'span', styles: { 'text-decoration': 'underline', color: '#fff' }
+        },
+        {
+          title: '图片描述', inline: 'span', styles: { 'font-size': '12px', 'line-height': '20px', color: '#fff' }
+        }
       ],
       style_formats_merge: true,
-      style_formats_autohide: true,
-      fontsize_formats: '12px 14px 15px 16px 18px 20px 24px',
+      style_formats_autohide: false,
+      fontsize_formats: '12px 14px 16px 18px 20px 24px 32px 40px',
       paste_data_images: true,
       images_file_types: 'jpeg,jpg,png,gif,bmp,webp',
       plugins: 'code link image media table lists fullscreen quickbars',
