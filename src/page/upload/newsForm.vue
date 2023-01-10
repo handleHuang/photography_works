@@ -218,13 +218,13 @@ const steps = [
 const resetFormData = ref(null)
 const contentMode = ref(1)
 const inputRich = emit => {
+  console.log(emit)
   newsFormData.content = emit
 }
 const contentModeChange = (e) => {
   if (e === 2 && newsFormData.tweet_url !== '') {
     onBlur()
   }
-  console.log(resetFormData.value)
   // newsFormData.title = ''
   // newsFormData.publish_date = ''
   resetFormData.value.reset()

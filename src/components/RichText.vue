@@ -81,8 +81,11 @@ const { myValue, setting } = toRefs(
         const files = new window.File([blobInfo.blob()], blobInfo.filename(), {
           type: blobInfo.blob().type
         })
-        console.log(files)
-        fileSlice(files)
+        // console.log(files)
+        // fileSlice(files)
+        fileSlice(files, url => {
+          success(url)
+        })
       }
     }
   })
@@ -101,7 +104,7 @@ let uploadFileData = {
 }
 const uploadCount = ref(0)
 const totalBlob = ref(0)
-function fileSlice (file) {
+function fileSlice (file, callback) {
   const LENGTH = 1024 * 1024 * 2
 
   totalBlob.value = Math.ceil(file.size / LENGTH)
@@ -123,10 +126,10 @@ function fileSlice (file) {
   for (let i = 0; i < uploadFileData.total_blob_num; i++) {
     uploadFileData.blob =
           uploadFileData.total_blob_num > 1 ? cutFile(file) : file
-    sendFile()
+    sendFile(file, callback)
   }
 }
-function sendFile () {
+function sendFile (file, callback) {
   uploadFileData.blob_num++
   const formData = new FormData()
   formData.append('file', uploadFileData.blob)
@@ -169,6 +172,7 @@ function sendFile () {
             },
             data: formData_2
           }).then((res) => {
+            callback(res.data.url)
             console.log(res)
           })
         }
