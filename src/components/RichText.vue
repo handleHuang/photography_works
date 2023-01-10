@@ -45,21 +45,23 @@ const { myValue, setting } = toRefs(
       font_formats:
       "微软雅黑='微软雅黑';宋体='宋体';黑体='黑体';仿宋='仿宋';汉仪旗黑='HYQiHei';PingFang SC;Microsoft YaHei,sans-serif;楷体='楷体';隶书='隶书';幼圆='幼圆';Andale Mono=andale mono,times;Arial=arial,helvetica,sans-serif;Arial Black=arial black,avant garde;Book Antiqua=book antiqua,palatino;Comic Sans MS=comic sans ms,sans-serif;Courier New=courier new,courier;Georgia=georgia,palatino;Helvetica=helvetica;Impact=impact,chicago;Symbol=symbol;Tahoma=tahoma,arial,helvetica,sans-serif;Terminal=terminal,monaco;Times New Roman=times new roman,times;Trebuchet MS=trebuchet ms,geneva;Verdana=verdana,geneva;Webdings=webdings;Wingdings=wingdings",
       statusbar: false, // 底部的状态栏
+      skin: 'oxide-dark',
+      content_style: 'p {font-size:16px; color: #FFF; opacity: 0.6}',
       style_formats: [
         {
-          title: '大标题', block: 'h1', styles: { 'font-family': 'HYQiHei', 'font-size': '40px', 'font-weight': '850', 'line-height': '40px', color: '#fff' }
+          title: '大标题', block: 'h1', styles: { 'font-family': 'HYQiHei', 'font-size': '40px', 'font-weight': '850', 'line-height': '40px', color: '#fff', opacity: '1' }
         },
         {
-          title: 'H1正文标题1', block: 'h1', styles: { 'font-family': 'HYQiHei', 'font-size': '32px', 'font-weight': '850', 'line-height': '1.2', color: '#fff' }
+          title: 'H1正文标题1', block: 'h1', styles: { 'font-family': 'HYQiHei', 'font-size': '32px', 'font-weight': '850', 'line-height': '1.2', color: '#fff', opacity: '1' }
         },
         {
-          title: 'H2正文标题2', block: 'h2', styles: { 'font-family': 'HYQiHei', 'font-size': '24px', 'font-weight': '850', 'line-height': '1.2', color: '#fff' }
+          title: 'H2正文标题2', block: 'h2', styles: { 'font-family': 'HYQiHei', 'font-size': '24px', 'font-weight': '850', 'line-height': '1.2', color: '#fff', opacity: '1' }
         },
         {
-          title: '正文', inline: 'span', styles: { 'font-family': 'HYQiHei', 'font-size': '16px', 'line-height': '24px', opacity: '0.6', color: '#fff' }
+          title: '正文', block: 'p', styles: { 'font-family': 'HYQiHei', 'font-size': '16px', 'line-height': '24px', opacity: '0.6', color: '#fff' }
         },
         {
-          title: '高亮文字', inline: 'span', styles: { 'font-family': 'HYQiHei', 'font-size': '24px', 'line-height': '36px', color: '#fff' }
+          title: '高亮文字', inline: 'span', styles: { 'font-family': 'HYQiHei', 'font-size': '24px', 'line-height': '36px', color: '#fff', opacity: '1' }
         },
         {
           title: '链接文字', inline: 'span', styles: { 'text-decoration': 'underline', color: '#fff' }
