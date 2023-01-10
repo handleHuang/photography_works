@@ -218,7 +218,6 @@ const steps = [
 const resetFormData = ref(null)
 const contentMode = ref(1)
 const inputRich = emit => {
-  console.log(emit)
   newsFormData.content = emit
 }
 const contentModeChange = (e) => {
