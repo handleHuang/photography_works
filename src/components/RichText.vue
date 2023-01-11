@@ -142,7 +142,6 @@ function sendFile (file, callback) {
   formData.append('original_name', uploadFileData.original_name)
   formData.append('size', Number(uploadFileData.size))
   formData.append('mime', uploadFileData.mime)
-  console.log(formData)
   axios({
     method: 'POST',
     url: 'https://robot.zjtntd.com/admin/slice-upload',
@@ -153,6 +152,9 @@ function sendFile (file, callback) {
     data: formData
   })
     .then((res) => {
+      if (res.status === 200) {
+        callback(res.data.url)
+      }
       if (res.status === 204) {
         uploadCount.value++
         if (uploadCount.value === totalBlob.value) {
@@ -173,7 +175,6 @@ function sendFile (file, callback) {
             data: formData_2
           }).then((res) => {
             callback(res.data.url)
-            console.log(res)
           })
         }
       }
@@ -219,6 +220,20 @@ watch(
 watch(
   () => myValue.value,
   (newValue) => {
+    uploadCount.value = 0
+    totalBlob.value = 0
+    uploadFileData = {
+      LENGTH: 1024 * 1024 * 2,
+      start: 0,
+      end: 0,
+      blob: '',
+      blob_num: 0,
+      total_blob_num: 0,
+      required_id: '',
+      original_name: '',
+      size: 0,
+      mime: ''
+    }
     emits('input', newValue)
   }
 )
