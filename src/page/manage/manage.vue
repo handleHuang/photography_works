@@ -85,6 +85,8 @@ import robotPng from '../../assets/icon/robot.png'
 import { MessagePlugin, DialogPlugin } from 'tdesign-vue-next'
 import { reactive, ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
+const route = useRoute()
 const store = useStore()
 const Data = reactive({
   arr: []
@@ -120,6 +122,14 @@ function dataList () {
   })
 }
 onMounted(() => {
+  if (route.params.menu) {
+    checkedThesis.value = route.params.menu
+  }
+  if (route.params.menu === 'thesis') {
+    requestType.value = 'papersList'
+  } else {
+    requestType.value = 'newsList'
+  }
   dataList()
 })
 

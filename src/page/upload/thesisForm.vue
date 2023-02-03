@@ -158,7 +158,6 @@
                 <t-time-picker
                   v-model="publishTime"
                   format="HH:mm"
-                  :steps="[1, 60, 60]"
                 />
               </div>
             </t-form-item>
@@ -178,8 +177,8 @@
             <h4>{{is_timing?'定时发布成功':'发布成功'}}</h4>
             <h6>{{is_timing?'论文将在预定的时间发布':'恭喜，论文已发布成功'}}</h6>
             <div class="operation">
-              <t-button theme="default">查看状态</t-button>
-              <t-button theme="primary">去官网</t-button>
+              <t-button theme="default" @click="checkStatus">查看状态</t-button>
+              <t-button theme="primary" @click="toWebsite">去官网</t-button>
             </div>
           </div>
         </div>
@@ -192,14 +191,29 @@
 import { getDay } from '../../utils /transfertime'
 import test from '../../components/test.vue'
 import { DialogPlugin, MessagePlugin } from 'tdesign-vue-next'
-import { ref, reactive, watch } from 'vue'
+import { ref, reactive, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 const store = useStore()
 const router = useRouter()
 const activeStep = ref(1)
 const selected = ref('今天')
-const publishTime = ref('')
+const myDate = new Date()
+const hh = myDate.getHours() < 10 ? '0' + myDate.getHours() : myDate.getHours()
+const mm = myDate.getMinutes() < 10 ? '0' + myDate.getMinutes() : myDate.getMinutes()
+const publishTime = ref(hh + ':' + mm)
+onMounted(() => {
+  if (selected.value === '今天') {
+    thesisFormData.publish_at = getDay(0) + ' ' + publishTime.value + ':00'
+    const c = new Date(Date.parse(thesisFormData.publish_at) + 15 * 60 * 1000).toLocaleString()
+    const date = new Date(c)
+    var h = (date.getHours() < 10 ? '0' + (date.getHours()) : date.getHours())
+    var m = (date.getMinutes() < 10 ? '0' + (date.getMinutes()) : date.getMinutes())
+    publishTime.value = h + ':' + m
+  } else {
+    thesisFormData.publish_at = getDay(1) + ' ' + publishTime.value + ':00'
+  }
+})
 // const options = [
 //   { label: '无', value: '0' },
 //   { label: 'Max', value: '1' },
@@ -245,7 +259,7 @@ const thesisFormData = reactive({
   publish_date: '' // 论文发布日期
   // keyword: ''
 })
-const is_timing = ref(true)
+const is_timing = ref(false)
 function goBack () {
   const confirmDia = DialogPlugin.confirm({
     header: '确定要离开吗',
@@ -287,7 +301,7 @@ function onSubmit (e) {
     } else if (e.e.submitter.innerText === '发布' && is_timing.value) {
       params.is_published = 0
       params.is_timing = 1
-      params.published_at = thesisFormData.publish_at
+      params.published_at = thesisFormData.publish_at + ':00'
     } else {
       params.is_published = 1
       params.is_timing = 0
@@ -301,6 +315,7 @@ function onSubmit (e) {
       } else activeStep.value += 1
       console.log(res)
     }).catch(err => {
+      console.log(err.response.data)
       if (err.response.data.message === 'validation.date_format') {
         MessagePlugin.error('定时发布的时间必须选择完整')
       }
@@ -309,6 +324,17 @@ function onSubmit (e) {
   if (e.firstError && e.firstError !== '') {
     MessagePlugin.warning(e.firstError)
   }
+}
+const toWebsite = () => {
+  window.open('https://demo.zjtntd.com/jian/robotics-x/dist/#/', '_blank')
+}
+const checkStatus = () => {
+  router.push({
+    name: 'manage',
+    params: {
+      menu: 'thesis'
+    }
+  })
 }
 watch(
   () => pdfData.obj,

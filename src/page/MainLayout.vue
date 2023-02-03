@@ -5,7 +5,7 @@
       <t-head-menu
         theme="dark"
         style="margin-top: 24px"
-        :default-value="$route.path.split('/')[1]"
+        v-model="$route.path.split('/')[1]"
       >
         <template #logo>
           <img
@@ -37,30 +37,14 @@
     <t-layout class="content">
       <!-- 主体模块：当前路由内容 -->
       <t-content class="main">
-        <router-view :key="routeKey" />
+        <router-view :key="$route.path" />
       </t-content>
     </t-layout>
   </t-layout>
 </template>
 
 <script>
-export default {
-  name: 'MainLayout',
-  data () {
-    return {
 
-    }
-  },
-  computed: {
-    routeKey () {
-      return this.$route.path
-    }
-  },
-  watch: {},
-  methods: {
-
-  }
-}
 </script>
 
 <style lang="less" scoped>

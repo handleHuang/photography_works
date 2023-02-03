@@ -162,7 +162,7 @@
                 <t-time-picker
                   v-model="publishTime"
                   format="HH:mm"
-                  :steps="[1, 60, 60]"
+                  :disableTime="disableTime"
                 />
               </div>
             </t-form-item>
@@ -182,8 +182,8 @@
             <h4>{{is_timing?'定时发布成功':'发布成功'}}</h4>
             <h6>{{is_timing?'新闻将在预定的时间发布':'恭喜，新闻已发布成功'}}</h6>
             <div class="operation">
-              <t-button theme="default">查看状态</t-button>
-              <t-button theme="primary">去官网</t-button>
+              <t-button theme="default" @click="checkStatus">查看状态</t-button>
+              <t-button theme="primary" @click="toWebsite">去官网</t-button>
             </div>
           </div>
         </div>
@@ -198,14 +198,35 @@ import { getDay } from '../../utils /transfertime'
 import robotPng from '../../assets/icon/robot.png'
 import test from '../../components/test.vue'
 import { DialogPlugin, MessagePlugin } from 'tdesign-vue-next'
-import { ref, reactive, watch } from 'vue'
+import { ref, reactive, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 const store = useStore()
 const router = useRouter()
 const activeStep = ref(1)
 const selected = ref('今天')
-const publishTime = ref('')
+const myDate = new Date()
+const hh = myDate.getHours() < 10 ? '0' + myDate.getHours() : myDate.getHours()
+const mm = myDate.getMinutes() < 10 ? '0' + myDate.getMinutes() : myDate.getMinutes()
+const publishTime = ref(hh + ':' + mm)
+onMounted(() => {
+  if (selected.value === '今天') {
+    newsFormData.publish_at = getDay(0) + ' ' + publishTime.value + ':00'
+    const c = new Date(Date.parse(newsFormData.publish_at) + 15 * 60 * 1000).toLocaleString()
+    const date = new Date(c)
+    var h = (date.getHours() < 10 ? '0' + (date.getHours()) : date.getHours())
+    var m = (date.getMinutes() < 10 ? '0' + (date.getMinutes()) : date.getMinutes())
+    publishTime.value = h + ':' + m
+  } else {
+    newsFormData.publish_at = getDay(1) + ' ' + publishTime.value + ':00'
+  }
+})
+const disableTime = (m) => {
+  // const disableMinute = [mm + 1, mm + 2, mm + 3, mm + 4, mm + 5, mm + 6, mm + 7, mm + 8, mm + 9, mm + 10, mm + 11, mm + 12, mm + 13, mm + 14, mm + 15]
+  // return {
+  //   minute: disableMinute
+  // }
+}
 const dayOptions = [
   { label: '今天', value: '今天' },
   { label: '明天', value: '明天' }
@@ -241,7 +262,6 @@ const rules = reactive({
 watch(
   () => [selected.value, publishTime.value],
   e => {
-    console.log(e)
     if (e[0] === '今天') {
       newsFormData.publish_at = getDay(0) + ' ' + publishTime.value + ':00'
     } else {
@@ -259,7 +279,7 @@ const newsFormData = reactive({
   cover: '',
   content: ''
 })
-const is_timing = ref(true)
+const is_timing = ref(false)
 function goBack () {
   const confirmDia = DialogPlugin.confirm({
     header: '确定要离开吗',
@@ -300,7 +320,6 @@ function fileSuccessData (data) {
   imageData.obj = data
   newsFormData.cover = data.url
 }
-const myDate = new Date()
 // 提交上传
 function onSubmit (e) {
   const params = {
@@ -351,6 +370,17 @@ function onSubmit (e) {
   if (e.firstError && e.firstError !== '') {
     MessagePlugin.warning(e.firstError)
   }
+}
+const toWebsite = () => {
+  window.open('https://demo.zjtntd.com/jian/robotics-x/dist/#/', '_blank')
+}
+const checkStatus = () => {
+  router.push({
+    name: 'manage',
+    params: {
+      menu: 'news'
+    }
+  })
 }
 watch(
   () => imageData.obj,
