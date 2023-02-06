@@ -27,6 +27,7 @@
       <div class="content">
         <div v-if="Data.arr.length !== 0" class="positionDiv">
           <div
+            @click="checkedThesis === 'thesis'? thesisDetail(item.id) : newsDetail(item.id)"
             class="content_item"
             v-for="(item, index) in Data.arr"
             :key="index"
@@ -60,15 +61,15 @@
             <div
               v-if="params.is_draft == 0"
               class="del_icon"
-              @click="delListItem(item.cover ? '新闻' : '论文', item.id)"
+              @click.stop="delListItem(item.cover ? '新闻' : '论文', item.id)"
             >
               <t-icon name="delete" />
             </div>
           </div>
-            <div class="more" v-if="isHasMore">
-              <span @click="moreData">加载更多</span>
-            </div>
-            <t-divider v-if="!isHasMore">没有更多了</t-divider>
+          <div class="more" v-if="isHasMore">
+            <span @click="moreData">加载更多</span>
+          </div>
+          <t-divider v-if="!isHasMore">没有更多了</t-divider>
         </div>
         <div class="empty" v-else>暂无数据</div>
       </div>
@@ -78,6 +79,36 @@
       <t-divider  v-else>没有更多了</t-divider> -->
     </div>
   </div>
+  <t-dialog
+    placement="center"
+    :cancelBtn="null"
+    :confirmBtn="null"
+    :closeBtn="null"
+    v-model:visible="visible"
+  >
+   <template #header>
+    <div class="header_box">
+      <div class="title">{{detailData.value&&detailData.value.title}}</div>
+      <img @click="visible=false" class="close_icon" src="../../assets/icon/close.png" />
+    </div>
+   </template>
+   <template #body>
+    <div class="body_box">
+      <div class="body_left">
+        {{detailData.value&&detailData.value.description}}
+        <!-- Duchess! The Duchess! Oh my dear paws! Oh my fur and whiskers! She'll get me executed, as sure as ferrets are ferrets! Where CAN I have none, Why, I do wonder what was on the floor, and a fall, and. -->
+      </div>
+      <div class="body_right">
+        <div class="author">{{ detailData.value&&detailData.value.author }} </div>
+        <div class="journal">{{ detailData.value&&detailData.value.journal }}</div>
+        <div class="published_at">{{ detailData.value&&detailData.value.published_at.substr(0,10) }}&nbsp; Published</div>
+        <div class="download-btn" @click="dowloadPdf(detailData.value&&detailData.value.pdf_url)">
+          DOWNLOAD
+        </div>
+      </div>
+    </div>
+   </template>
+  </t-dialog>
 </template>
 <script setup>
 /* eslint-disable camelcase */
@@ -85,15 +116,17 @@ import robotPng from '../../assets/icon/robot.png'
 import { MessagePlugin, DialogPlugin } from 'tdesign-vue-next'
 import { reactive, ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 const route = useRoute()
+const router = useRouter()
 const store = useStore()
 const Data = reactive({
   arr: []
 })
 // 论文/新闻筛选
 const checkedThesis = ref('thesis')
-
+// 详情弹窗
+const visible = ref(false)
 function changeThesisOrNews (e) {
   console.log(e)
   params.per_page = 4
@@ -125,7 +158,7 @@ onMounted(() => {
   if (route.params.menu) {
     checkedThesis.value = route.params.menu
   }
-  if (route.params.menu === 'thesis') {
+  if (route.params.menu === 'thesis' || checkedThesis.value === 'thesis') {
     requestType.value = 'papersList'
   } else {
     requestType.value = 'newsList'
@@ -136,6 +169,34 @@ onMounted(() => {
 function handleChange (e) {
   dataList()
   console.log(e)
+}
+// 论文弹窗详情
+const detailData = reactive({})
+const thesisDetail = id => {
+  if (params.is_draft === 0) {
+    visible.value = true
+    store.dispatch('paperDetail', id).then(res => {
+      console.log(res)
+      detailData.value = res
+    })
+  }
+  console.log(id)
+}
+// 下载论文
+const dowloadPdf = (url) => {
+}
+// 新闻详情
+const newsDetail = (id) => {
+  if (params.is_draft === 0) {
+    console.log(id)
+    store.dispatch('newsDetail', id).then(res => {
+      if (res.tweet_url) {
+        window.open(res.tweet_url)
+      } else {
+        router.push(`/manage/newsDetail?id=${res.id}`)
+      }
+    })
+  }
 }
 // 删除新闻
 function delListItem (target, id) {

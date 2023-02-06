@@ -14,3 +14,7 @@ export function delPpapers (papers_id) {
   return axios.delete(`/papers/${papers_id}
   `)
 }
+// 论文详情
+export function paperDetail (id) {
+  return axios.get(`/papers/${id}`)
+}

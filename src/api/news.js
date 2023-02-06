@@ -17,3 +17,7 @@ export function addNews (params) {
 export function delNews (news_id) {
   return axios.delete(`/news/${news_id}`)
 }
+// 新闻详情
+export function newsDetail (id) {
+  return axios.get(`/news/${id}`)
+}

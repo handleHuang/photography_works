@@ -29,6 +29,11 @@ const routes = [
         path: 'manage',
         name: 'manage',
         component: () => import('../page/manage/manage.vue')
+      },
+      {
+        path: '/manage/newsDetail',
+        name: 'newsDetail',
+        component: () => import('../page/manage/newsDetail.vue')
       }
     ]
   }

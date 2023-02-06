@@ -331,19 +331,18 @@ function onSubmit (e) {
   }
   console.log(e)
   if (e.validateResult === true) {
+    console.log(newsFormData.publish_at)
     if (e.e.submitter.innerText === '保存草稿') {
       params.is_published = 0
       params.is_timing = 0
-    }
-    if (e.e.submitter.innerText === '发布' && is_timing.value) {
+    } else if (e.e.submitter.innerText === '发布' && is_timing.value) {
       params.is_published = 0
       params.is_timing = 1
       params.published_at = newsFormData.publish_at
-    }
-    if (e.e.submitter.innerText === '发布' && !is_timing.value) {
+    } else {
       params.is_published = 1
       params.is_timing = 0
-      params.published_at = newsFormData.publish_at + ' ' + myDate.getHours() + ':' + myDate.getMinutes() + ':00'
+      // params.published_at = newsFormData.publish_at + ' ' + myDate.getHours() + ':' + myDate.getMinutes() + ':00'
     }
     if (contentMode.value === 1) {
       params.content = newsFormData.content
