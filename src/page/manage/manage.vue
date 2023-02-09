@@ -73,10 +73,6 @@
         </div>
         <div class="empty" v-else>暂无数据</div>
       </div>
-      <!-- <div class="more"  v-if="isHasMore">
-        <span @click="moreData">加载更多</span>
-      </div>
-      <t-divider  v-else>没有更多了</t-divider> -->
     </div>
   </div>
   <t-dialog
@@ -85,24 +81,24 @@
     :confirmBtn="null"
     :closeBtn="null"
     v-model:visible="visible"
+    v-if="detailData.value"
   >
    <template #header>
     <div class="header_box">
-      <div class="title">{{detailData.value&&detailData.value.title}}</div>
+      <div class="title">{{detailData.value.title}}</div>
       <img @click="visible=false" class="close_icon" src="../../assets/icon/close.png" />
     </div>
    </template>
    <template #body>
-    <div class="body_box">
+    <div class="body_box" v-if="detailData.value">
       <div class="body_left">
-        {{detailData.value&&detailData.value.description}}
-        <!-- Duchess! The Duchess! Oh my dear paws! Oh my fur and whiskers! She'll get me executed, as sure as ferrets are ferrets! Where CAN I have none, Why, I do wonder what was on the floor, and a fall, and. -->
+        {{detailData.value.description}}
       </div>
       <div class="body_right">
-        <div class="author">{{ detailData.value&&detailData.value.author }} </div>
-        <div class="journal">{{ detailData.value&&detailData.value.journal }}</div>
-        <div class="published_at">{{ detailData.value&&detailData.value.published_at.substr(0,10) }}&nbsp; Published</div>
-        <div class="download-btn" @click="dowloadPdf(detailData.value&&detailData.value.pdf_url)">
+        <div class="author">{{ detailData.value.author }} </div>
+        <div class="journal">{{ detailData.value.journal }}</div>
+        <div class="published_at">{{ detailData.value.published_at.substr(0,10) }}&nbsp; Published</div>
+        <div class="download-btn" @click="dowloadPdf(detailData.value.pdf_url)">
           DOWNLOAD
         </div>
       </div>

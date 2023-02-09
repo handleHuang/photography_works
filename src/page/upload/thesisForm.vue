@@ -241,7 +241,6 @@ const rules = reactive({
 watch(
   () => [selected.value, publishTime.value],
   e => {
-    console.log(e)
     if (e[0] === '今天') {
       thesisFormData.publish_at = getDay(0) + ' ' + publishTime.value
     } else {
@@ -286,7 +285,6 @@ function fileSuccessData (data) {
 }
 // 提交上传
 function onSubmit (e) {
-  console.log(e)
   const params = {
     title: thesisFormData.title,
     journal: thesisFormData.journal,

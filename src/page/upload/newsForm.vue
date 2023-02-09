@@ -329,7 +329,6 @@ function onSubmit (e) {
     cover: imageData.obj.path
     // content: newsFormData.content
   }
-  console.log(e)
   if (e.validateResult === true) {
     console.log(newsFormData.publish_at)
     if (e.e.submitter.innerText === '保存草稿') {
