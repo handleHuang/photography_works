@@ -35,9 +35,9 @@
             <div class="item_left" v-if="checkedThesis == 'news'">
               <img
                 :src="
-                  item.cover
-                    ? 'https://robot-1252839081.cos.ap-guangzhou.myqcloud.com/' +
-                      item.cover
+                  item.latest_file&&item.latest_file.path
+                    ?
+                    'https://robot-1252839081.cos.ap-guangzhou.myqcloud.com/' +   item.latest_file.path
                     : robotPng
                 "
                 alt=""
@@ -59,7 +59,19 @@
               </div>
             </div>
             <div
-              v-if="params.is_draft == 0"
+              v-if="params.is_draft == 1"
+              class="edit_icon"
+              @click.stop="editListItem(item.id)"
+            >
+              <t-icon name="edit-1" />
+            </div>
+            <div
+              class="browse_icon"
+              @click.stop="checkedThesis === 'thesis'? thesisDetail(item.id) : newsDetail(item.id)"
+            >
+              <t-icon name="browse" />
+            </div>
+            <div
               class="del_icon"
               @click.stop="delListItem(item.cover ? '新闻' : '论文', item.id)"
             >
@@ -97,7 +109,7 @@
       <div class="body_right">
         <div class="author">{{ detailData.value.author }} </div>
         <div class="journal">{{ detailData.value.journal }}</div>
-        <div class="published_at">{{ detailData.value.published_at.substr(0,10) }}&nbsp; Published</div>
+        <div class="published_at">{{ detailData.value.published_at&& detailData.value.published_at.substr(0,10) }}&nbsp; Published</div>
         <div class="download-btn" @click="dowloadPdf(detailData.value.pdf_url)">
           DOWNLOAD
         </div>
@@ -134,8 +146,6 @@ function changeThesisOrNews (e) {
   dataList()
 }
 const isHasMore = ref('')
-// const params.is_draft = ref(0)
-// const by_date = ref('all')
 const requestType = ref('papersList')
 const params = reactive({
   per_page: 4,
@@ -143,7 +153,7 @@ const params = reactive({
   is_draft: 0,
   by_date: 'all'
 })
-function dataList () {
+const dataList = () => {
   store.dispatch(requestType.value, params).then(res => {
     console.log(res)
     Data.arr = res.data
@@ -162,44 +172,44 @@ onMounted(() => {
   dataList()
 })
 
-function handleChange (e) {
+const handleChange = (e) => {
   dataList()
   console.log(e)
 }
 // 论文弹窗详情
 const detailData = reactive({})
 const thesisDetail = id => {
-  if (params.is_draft === 0) {
-    visible.value = true
-    store.dispatch('paperDetail', id).then(res => {
-      console.log(res)
-      detailData.value = res
-    })
-  }
-  console.log(id)
+  visible.value = true
+  store.dispatch('paperDetail', { id: id, is_draft: params.is_draft }).then(res => {
+    console.log(res)
+    detailData.value = res
+  })
 }
 // 下载论文
 const dowloadPdf = (url) => {
 }
 // 新闻详情
 const newsDetail = (id) => {
-  if (params.is_draft === 0) {
-    console.log(id)
-    store.dispatch('newsDetail', id).then(res => {
-      if (res.tweet_url) {
-        window.open(res.tweet_url)
-      } else {
-        router.push(`/manage/newsDetail?id=${res.id}`)
-      }
-    })
-  }
+  store.dispatch('newsDetail', { id: id, is_draft: params.is_draft }).then(res => {
+    if (res.tweet_url) {
+      window.open(res.tweet_url)
+    } else {
+      router.push(`/manage/newsDetail?id=${id}?is_draft=${params.is_draft}`)
+    }
+  })
 }
-// 删除新闻
-function delListItem (target, id) {
+// 删除
+const delListItem = (target, id) => {
   console.log(target)
   let requestMode = null
-  if (target === '论文') requestMode = 'delPpapers'
-  else requestMode = 'delNews'
+  const delparams = { is_draft: params.is_draft }
+  if (target === '论文') {
+    requestMode = 'delPpapers'
+    delparams.papers_id = id
+  } else {
+    requestMode = 'delNews'
+    delparams.news_id = id
+  }
 
   const confirmDia = DialogPlugin.confirm({
     header: `确定要删除这篇${target}吗`,
@@ -208,7 +218,7 @@ function delListItem (target, id) {
     cancelBtn: '取消',
     theme: 'warning',
     onConfirm: ({ e }) => {
-      store.dispatch(requestMode, id).then(res => {
+      store.dispatch(requestMode, delparams).then(res => {
         console.log(res)
         MessagePlugin.success('删除成功')
         dataList()
@@ -220,8 +230,16 @@ function delListItem (target, id) {
     }
   })
 }
+// 编辑
+const editListItem = (id) => {
+  if (checkedThesis.value === 'news') {
+    router.push(`/upload/newsForm?id=${id}`)
+  } else {
+    router.push(`/upload/thesisForm?id=${id}`)
+  }
+}
 // 加载更多
-function moreData () {
+const moreData = () => {
   params.per_page += 4
   dataList()
 }

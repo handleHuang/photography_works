@@ -1,6 +1,6 @@
 // 模块
-import { newsList, resolveTweet, addNews, delNews, newsDetail } from '@/api/news'
-import { papersList, addPapers, delPpapers, paperDetail } from '@/api/papers'
+import { newsList, resolveTweet, addNews, delNews, newsDetail, editNews } from '@/api/news'
+import { papersList, addPapers, delPpapers, paperDetail, editPaper } from '@/api/papers'
 
 export default {
   // 新闻列表
@@ -23,6 +23,10 @@ export default {
   async newsDetail (store, params) {
     return await newsDetail(params)
   },
+  // 新闻编辑
+  async editNews (store, params) {
+    return await editNews(params)
+  },
   // 论文列表
   async papersList (store, params) {
     return await papersList(params)
@@ -38,5 +42,9 @@ export default {
   // 论文详情
   async paperDetail (store, params) {
     return await paperDetail(params)
+  },
+  // 编辑论文
+  async editPaper (store, params) {
+    return await editPaper(params)
   }
 }

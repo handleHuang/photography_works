@@ -15,14 +15,14 @@
         <t-form
           :label-width="95"
           :rules="rules"
-          :data="thesisFormData"
+          :data="thesisFormData.obj"
           @submit="onSubmit"
           label-align="top"
         >
           <div class="step_1" v-show="activeStep == 1">
             <t-form-item label="论文标题" name="title">
               <t-textarea
-                v-model="thesisFormData.title"
+                v-model="thesisFormData.obj.title"
                 type="text"
                 placeholder="请输入标题"
                 :maxlength="30"
@@ -36,14 +36,14 @@
               <t-textarea
                 type="text"
                 placeholder="请输入作者"
-                v-model="thesisFormData.author"
+                v-model="thesisFormData.obj.author"
               ></t-textarea>
             </t-form-item>
             <t-form-item label="投稿会议/期刊名称" name="journal">
               <t-input
                 type="text"
                 placeholder="请输入内容"
-                v-model="thesisFormData.journal"
+                v-model="thesisFormData.obj.journal"
               ></t-input>
             </t-form-item>
             <t-form-item label="发布时间" name="publish_date">
@@ -51,14 +51,14 @@
                 clearable
                 theme="primary"
                 mode="date"
-                v-model="thesisFormData.publish_date"
+                v-model="thesisFormData.obj.publish_date"
               />
             </t-form-item>
             <t-form-item label="论文摘要" name="description">
               <t-textarea
                 type="text"
                 placeholder="请输入更多内容"
-                v-model="thesisFormData.description"
+                v-model="thesisFormData.obj.description"
                 :maxlength="300"
               ></t-textarea>
             </t-form-item>
@@ -68,7 +68,7 @@
               help="限制5个关键词以内，用空格隔开多个关键词"
             >
               <t-input
-                v-model="thesisFormData.keyword"
+                v-model="thesisFormData.obj.keyword"
                 type="text"
                 placeholder="请输入内容"
               ></t-input>
@@ -84,11 +84,15 @@
               />
             </t-form-item> -->
             <t-form-item
-              name="pdf_url"
+              name="file"
               label="论文PDF上传"
               help="额外提示语，文字过多时宽度折行"
             >
-            <test @fileSuccessData="fileSuccessData" @clearData="clearData"></test>
+              <test
+                @fileSuccessData="fileSuccessData"
+                @clearData="clearData"
+                :fileInfo="fileInfo.arr"
+              ></test>
             </t-form-item>
             <t-form-item class="delLabel">
               <t-button theme="primary" @click="nextStep">下一步</t-button>
@@ -101,24 +105,30 @@
                 <div class="previewNews">
                   <div class="previewNews_N1">
                     <span class="time">{{
-                      thesisFormData.publish_date || '2022 / 06 / 28'
+                      formatDateTime( thesisFormData.obj.publish_date).substr(0,10).replace(/-/g,'/') || '2022 / 06 / 28'
                     }}</span>
                     <h4 class="title">
                       {{
                         ellipsis_1(
-                          thesisFormData.title ||
-                          'Gain Scheduled Controller Design for Balancing an Autonomous Bicycle'
+                          thesisFormData.obj.title ||
+                            'Gain Scheduled Controller Design for Balancing an Autonomous Bicycle'
                         )
                       }}
                     </h4>
                   </div>
                   <div class="previewNews_N2">
                     <div class="introduce">
-                      {{thesisFormData.author ||'Haoyu Wang, Jiaqi Wang, Kunming Yao, Jingjing Fu, Xin Xia,Ruirui Zhang, Jiyu Li,Guoqiang Xu, Lingyun Wang, JingchaoYang, Jie Lai, Yuan Dai*, Zhengyou Zhang, Anyin Li, Yuyan Zhu,sXinge Yu, Zhong Lin Wang*, Yunlong Zi*'}}
-                      </div>
-                      <div class="introduce_end">
-                        {{thesisFormData.journal||'IEEE IROS 2020 Measurement Science and Technology'}}
-                      </div>
+                      {{
+                        thesisFormData.obj.author ||
+                          'Haoyu Wang, Jiaqi Wang, Kunming Yao, Jingjing Fu, Xin Xia,Ruirui Zhang, Jiyu Li,Guoqiang Xu, Lingyun Wang, JingchaoYang, Jie Lai, Yuan Dai*, Zhengyou Zhang, Anyin Li, Yuyan Zhu,sXinge Yu, Zhong Lin Wang*, Yunlong Zi*'
+                      }}
+                    </div>
+                    <div class="introduce_end">
+                      {{
+                        thesisFormData.obj.journal ||
+                          'IEEE IROS 2020 Measurement Science and Technology'
+                      }}
+                    </div>
                   </div>
                 </div>
               </t-form-item>
@@ -128,18 +138,21 @@
                 <div class="previewHome">
                   <div class="preview_H1">
                     <span class="time">{{
-                      thesisFormData.publish_date || '2022 / 06 / 28'
+                      formatDateTime( thesisFormData.obj.publish_date).substr(0,10).replace(/-/g,'/')  || '2022 / 06 / 28'
                     }}</span>
-                   <h4 class="title">
+                    <h4 class="title">
                       {{
                         ellipsis_1(
-                          thesisFormData.title ||
-                          'Gain Scheduled Controller Design for Balancing an Autonomous Bicycle'
+                          thesisFormData.obj.title ||
+                            'Gain Scheduled Controller Design for Balancing an Autonomous Bicycle'
                         )
                       }}
                     </h4>
                     <span class="introduce">
-                      {{thesisFormData.journal||'IEEE IROS 2020 Measurement Science and Technology'}}
+                      {{
+                        thesisFormData.obj.journal ||
+                          'IEEE IROS 2020 Measurement Science and Technology'
+                      }}
                     </span>
                   </div>
                 </div>
@@ -155,14 +168,11 @@
                   :options="dayOptions"
                   placeholder="请选择"
                 />
-                <t-time-picker
-                  v-model="publishTime"
-                  format="HH:mm"
-                />
+                <t-time-picker v-model="publishTime" format="HH:mm" />
               </div>
             </t-form-item>
             <t-form-item class="delLabel">
-              <t-button @click="preStep">上一步</t-button>
+              <t-button  theme="default"  variant="base" @click="preStep">上一步</t-button>
               <t-button theme="primary" type="submit" @click="onSubmit"
                 >发布</t-button
               >
@@ -174,8 +184,10 @@
             <div class="icon_box">
               <t-icon name="check-circle" style="color: green" />
             </div>
-            <h4>{{is_timing?'定时发布成功':'发布成功'}}</h4>
-            <h6>{{is_timing?'论文将在预定的时间发布':'恭喜，论文已发布成功'}}</h6>
+            <h4 v-if="route.query.id">编辑成功</h4>
+            <h4 v-else>{{is_timing?'定时发布成功':'发布成功'}}</h4>
+            <h6 v-if="route.query.id">恭喜，论文已编辑成功 </h6>
+            <h6 v-else> {{is_timing ? '论文将在预定的时间发布' : '恭喜，论文已发布成功'}} </h6>
             <div class="operation">
               <t-button theme="default" @click="checkStatus">查看状态</t-button>
               <t-button theme="primary" @click="toWebsite">去官网</t-button>
@@ -188,39 +200,55 @@
 </template>
 <script setup>
 /* eslint-disable camelcase */
-import { getDay } from '../../utils /transfertime'
+import { getDay, formatDateTime } from '../../utils /transfertime'
 import test from '../../components/test.vue'
 import { DialogPlugin, MessagePlugin } from 'tdesign-vue-next'
 import { ref, reactive, watch, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 const store = useStore()
 const router = useRouter()
+const route = useRoute()
+const fileInfo = reactive({ arr: [] })
 const activeStep = ref(1)
 const selected = ref('今天')
 const myDate = new Date()
 const hh = myDate.getHours() < 10 ? '0' + myDate.getHours() : myDate.getHours()
-const mm = myDate.getMinutes() < 10 ? '0' + myDate.getMinutes() : myDate.getMinutes()
+const mm =
+  myDate.getMinutes() < 10 ? '0' + myDate.getMinutes() : myDate.getMinutes()
 const publishTime = ref(hh + ':' + mm)
 onMounted(() => {
   if (selected.value === '今天') {
-    thesisFormData.publish_at = getDay(0) + ' ' + publishTime.value + ':00'
-    const c = new Date(Date.parse(thesisFormData.publish_at) + 15 * 60 * 1000).toLocaleString()
+    thesisFormData.obj.publish_at = getDay(0) + ' ' + publishTime.value + ':00'
+    const c = new Date(
+      Date.parse(thesisFormData.obj.publish_at) + 15 * 60 * 1000
+    ).toLocaleString()
     const date = new Date(c)
-    var h = (date.getHours() < 10 ? '0' + (date.getHours()) : date.getHours())
-    var m = (date.getMinutes() < 10 ? '0' + (date.getMinutes()) : date.getMinutes())
+    var h = date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
+    var m = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
     publishTime.value = h + ':' + m
   } else {
-    thesisFormData.publish_at = getDay(1) + ' ' + publishTime.value + ':00'
+    thesisFormData.obj.publish_at = getDay(1) + ' ' + publishTime.value + ':00'
+  }
+  if (route.query.id) {
+    store
+      .dispatch('paperDetail', { id: route.query.id, is_draft: 1 })
+      .then(res => {
+        console.log(res)
+        res.file = res.latest_file
+        fileInfo.arr.push({
+          name: res.file.original_name,
+          status: 'success',
+          size: res.file.size,
+          uploadTime: formatDateTime(res.file.created_at)
+        })
+        res.publish_date = res.created_at
+        delete res.latest_file
+        thesisFormData.obj = { ...res }
+      })
   }
 })
-// const options = [
-//   { label: '无', value: '0' },
-//   { label: 'Max', value: '1' },
-//   { label: 'Ollie', value: '2' },
-//   { label: '自平衡车/RoBicycle', value: '3' },
-//   { label: 'Jamoca', value: '4' }
-// ]
+
 const dayOptions = [
   { label: '今天', value: '今天' },
   { label: '明天', value: '明天' }
@@ -233,30 +261,34 @@ const steps = [
 const rules = reactive({
   title: [{ required: true, message: '论文标题必填', type: 'error' }],
   author: [{ required: true, message: '论文作者必填', type: 'error' }],
-  journal: [{ required: true, message: '投稿会议/期刊名称必填', type: 'error' }],
+  journal: [
+    { required: true, message: '投稿会议/期刊名称必填', type: 'error' }
+  ],
   publish_date: [{ required: true, message: '发布时间必选', type: 'error' }],
   description: [{ required: true, message: '论文摘要必填', type: 'error' }],
-  pdf_url: [{ required: true, message: '论文PDF必传', type: 'error' }]
+  file: [{ required: true, message: '论文PDF必传', type: 'error' }]
 })
 watch(
   () => [selected.value, publishTime.value],
   e => {
     if (e[0] === '今天') {
-      thesisFormData.publish_at = getDay(0) + ' ' + publishTime.value
+      thesisFormData.obj.publish_at = getDay(0) + ' ' + publishTime.value
     } else {
-      thesisFormData.publish_at = getDay(1) + ' ' + publishTime.value
+      thesisFormData.obj.publish_at = getDay(1) + ' ' + publishTime.value
     }
   }
 )
 const thesisFormData = reactive({
-  title: '',
-  author: '',
-  journal: '',
-  description: '',
-  publish_at: getDay(0),
-  pdf_url: '',
-  publish_date: '' // 论文发布日期
-  // keyword: ''
+  obj: {
+    title: '',
+    author: '',
+    journal: '',
+    description: '',
+    publish_at: getDay(0),
+    file: [],
+    publish_date: '' // 论文发布日期
+    // keyword: ''
+  }
 })
 const is_timing = ref(false)
 function goBack () {
@@ -280,17 +312,21 @@ function goBack () {
 }
 const pdfData = reactive({ obj: {} })
 function fileSuccessData (data) {
-  pdfData.obj = data
-  thesisFormData.pdf_url = data.url
+  console.log(data, 'data')
+  pdfData.obj = { ...data }
+  thesisFormData.obj.file = { ...data }
 }
 // 提交上传
 function onSubmit (e) {
   const params = {
-    title: thesisFormData.title,
-    journal: thesisFormData.journal,
-    author: thesisFormData.author,
-    description: thesisFormData.description,
-    pdf_url: pdfData.obj.path
+    title: thesisFormData.obj.title,
+    journal: thesisFormData.obj.journal,
+    author: thesisFormData.obj.author,
+    description: thesisFormData.obj.description,
+    file: thesisFormData.obj.file
+  }
+  if (route.query.id) {
+    params.papersDraft_id = route.query.id
   }
   if (e.validateResult === true) {
     if (e.e.submitter.innerText === '保存草稿') {
@@ -299,25 +335,28 @@ function onSubmit (e) {
     } else if (e.e.submitter.innerText === '发布' && is_timing.value) {
       params.is_published = 0
       params.is_timing = 1
-      params.published_at = thesisFormData.publish_at + ':00'
+      params.published_at = thesisFormData.obj.publish_at + ':00'
     } else {
       params.is_published = 1
       params.is_timing = 0
     }
-    store.dispatch('addPapers', params).then(res => {
-      const myDate = new Date()
-      if (e.e.submitter.innerText === '保存草稿') {
-        MessagePlugin.success(
-          `${myDate.getHours() + ':' + myDate.getMinutes() + '已保存草稿'}`
-        )
-      } else activeStep.value += 1
-      console.log(res)
-    }).catch(err => {
-      console.log(err.response.data)
-      if (err.response.data.message === 'validation.date_format') {
-        MessagePlugin.error('定时发布的时间必须选择完整')
-      }
-    })
+    store
+      .dispatch(route.query.id ? 'editPaper' : 'addPapers', params)
+      .then(res => {
+        const myDate = new Date()
+        if (e.e.submitter.innerText === '保存草稿') {
+          MessagePlugin.success(
+            `${myDate.getHours() + ':' + myDate.getMinutes() + '已保存草稿'}`
+          )
+        } else activeStep.value += 1
+        console.log(res)
+      })
+      .catch(err => {
+        console.log(err.response.data)
+        if (err.response.data.message === 'validation.date_format') {
+          MessagePlugin.error('定时发布的时间必须选择完整')
+        }
+      })
   }
   if (e.firstError && e.firstError !== '') {
     MessagePlugin.warning(e.firstError)
@@ -326,6 +365,7 @@ function onSubmit (e) {
 const toWebsite = () => {
   window.open('https://demo.zjtntd.com/jian/robotics-x/dist/#/', '_blank')
 }
+
 const checkStatus = () => {
   router.push({
     name: 'manage',
@@ -337,7 +377,8 @@ const checkStatus = () => {
 watch(
   () => pdfData.obj,
   e => {
-    thesisFormData.pdf_url = e.url
+    console.log(e)
+    thesisFormData.obj.file = { ...e }
   }
 )
 function clearData () {

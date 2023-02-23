@@ -1,6 +1,8 @@
 <template>
   <div>
+    <!-- {{ fileInfo }} -->
     <t-upload
+      v-model="fileDetail.arr"
       :request-method="requestMethod"
       :theme="props.theme"
       :accept="props.accept"
@@ -22,6 +24,12 @@ const props = defineProps({
   accept: {
     type: String,
     default: 'application/pdf'
+  },
+  fileInfo: {
+    type: Array,
+    default: () => {
+      return []
+    }
   }
 })
 let uploadFileData = reactive({
@@ -36,6 +44,19 @@ let uploadFileData = reactive({
   size: 0,
   mime: ''
 })
+const fileDetail = reactive({
+  arr: props.fileInfo || []
+})
+// const file_ = reactive([])
+// const aa = [{
+//   name: '默认文件',
+//   status: 'success',
+//   size: 1024,
+//   // 上传日期，如果接口返回的字段包含 uploadTime，则会以接口返回的为准，默认使用本地电脑时间。
+//   // 如果希望使用接口返回的上传日期，但是接口字段名不是 uploadTime，则可以使用函数 formatResponse 格式化接口数据
+//   uploadTime: '2022-09-25',
+//   url: 'https://robot-1252839081.cos.ap-guangzhou.myqcloud.com/uploads/2023/02/21/4c5787cccdb1107d5c9c9c5086befe88.pdf'
+// }]
 function onChange (trigger) {
   console.log(trigger)
   if (trigger.length === 0) {
@@ -77,8 +98,7 @@ const requestMethod = file => {
       mime: file.raw.type
     }
     for (let i = 0; i < totalBlob.value; i++) {
-      uploadFileData.blob =
-        totalBlob.value > 1 ? cutFile(file.raw) : file.raw
+      uploadFileData.blob = totalBlob.value > 1 ? cutFile(file.raw) : file.raw
       uploadFileData.blob_num++
       const formData = new FormData()
       formData.append('file', uploadFileData.blob)

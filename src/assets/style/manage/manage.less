@@ -70,10 +70,11 @@
             .content_item{
                 position: relative;
                 display: flex;
+                align-items: center;
                 margin-bottom: 16px;
                 padding: 16px;
                 // padding-right: 68px;
-                padding-right: 16px;
+                padding-right: 36px;
                 width: 100%;
                 height: 161px;
                 background-color: #fff;
@@ -84,16 +85,14 @@
                 }
                 &:hover{
                     box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.05), 0px 4px 5px rgba(0, 0, 0, 0.08), 0px 2px 4px -1px rgba(0, 0, 0, 0.12);
-                    .del_icon{
-                        svg.t-icon.t-icon-delete{
+                    .del_icon,.edit_icon,.browse_icon{
+                        svg.t-icon{
                             display: block;
-                            position: absolute;
-                            right: 38px;
-                            top: 73px;
-                            width: 14px;
-                            height: 16px;
+                        }
+                        svg.t-icon.t-icon-delete{
                             color: red;
                         }
+                       
                     }
                 }
                 .item_left{
@@ -128,9 +127,19 @@
                         }
                     }
                 }
-                .del_icon{
-                    svg.t-icon.t-icon-delete{
+                .edit_icon,.browse_icon{
+                    margin-right: 30px;
+                }
+                .del_icon,.edit_icon,.browse_icon{
+                    width: 14px;
+                    height: 16px;
+                    svg.t-icon{
                         display: none;
+                        // position: absolute;
+                        right: 38px;
+                        top: 73px;
+                        width: 18px;
+                        height: 20px;
                     }
                 }
             }

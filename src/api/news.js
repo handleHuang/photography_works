@@ -14,10 +14,14 @@ export function addNews (params) {
   return axios.post('/news', params)
 }
 // 删除新闻
-export function delNews (news_id) {
-  return axios.delete(`/news/${news_id}`)
+export function delNews (params) {
+  return axios.delete(`/news/${params.news_id}`, params)
 }
 // 新闻详情
-export function newsDetail (id) {
-  return axios.get(`/news/${id}`)
+export function newsDetail (params) {
+  return axios.get(`/news/${params.id}`, params)
+}
+// 新闻编辑
+export function editNews (params) {
+  return axios.put(`/news/${params.newsDraft_id}`, params)
 }
