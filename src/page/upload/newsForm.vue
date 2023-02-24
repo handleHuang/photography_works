@@ -239,6 +239,10 @@ onMounted(() => {
             url: 'https://robot-1252839081.cos.ap-guangzhou.myqcloud.com/' + res.file.path
           })
         }
+        if (res.tweet_url) {
+          onBlur()
+          contentMode.value = 2
+        }
         res.publish_date = res.created_at
         delete res.latest_file
         newsFormData.obj = { ...res }
@@ -266,7 +270,7 @@ const contentModeChange = (e) => {
   }
   // newsFormData.obj.title = ''
   // newsFormData.obj.publish_date = ''
-  resetFormData.value.reset()
+  // resetFormData.value.reset()
 }
 const rules = reactive({
   tweet_url: [
@@ -326,12 +330,12 @@ function onBlur () {
       .dispatch('resolveTweet', { tweet_url: newsFormData.obj.tweet_url })
       .then(res => {
         newsFormData.obj.title = res.title
-        newsFormData.obj.publish_date =
-          res.publish_date.substr(0, 4) +
-          ' / ' +
-          res.publish_date.substr(5, 2) +
-          ' / ' +
-          res.publish_date.substr(8, 2)
+        newsFormData.obj.publish_date = res.publish_date.substr(0, 10).replace(/-/g, '/')
+        // res.publish_date.substr(0, 4) +
+        // ' / ' +
+        // res.publish_date.substr(5, 2) +
+        // ' / ' +
+        // res.publish_date.substr(8, 2)
         console.log(res)
       })
   }
@@ -432,6 +436,7 @@ const toNewsDetail = () => {
   if (newsFormData.obj.tweet_url) {
     window.open(newsFormData.obj.tweet_url)
   } else {
+    localStorage.setItem('tempNewsDetailInfo', JSON.stringify(newsFormData.obj))
     router.push('/manage/newsDetail')
   }
 }

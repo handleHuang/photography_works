@@ -35,7 +35,7 @@
             <div class="item_left" v-if="checkedThesis == 'news'">
               <img
                 :src="
-                  item.latest_file&&item.latest_file.path
+                  item.latest_file
                     ?
                     'https://robot-1252839081.cos.ap-guangzhou.myqcloud.com/' +   item.latest_file.path
                     : robotPng
@@ -73,7 +73,7 @@
             </div>
             <div
               class="del_icon"
-              @click.stop="delListItem(item.cover ? '新闻' : '论文', item.id)"
+              @click.stop="delListItem(item.latest_file.mime.includes('pdf') ? '论文' : '新闻', item.id)"
             >
               <t-icon name="delete" />
             </div>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <vue3-tinymce v-model="myValue" :setting="setting"/>
+    <vue3-tinymce v-model="myValue" :setting="setting" />
   </div>
 </template>
 
@@ -38,36 +38,83 @@ const { myValue, setting } = toRefs(
       toolbar_drawer: 'sliding',
       resize: false,
       toolbar:
-      'undo redo | fullscreen | styleselect  | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | link   charmap pastetext print preview | numlist bullist | image media table | fontselect fontsizeselect forecolor backcolor | indent outdent | superscript subscript | removeformat |',
+        'undo redo | fullscreen | styleselect  | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | link   charmap pastetext print preview | numlist bullist | image media table | fontselect fontsizeselect forecolor backcolor | indent outdent | superscript subscript | removeformat |',
       language_url:
-      'https://unpkg.com/@jsdawn/vue3-tinymce@1.1.6/dist/tinymce/langs/zh_CN.js',
+        'https://unpkg.com/@jsdawn/vue3-tinymce@1.1.6/dist/tinymce/langs/zh_CN.js',
       language: 'zh_CN',
       font_formats:
-      "微软雅黑='微软雅黑';宋体='宋体';黑体='黑体';仿宋='仿宋';汉仪旗黑='HYQiHei';PingFang SC;Microsoft YaHei,sans-serif;楷体='楷体';隶书='隶书';幼圆='幼圆';Andale Mono=andale mono,times;Arial=arial,helvetica,sans-serif;Arial Black=arial black,avant garde;Book Antiqua=book antiqua,palatino;Comic Sans MS=comic sans ms,sans-serif;Courier New=courier new,courier;Georgia=georgia,palatino;Helvetica=helvetica;Impact=impact,chicago;Symbol=symbol;Tahoma=tahoma,arial,helvetica,sans-serif;Terminal=terminal,monaco;Times New Roman=times new roman,times;Trebuchet MS=trebuchet ms,geneva;Verdana=verdana,geneva;Webdings=webdings;Wingdings=wingdings",
+        "微软雅黑='微软雅黑';宋体='宋体';黑体='黑体';仿宋='仿宋';汉仪旗黑='HYQiHei';PingFang SC;Microsoft YaHei,sans-serif;楷体='楷体';隶书='隶书';幼圆='幼圆';Andale Mono=andale mono,times;Arial=arial,helvetica,sans-serif;Arial Black=arial black,avant garde;Book Antiqua=book antiqua,palatino;Comic Sans MS=comic sans ms,sans-serif;Courier New=courier new,courier;Georgia=georgia,palatino;Helvetica=helvetica;Impact=impact,chicago;Symbol=symbol;Tahoma=tahoma,arial,helvetica,sans-serif;Terminal=terminal,monaco;Times New Roman=times new roman,times;Trebuchet MS=trebuchet ms,geneva;Verdana=verdana,geneva;Webdings=webdings;Wingdings=wingdings",
       statusbar: false, // 底部的状态栏
       skin: 'oxide-dark',
-      content_style: 'p,td {font-size:16px; color: #FFF; opacity: 0.6}',
+      content_style: 'p,td {font-size:16px; color:#999; }',
       style_formats: [
         {
-          title: '大标题', block: 'h1', styles: { 'font-family': 'HYQiHei', 'font-size': '40px', 'font-weight': '850', 'line-height': '40px', color: '#fff', opacity: '1' }
+          title: '大标题',
+          block: 'h1',
+          styles: {
+            'font-family': 'HYQiHei',
+            'font-size': '40px',
+            'font-weight': '850',
+            'line-height': '40px',
+            color: '#fff',
+            opacity: '1'
+          }
         },
         {
-          title: 'H1正文标题1', block: 'h1', styles: { 'font-family': 'HYQiHei', 'font-size': '32px', 'font-weight': '850', 'line-height': '1.2', color: '#fff', opacity: '1' }
+          title: 'H1正文标题1',
+          block: 'h1',
+          styles: {
+            'font-family': 'HYQiHei',
+            'font-size': '32px',
+            'font-weight': '850',
+            'line-height': '1.2',
+            color: '#fff',
+            opacity: '1'
+          }
         },
         {
-          title: 'H2正文标题2', block: 'h2', styles: { 'font-family': 'HYQiHei', 'font-size': '24px', 'font-weight': '850', 'line-height': '1.2', color: '#fff', opacity: '1' }
+          title: 'H2正文标题2',
+          block: 'h2',
+          styles: {
+            'font-family': 'HYQiHei',
+            'font-size': '24px',
+            'font-weight': '850',
+            'line-height': '1.2',
+            color: '#fff',
+            opacity: '1'
+          }
         },
         {
-          title: '正文', block: 'p', styles: { 'font-family': 'HYQiHei', 'font-size': '16px', 'line-height': '24px', opacity: '0.6', color: '#fff' }
+          title: '正文',
+          block: 'p',
+          styles: {
+            'font-family': 'HYQiHei',
+            'font-size': '16px',
+            'line-height': '24px',
+            'font-weight': '400',
+            color: '#999'
+          }
         },
         {
-          title: '高亮文字', inline: 'span', styles: { 'font-family': 'HYQiHei', 'font-size': '24px', 'line-height': '36px', color: '#fff', opacity: '1' }
+          title: '高亮文字',
+          inline: 'span',
+          styles: {
+            'font-family': 'HYQiHei',
+            'font-size': '16px',
+            'line-height': '24px',
+            color: '#fff',
+            opacity: '1'
+          }
         },
         {
-          title: '链接文字', inline: 'span', styles: { 'text-decoration': 'underline', color: '#fff' }
+          title: '链接文字',
+          inline: 'span',
+          styles: { 'text-decoration': 'underline', color: '#fff' }
         },
         {
-          title: '图片描述', inline: 'span', styles: { 'font-size': '12px', 'line-height': '20px', color: '#fff' }
+          title: '图片描述',
+          inline: 'span',
+          styles: { 'font-size': '12px', 'line-height': '20px', color: '#fff' }
         }
       ],
       style_formats_merge: true,
@@ -108,9 +155,7 @@ function fileSlice (file, callback) {
   const LENGTH = 1024 * 1024 * 2
 
   totalBlob.value = Math.ceil(file.size / LENGTH)
-  const startNum = uploadFileData.start
-    ? uploadFileData.start
-    : 0
+  const startNum = uploadFileData.start ? uploadFileData.start : 0
   uploadFileData = {
     LENGTH,
     start: 0,
@@ -125,7 +170,7 @@ function fileSlice (file, callback) {
   }
   for (let i = 0; i < uploadFileData.total_blob_num; i++) {
     uploadFileData.blob =
-          uploadFileData.total_blob_num > 1 ? cutFile(file) : file
+      uploadFileData.total_blob_num > 1 ? cutFile(file) : file
     sendFile(file, callback)
   }
 }
@@ -135,10 +180,7 @@ function sendFile (file, callback) {
   formData.append('file', uploadFileData.blob)
   formData.append('required_id', uploadFileData.required_id)
   formData.append('blob_num', Number(uploadFileData.blob_num))
-  formData.append(
-    'total_blob_num',
-    Number(uploadFileData.total_blob_num)
-  )
+  formData.append('total_blob_num', Number(uploadFileData.total_blob_num))
   formData.append('original_name', uploadFileData.original_name)
   formData.append('size', Number(uploadFileData.size))
   formData.append('mime', uploadFileData.mime)
@@ -151,7 +193,7 @@ function sendFile (file, callback) {
     },
     data: formData
   })
-    .then((res) => {
+    .then(res => {
       if (res.status === 200) {
         callback(res.data.url)
       }
@@ -160,10 +202,7 @@ function sendFile (file, callback) {
         if (uploadCount.value === totalBlob.value) {
           const formData_2 = new FormData()
           formData_2.append('required_id', uploadFileData.required_id)
-          formData_2.append(
-            'original_name',
-            uploadFileData.original_name
-          )
+          formData_2.append('original_name', uploadFileData.original_name)
           console.log('done')
           axios({
             method: 'POST',
@@ -173,25 +212,21 @@ function sendFile (file, callback) {
               // Authorization: `Bearer ${token}`
             },
             data: formData_2
-          }).then((res) => {
+          }).then(res => {
             callback(res.data.url)
           })
         }
       }
     })
-    .catch((err) => {
+    .catch(err => {
       console.log(err.response)
     })
 }
 // 切割文件
 function cutFile (file) {
-  const fileBlob = file.slice(
-    uploadFileData.start,
-    uploadFileData.end
-  )
+  const fileBlob = file.slice(uploadFileData.start, uploadFileData.end)
   uploadFileData.start = uploadFileData.end
-  uploadFileData.end =
-        uploadFileData.start + uploadFileData.LENGTH
+  uploadFileData.end = uploadFileData.start + uploadFileData.LENGTH
   return fileBlob
 }
 // 生成唯一字段
@@ -202,7 +237,7 @@ function generaterequired_id () {
   }
   const required_id = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
     /[xy]/g,
-    (c) => {
+    c => {
       const r = (d + Math.random() * 16) % 16 | 0
       d = Math.floor(d / 16)
       return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16)
@@ -212,14 +247,14 @@ function generaterequired_id () {
 }
 watch(
   () => props.value,
-  (newValue) => {
+  newValue => {
     myValue.value = newValue
   }
 )
 
 watch(
   () => myValue.value,
-  (newValue) => {
+  newValue => {
     uploadCount.value = 0
     totalBlob.value = 0
     uploadFileData = {
@@ -237,5 +272,4 @@ watch(
     emits('input', newValue)
   }
 )
-
 </script>
