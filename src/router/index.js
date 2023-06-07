@@ -8,32 +8,27 @@ const routes = [
       {
         // 这里不设置值，是把main作为默认页面
         path: '',
-        redirect: '/upload'
+        redirect: '/project'
       },
       {
-        path: 'upload',
-        name: 'upload',
-        component: () => import('../page/upload/upload.vue')
+        path: '/project',
+        name: 'project',
+        component: () => import('../page/project/project.vue')
       },
       {
-        path: 'upload/thesisForm',
-        name: 'upload_thesisForm',
-        component: () => import('../page/upload/thesisForm.vue')
+        path: '/project/detail',
+        name: 'project_detail',
+        component: () => import('../page/project/detail.vue')
       },
       {
-        path: 'upload/newsForm',
-        name: 'upload_newsForm',
-        component: () => import('../page/upload/newsForm.vue')
+        path: '/project/create',
+        name: 'project_create',
+        component: () => import('../page/project/form.vue')
       },
       {
-        path: 'manage',
-        name: 'manage',
-        component: () => import('../page/manage/manage.vue')
-      },
-      {
-        path: '/manage/newsDetail',
-        name: 'newsDetail',
-        component: () => import('../page/manage/newsDetail.vue')
+        path: '/project/update',
+        name: 'project_update',
+        component: () => import('../page/project/form.vue')
       }
     ]
   }

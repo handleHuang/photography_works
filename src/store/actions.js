@@ -1,50 +1,29 @@
 // 模块
-import { newsList, resolveTweet, addNews, delNews, newsDetail, editNews } from '@/api/news'
-import { papersList, addPapers, delPpapers, paperDetail, editPaper } from '@/api/papers'
+import { projectList, setProjectStatus, delProject, projectCreate, projectUpdate, projectDetail } from '@/api/project'
 
 export default {
-  // 新闻列表
-  async newsList (store, params) {
-    return await newsList(params)
+  // 命题列表
+  async projectList (store, params) {
+    return await projectList(params)
   },
-  // 解析推文
-  async resolveTweet (store, params) {
-    return await resolveTweet(params)
+  // 设置命题上下架状态
+  async setProjectStatus (store, params) {
+    return await setProjectStatus(params)
   },
-  // 上传新闻
-  async addNews (store, params) {
-    return await addNews(params)
+  // 删除命题
+  async delProject (store, params) {
+    return await delProject(params)
   },
-  // 删除新闻
-  async delNews (store, params) {
-    return await delNews(params)
+  // 命题上传
+  async projectCreate (store, params) {
+    return await projectCreate(params)
   },
-  // 新闻详情
-  async newsDetail (store, params) {
-    return await newsDetail(params)
+  // 命题编辑
+  async projectUpdate (store, params) {
+    return await projectUpdate(params)
   },
-  // 新闻编辑
-  async editNews (store, params) {
-    return await editNews(params)
-  },
-  // 论文列表
-  async papersList (store, params) {
-    return await papersList(params)
-  },
-  // 上传论文
-  async addPapers (store, params) {
-    return await addPapers(params)
-  },
-  // 删除论文
-  async delPpapers (store, params) {
-    return await delPpapers(params)
-  },
-  // 论文详情
-  async paperDetail (store, params) {
-    return await paperDetail(params)
-  },
-  // 编辑论文
-  async editPaper (store, params) {
-    return await editPaper(params)
+  // 命题详情
+  async projectDetail (store, params) {
+    return await projectDetail(params)
   }
 }

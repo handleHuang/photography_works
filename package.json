@@ -12,7 +12,7 @@
     "@jsdawn/vue3-tinymce": "^1.1.7",
     "axios": "^0.27.2",
     "core-js": "^3.6.5",
-    "element-plus": "^2.2.10",
+    "cropperjs": "^1.5.13",
     "tdesign-vue-next": "^0.17.5",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",

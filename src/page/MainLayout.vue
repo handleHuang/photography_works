@@ -8,23 +8,18 @@
         v-model="$route.path.split('/')[1]"
       >
         <template #logo>
-          <img
+         <span class="logo"> AIGC后台管理</span>
+          <!-- <img
             width="136"
             :src="require('../assets/icon/TRX RGB White.png')"
             alt="logo"
-          />
+          /> -->
         </template>
-        <t-menu-item value="upload" to="/upload">
+        <t-menu-item value="project" to="/project">
           <template #icon>
             <t-icon name="layers" />
           </template>
-          上传
-        </t-menu-item>
-        <t-menu-item value="manage" to="/manage">
-          <template #icon>
-            <t-icon name="layers" />
-          </template>
-          管理
+          命题管理
         </t-menu-item>
         <template #operations>
           <a href="javascript:;"
@@ -72,8 +67,13 @@ body {
       height: 100%;
       margin-top: 0 !important;
     }
-      .t-head-menu .t-menu__logo:not(:empty) {
+      .t-head-menu .t-menu__logo{
         margin-right: 80px;
+        .logo{
+          color: #fff;
+          font-size: 16px;
+          font-weight: 500;
+        }
       }
     /deep/.t-head-menu__inner {
       height: 100%;
