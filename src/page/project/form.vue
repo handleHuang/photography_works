@@ -9,7 +9,7 @@
     <div class="continer_box">
       <div class="header">
         <div class="header_left">
-          <span>新增命题</span>
+          <span>{{ route.query.id?'编辑命题':'新增命题' }}</span>
         </div>
       </div>
       <div class="body">
@@ -24,7 +24,7 @@
               <t-input v-model="formData.obj.title" type="text"></t-input>
             </t-form-item>
             <t-form-item label="描述" name="description">
-              <t-textarea v-model="formData.obj.description" type="text"></t-textarea>
+              <t-textarea v-model="formData.obj.description" type="text" :autosize="{ minRows: 4, maxRows: 4 }"></t-textarea>
             </t-form-item>
             <t-form-item label="封面" name="tempcover">
               <upload
