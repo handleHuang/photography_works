@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import axios from '@/config/http'
 
 // 命题列表
@@ -9,7 +8,7 @@ export function projectList (params) {
 export function setProjectStatus (params) {
   return axios.post(`set/${params.project_id}/status`, params)
 }
-// 设置命题状态
+// 删除命题
 export function delProject (params) {
   return axios.delete('project/delete/ids', params)
 }

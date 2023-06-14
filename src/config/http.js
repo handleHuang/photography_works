@@ -17,6 +17,7 @@ instance.interceptors.request.use(
     // if (token) {
     //   newConfig.headers.authorization = `Bearer ${token}`
     // }
+    newConfig.headers.staffname = 'zjt'
     if (
       newConfig.method === 'post' ||
       newConfig.method === 'put' ||

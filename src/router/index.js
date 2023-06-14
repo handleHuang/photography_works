@@ -29,6 +29,16 @@ const routes = [
         path: '/project/update',
         name: 'project_update',
         component: () => import('../page/project/form.vue')
+      },
+      {
+        path: '/article',
+        name: 'article',
+        component: () => import('../page/articles/article.vue')
+      },
+      {
+        path: '/article/detail',
+        name: 'article_detail',
+        component: () => import('../page/articles/detail.vue')
       }
     ]
   }

@@ -21,6 +21,12 @@
           </template>
           命题管理
         </t-menu-item>
+        <t-menu-item value="article" to="/article">
+          <template #icon>
+            <t-icon name="gift" />
+          </template>
+          作品管理
+        </t-menu-item>
         <template #operations>
           <a href="javascript:;"
             ><t-icon class="t-menu__operations-icon" name="user"
@@ -63,6 +69,9 @@ body {
     z-index: 888;
     background-color: #fff;
     height: 56px;
+    .t-menu__item{
+      margin-right: 24px!important;
+    }
     .t-head-menu {
       height: 100%;
       margin-top: 0 !important;
@@ -79,14 +88,16 @@ body {
       height: 100%;
       padding: 0 24px;
       .t-menu__operations {
+        height: 56px;
         a {
           height: 100%;
           svg.t-icon.t-icon-user.t-menu__operations-icon {
             width: 24px;
+            height: 40px;
           }
         }
       }
-      svg.t-icon.t-icon-layers {
+      svg.t-icon{
         width: 18px;
         height: 18px;
       }
@@ -100,10 +111,6 @@ body {
     .main {
       height: calc(100% - 48px);
       background-color: #f1f1f1;
-
-      // width: calc(100% - 48px);
-      // background: #fff;
-      // margin: 24px;
     }
   }
 }
