@@ -7,6 +7,9 @@
         <div class="header_left">
           <span>作品列表</span>
         </div>
+        <div class="header_right">
+          <t-button @click="exportArticle">导出作品</t-button>
+        </div>
       </div>
       <div class="search">
         <div class="search_left">
@@ -24,7 +27,8 @@
           </t-radio-group>
         </div>
       </div>
-      <t-table row-key="id" :data="tabelData.arr" :columns="columns">
+      <t-table row-key="id" :data="tabelData.arr" :columns="columns"  :selected-row-keys="selected.arr"
+          @select-change="rehandleSelectChange">
         <template #cover="{ row }">
           <img
           v-if="row.articles"
@@ -110,7 +114,7 @@ const pagination = reactive({
 function rehandleChange (changeParams) {
   pagination.obj.pageSize = changeParams.pageSize
   pagination.obj.current = changeParams.current
-  projectList()
+  articleList()
 }
 const tabelData = reactive({
   arr: [
@@ -119,6 +123,12 @@ const tabelData = reactive({
 
 // 表头
 const columns = reactive([
+  {
+    colKey: 'row-select',
+    type: 'multiple',
+    width: '40',
+    fixed: 'left'
+  },
   {
     colKey: 'id',
     title: 'ID',
@@ -165,7 +175,7 @@ const columns = reactive([
     width: '184'
   }
 ])
-const projectList = () => {
+const articleList = () => {
   const params = {
     per_page: pagination.obj.pageSize,
     page: pagination.obj.current
@@ -185,13 +195,13 @@ const projectList = () => {
 function setArticleStatus (params) {
   store.dispatch('setArticleStatus', params).then(res => {
     MessagePlugin.success('操作成功')
-    projectList()
+    articleList()
   })
 }
 // 筛选
 const handleChange = () => {
   pagination.obj.current = 1
-  projectList()
+  articleList()
 }
 // 删除
 function dodelete (id) {
@@ -202,7 +212,7 @@ function dodelete (id) {
     onConfirm: () => {
       store.dispatch('delArticle', { ids: [id] }).then(res => {
         MessagePlugin.success('删除成功')
-        projectList()
+        articleList()
       })
       confirmDia.destroy()
     },
@@ -220,6 +230,30 @@ function docheck (id) {
     }
   })
 }
+// 批量
+const selected = reactive({
+  arr: []
+})
+const rehandleSelectChange = value => {
+  selected.arr = value
+}
+// 导出
+function exportArticle () {
+  const confirmDia = DialogPlugin.confirm({
+    header: `确定导出${selected.arr.length !== 0 ? `所选择的${selected.arr.length}个` : '所有'}作品吗？`,
+    theme: 'info',
+    onConfirm: () => {
+      store.dispatch('exportArticle', { ids: selected.arr }).then(res => {
+        window.location.href = res.data.path
+        MessagePlugin.success('导出成功')
+      })
+      confirmDia.destroy()
+    },
+    onClose: () => {
+      confirmDia.hide()
+    }
+  })
+}
 const ellipsis = (value) => {
   if (!value) return ''
   if (value.length > 25) {
@@ -228,7 +262,7 @@ const ellipsis = (value) => {
   return value
 }
 onMounted(() => {
-  projectList()
+  articleList()
 })
 </script>
 <style lang="less" scoped src="../../assets/style/manage/manage.less"></style>

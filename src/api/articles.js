@@ -16,3 +16,7 @@ export function delArticle (params) {
 export function articleDetail (params) {
   return axios.get(`articles/${params.article_id}`, params)
 }
+// 导出作品
+export function exportArticle (params) {
+  return axios.post('/articles/export', params)
+}

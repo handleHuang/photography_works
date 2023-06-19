@@ -1,7 +1,7 @@
 // 命题
 import { projectList, setProjectStatus, delProject, projectCreate, projectUpdate, projectDetail } from '@/api/project'
 // 作品
-import { articleList, setArticleStatus, delArticle, articleDetail } from '@/api/articles'
+import { articleList, setArticleStatus, delArticle, articleDetail, exportArticle } from '@/api/articles'
 export default {
   // 命题
 
@@ -44,5 +44,8 @@ export default {
   },
   async articleDetail (store, params) {
     return await articleDetail(params)
+  },
+  async exportArticle (store, params) {
+    return await exportArticle(params)
   }
 }
