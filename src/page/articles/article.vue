@@ -37,6 +37,11 @@
             alt=""
           />
         </template>
+        <template #title="{row}">
+          <t-tooltip :content="row.title" theme="light">
+              <span>{{ ellipsis(row.title) }}</span>
+            </t-tooltip>
+          </template>
         <template #projectName="{row}">
           {{ row.project&&row.project.title }}
         </template>
@@ -146,10 +151,7 @@ const columns = reactive([
   {
     colKey: 'title',
     title: '作品名称',
-    width: '140',
-    ellipsis: {
-      theme: 'light'
-    }
+    width: '240'
   },
   {
     colKey: 'projectName',
@@ -159,7 +161,7 @@ const columns = reactive([
   {
     colKey: 'description',
     title: '关键词描述',
-    width: '240'
+    width: '200'
   },
   {
     colKey: 'ai_json',

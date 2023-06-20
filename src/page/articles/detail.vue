@@ -133,7 +133,7 @@ const getDetail = () => {
     detailData.obj = res
   })
 }
-// 设置命题状态
+// 设置作品状态
 function setArticleStatus (params) {
   store.dispatch('setArticleStatus', params).then(res => {
     MessagePlugin.success('操作成功')

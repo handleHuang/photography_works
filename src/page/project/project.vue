@@ -317,7 +317,6 @@ function setProjectStatus (params) {
     MessagePlugin.success('操作成功')
     projectList()
   }).catch(err => {
-    console.log(err)
     MessagePlugin.warning(err.response.data.message)
   })
 }

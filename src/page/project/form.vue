@@ -114,6 +114,8 @@ const onSubmit = ({ validateResult, firstError, e }) => {
       .then(res => {
         MessagePlugin.success(formData.obj.id ? '修改成功' : '上传成功')
         router.push('/project')
+      }).catch(err => {
+        MessagePlugin.warning(err.response.data.message)
       })
   } else {
     MessagePlugin.warning(firstError)

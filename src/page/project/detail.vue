@@ -86,6 +86,8 @@ function setProjectStatus (params) {
   store.dispatch('setProjectStatus', params).then(res => {
     MessagePlugin.success('操作成功')
     getDetail()
+  }).catch(err => {
+    MessagePlugin.warning(err.response.data.message)
   })
 }
 // 删除
