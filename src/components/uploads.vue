@@ -290,7 +290,8 @@ function sendFile () {
     method: 'POST',
     url: 'https://aigc.emergelab.com.cn/api/file/upload',
     headers: {
-      'Content-Type': 'multipart/form-data'
+      'Content-Type': 'multipart/form-data',
+      staffname: 'zjt'
     },
     data: formData
   })
@@ -322,7 +323,8 @@ function sendFile () {
             method: 'POST',
             url: 'https://aigc.emergelab.com.cn/api/file/merge',
             headers: {
-              'Content-Type': 'multipart/form-data'
+              'Content-Type': 'multipart/form-data',
+              staffname: 'zjt'
             },
             data: formData_2
           }).then(res => {

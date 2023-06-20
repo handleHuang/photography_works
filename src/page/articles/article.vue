@@ -49,6 +49,9 @@
 
         {{ row.ai_json&&row.ai_json.title }}
           </template>
+          <template #username="{row}">
+          {{ row.user&&row.user.name }}
+        </template>
         <template #online_status="{ row }">
           <span :class="`status showStatus${row.online_status}`">{{
             row.online_status == 2 ? '未发布' : '已发布'
@@ -161,6 +164,11 @@ const columns = reactive([
   {
     colKey: 'ai_json',
     title: '所用AI平台',
+    width: '140'
+  },
+  {
+    colKey: 'username',
+    title: '创建人',
     width: '140'
   },
   {
