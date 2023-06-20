@@ -335,6 +335,8 @@ function dodelete (id) {
       store.dispatch('delProject', { ids: [id] }).then(res => {
         MessagePlugin.success('删除成功')
         projectList()
+      }).catch(err => {
+        MessagePlugin.warning(err.response.data.message)
       })
       confirmDia.destroy()
     },
