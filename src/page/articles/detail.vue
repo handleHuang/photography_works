@@ -12,7 +12,7 @@
           <div class="title_box">
             <span class="title">{{ detailData.obj.title }}</span>
             <span :class="`status showStatus${detailData.obj.online_status}`">{{
-              detailData.obj.online_status == 2 ? '未发布' : '已发布'
+              detailData.obj.online_status == 2 ? "未发布" : "已发布"
             }}</span>
           </div>
           <div class="article_baseInfo">
@@ -20,7 +20,7 @@
               class="avatar_box"
               v-if="detailData.obj.user && detailData.obj.user.avatar"
             >
-              <img class="avatar" :src="domain + detailData.obj.user.avatar" />
+              <img class="avatar" :src="detailData.obj.user.avatar" />
               <span class="author_name">{{ detailData.obj.user.name }}</span>
             </div>
             <div class="flow">
@@ -47,12 +47,33 @@
       <div class="body">
         <div class="body_left">
           <div class="article_covers">
-            <img
-              class="item"
-              v-for="(cover, index) in detailData.obj.articles"
-              :key="index"
-              :src="domain + cover.path"
-            />
+            <div v-for="(cover, index) in detailData.obj.articles" :key="index">
+              <img
+                class="item"
+                :key="index"
+                :src="cover.url"
+                v-show="cover.mine.indexOf('image') !== -1"
+              />
+              <div
+                class="item"
+                v-show="cover.mine.indexOf('video') !== -1"
+                style="position: relative; cursor: pointer"
+                @click="handleVideo(cover.url)"
+              >
+                <video :src="cover.url" style="width: 100%; height: 100%" />
+                <img
+                  src="../../assets/icon/play_circle.png"
+                  style="
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate3d(-50%, -50%, 0);
+                    width: 70px;
+                    height: 70px;
+                  "
+                />
+              </div>
+            </div>
           </div>
           <div
             class="course_title"
@@ -61,12 +82,32 @@
             创作过程：参考文件，工程文件截图
           </div>
           <div class="article_course">
-            <img
-              class="item"
-              v-for="(img, index) in detailData.obj.file"
-              :key="index"
-              :src="domain + img.path"
-            />
+            <div v-for="(cover, index) in detailData.obj.file" :key="index">
+              <img
+                class="item"
+                :key="index"
+                :src="cover.url"
+                v-show="cover.mine.indexOf('image') !== -1"
+              />
+              <div
+                class="item"
+                v-show="cover.mine.indexOf('video') !== -1"
+                style="position: relative; cursor: pointer"
+              >
+                <video :src="cover.url" style="width: 100%; height: 100%" />
+                <img
+                  src="../../assets/icon/play_circle.png"
+                  style="
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate3d(-50%, -50%, 0);
+                    width: 70px;
+                    height: 70px;
+                  "
+                />
+              </div>
+            </div>
           </div>
         </div>
         <div class="body_right">
@@ -95,7 +136,7 @@
           @click="
             setArticleStatus({
               article_id: articleId,
-              online_status: 1
+              online_status: 1,
             })
           "
           >上架</t-button
@@ -106,7 +147,7 @@
           @click="
             setArticleStatus({
               article_id: articleId,
-              online_status: 2
+              online_status: 2,
             })
           "
           >下架</t-button
@@ -114,28 +155,34 @@
         <t-button @click="dodelete(articleId)" variant="outline">删除</t-button>
       </div>
     </div>
+    <div class="pupop" v-if="videoShow">
+      <div class="pupop_bg" @click="handleVideoShow"></div>
+      <div class="pupop_box">
+        <video class="right_pic" :src="videoUrl" autoplay loop controls />
+      </div>
+    </div>
   </div>
 </template>
 <script setup>
 import { MessagePlugin, DialogPlugin } from 'tdesign-vue-next'
-import { reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 const router = useRouter()
 const route = useRoute()
 const store = useStore()
-const domain = 'https://aigc-1311564431.cos.ap-guangzhou.myqcloud.com/'
+// const domain = 'https://aigc-1311564431.cos.ap-guangzhou.myqcloud.com/'
 const articleId = route.query.id
 // 详情
 const detailData = reactive({ obj: {} })
 const getDetail = () => {
-  store.dispatch('articleDetail', { article_id: articleId }).then(res => {
+  store.dispatch('articleDetail', { article_id: articleId }).then((res) => {
     detailData.obj = res
   })
 }
 // 设置作品状态
 function setArticleStatus (params) {
-  store.dispatch('setArticleStatus', params).then(res => {
+  store.dispatch('setArticleStatus', params).then((res) => {
     MessagePlugin.success('操作成功')
     getDetail()
   })
@@ -147,7 +194,7 @@ function dodelete (id) {
     body: '删除后不可恢复',
     theme: 'warning',
     onConfirm: () => {
-      store.dispatch('delArticle', { ids: [id] }).then(res => {
+      store.dispatch('delArticle', { ids: [id] }).then((res) => {
         MessagePlugin.success('删除成功')
         router.push('/article')
       })
@@ -160,9 +207,23 @@ function dodelete (id) {
 }
 const formattedDate = (dateStr) => {
   const date = new Date(dateStr)
-  const newDateStr = date.toLocaleDateString('zh-Hans-CN', { year: 'numeric', month: 'numeric', day: 'numeric' })
+  const newDateStr = date
+    .toLocaleDateString('zh-Hans-CN', {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric'
+    })
     .replace(/\//g, '.')
   return newDateStr
+}
+const videoUrl = ref('')
+const videoShow = ref(false)
+const handleVideoShow = () => {
+  videoShow.value = false
+}
+const handleVideo = (url) => {
+  videoUrl.value = url
+  videoShow.value = true
 }
 onMounted(() => {
   getDetail()

@@ -2,35 +2,29 @@
   <t-layout id="app">
     <!-- header头部菜单 -->
     <t-header class="container_header">
-      <t-head-menu
-        theme="dark"
-        style="margin-top: 24px"
-        v-model="$route.path.split('/')[1]"
-      >
+      <t-head-menu theme="dark" style="margin-top: 24px" v-model="menuValue">
         <template #logo>
-         <span class="logo"> AIGC后台管理</span>
+          <span class="logo"> AIGC后台管理</span>
           <!-- <img
             width="136"
             :src="require('../assets/icon/TRX RGB White.png')"
             alt="logo"
           /> -->
         </template>
-        <t-menu-item value="project" to="/project">
+        <t-menu-item value="/project" to="/project">
           <template #icon>
             <t-icon name="layers" />
           </template>
           命题管理
         </t-menu-item>
-        <t-menu-item value="article" to="/article">
+        <t-menu-item value="/article" to="/article">
           <template #icon>
             <t-icon name="gift" />
           </template>
           作品管理
         </t-menu-item>
         <template #operations>
-          <a href="javascript:;"
-            ><t-icon class="t-menu__operations-icon" name="user"
-          /></a>
+          <a href="javascript:;"><t-icon class="t-menu__operations-icon" name="user" /></a>
         </template>
       </t-head-menu>
     </t-header>
@@ -44,12 +38,24 @@
   </t-layout>
 </template>
 
-<script>
+<script setup>
+import { watch, ref } from 'vue'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+const menuValue = ref(route.path)
+
+watch(() => route.path, (to, from) => {
+  // 在这里处理路由信息的变化
+  menuValue.value = to
+  console.log('路由发生变化', menuValue.value)
+})
 
 </script>
 
 <style lang="less" scoped>
 @import url('../assets/style/var/var.less');
+
 html,
 body {
   width: 100%;
@@ -57,6 +63,7 @@ body {
   overflow-x: hidden;
   overflow-y: hidden;
 }
+
 #app {
   height: 100%;
   width: 100%;
@@ -69,45 +76,57 @@ body {
     z-index: 888;
     background-color: #fff;
     height: 56px;
-    .t-menu__item{
-      margin-right: 24px!important;
+
+    .t-menu__item {
+      margin-right: 24px !important;
     }
+
     .t-head-menu {
       height: 100%;
       margin-top: 0 !important;
     }
-      .t-head-menu .t-menu__logo{
-        margin-right: 80px;
-        .logo{
-          color: #fff;
-          font-size: 16px;
-          font-weight: 500;
-        }
+
+    .t-head-menu .t-menu__logo {
+      margin-right: 80px;
+
+      .logo {
+        color: #fff;
+        font-size: 16px;
+        font-weight: 500;
       }
-    /deep/.t-head-menu__inner {
+    }
+
+    :deep(.t-head-menu__inner) {
       height: 100%;
       padding: 0 24px;
+
       .t-menu__operations {
         height: 56px;
+
         a {
           height: 100%;
+
           svg.t-icon.t-icon-user.t-menu__operations-icon {
             width: 24px;
             height: 40px;
           }
         }
       }
-      svg.t-icon{
+
+      svg.t-icon {
         width: 18px;
         height: 18px;
       }
     }
+
     .t-menu__item.t-is-active {
       background-color: #0052d9;
     }
   }
+
   .content {
     height: calc(100% - 72px);
+
     .main {
       height: calc(100% - 48px);
       background-color: #f1f1f1;

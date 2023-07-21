@@ -1,43 +1,22 @@
 <template>
   <ul class="upload-imgs" :class="{ cover_img: text == '封面图(5:7)' }">
     <li v-for="(item, index) in fileList.arr" :key="index">
-      <img
-        v-if="item.mine && item.mine.includes('image')"
-        class="demo-image-viewer__item"
-        :src="item.url ? item.url : domain + (item.path && item.path)"
-        fit="cover"
-      />
-      <video
-        v-else
-        controls
-        loop="loop"
-        :src="item.url ? item.url : domain + (item.path && item.path)"
-      />
+      <img v-if="item.mine && item.mine.includes('image')" class="demo-image-viewer__item"
+        :src="item.url ? item.url : domain + (item.path && item.path)" fit="cover" />
+      <video v-else controls loop="loop" :src="item.url ? item.url : domain + (item.path && item.path)" />
       <span class="delBtn" @click="delImg(index)">删除</span>
-      <input
-        :id="'f_file' + inputId"
-        ref="uploadInputer"
-        class="f_file file2"
-        type="file"
-        :accept="accept"
-        @change="beforeUpload"
-      />
+      <input :id="'f_file' + inputId" ref="uploadInputer" class="f_file file2" type="file" :accept="accept"
+        @change="beforeUpload" />
       <label :for="'f_file' + inputId" class="againUpload">编辑</label>
     </li>
     <li v-if="!fileList.arr.length >= 1">
-      <input
-        :id="'f_file' + inputId"
-        ref="uploadInputer"
-        class="f_file file1"
-        type="file"
-        :accept="accept"
-        @change="beforeUpload"
-      />
+      <input :id="'f_file' + inputId" ref="uploadInputer" class="f_file file1" type="file" :accept="accept"
+        @change="beforeUpload" />
       <label :for="'f_file' + inputId" id="321312" class="upload"></label>
 
       <a class="add"><img src="../assets/icon/add-small.png" /></a>
       <div class="upload__text">
-       <span> {{ text }}</span>
+        <span> {{ text }}</span>
       </div>
     </li>
   </ul>
@@ -52,20 +31,10 @@
     </template>
     <template #footer>
       <div class="btns_box">
-        <input
-          :id="'f_file' + inputId"
-          ref="uploadInputer"
-          class="f_file file2"
-          type="file"
-          :accept="accept"
-          @change="beforeUpload"
-        />
-        <label :for="'f_file' + inputId" class="againUpload_txt"
-          >重新上传</label
-        >
-        <t-button @click="cuttingVisible = false" variant="outline"
-          >取消</t-button
-        >
+        <input :id="'f_file' + inputId" ref="uploadInputer" class="f_file file2" type="file" :accept="accept"
+          @change="beforeUpload" />
+        <label :for="'f_file' + inputId" class="againUpload_txt">重新上传</label>
+        <t-button @click="cuttingVisible = false" variant="outline">取消</t-button>
         <t-button @click="sureSava">确定</t-button>
       </div>
     </template>
@@ -78,6 +47,7 @@ import Cropper from 'cropperjs'
 import 'cropperjs/dist/cropper.css'
 import { ref, reactive, defineProps, defineEmits, onMounted, watch } from 'vue'
 import { base64ToFile } from '../utils/base64ToFile'
+import baseURL from '../config/apiUrl.js'
 const props = defineProps({
   names: {
     type: String,
@@ -288,10 +258,10 @@ function sendFile () {
   formData.append('mine', uploadFileData.mine)
   axios({
     method: 'POST',
-    url: 'https://aigc.emergelab.com.cn/api/file/upload',
+    url: `${baseURL}/api/file/upload`,
     headers: {
-      'Content-Type': 'multipart/form-data',
-      staffname: 'zjt'
+      'Content-Type': 'multipart/form-data'
+      // staffname: 'zjt'
     },
     data: formData
   })
@@ -321,10 +291,10 @@ function sendFile () {
           formData_2.append('original_name', uploadFileData.original_name)
           axios({
             method: 'POST',
-            url: 'https://aigc.emergelab.com.cn/api/file/merge',
+            url: `${baseURL}/api/file/merge`,
             headers: {
-              'Content-Type': 'multipart/form-data',
-              staffname: 'zjt'
+              'Content-Type': 'multipart/form-data'
+              // staffname: 'zjt'
             },
             data: formData_2
           }).then(res => {
@@ -394,7 +364,7 @@ function delImg (index) {
 }
 onMounted(() => {
   imgs.arr = JSON.parse(JSON.stringify(props.list)).map(
-    res => domain + res.path
+    res => res.url
   )
 })
 </script>

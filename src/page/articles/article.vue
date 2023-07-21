@@ -1,7 +1,6 @@
 <template>
   <div class="continer">
-    <div class="page__breadcrumb back__breadcrumb">
-      </div>
+    <div class="page__breadcrumb back__breadcrumb"></div>
     <div class="continer_box">
       <div class="header">
         <div class="header_left">
@@ -13,53 +12,73 @@
       </div>
       <div class="search">
         <div class="search_left">
-          <t-input type="text" placeholder="请输入作品名称搜索" v-model="title" @change="handleChange">
+          <t-input
+            type="text"
+            placeholder="请输入作品名称搜索"
+            v-model="title"
+            @change="handleChange"
+          >
             <template #prefix-icon>
               <t-icon name="search" />
             </template>
           </t-input>
         </div>
         <div class="search_right">
-          <t-radio-group size="large" v-model="showValue" @change="handleChange">
+          <t-radio-group
+            size="large"
+            v-model="showValue"
+            @change="handleChange"
+          >
             <t-radio-button value="all">全部</t-radio-button>
             <t-radio-button :value="1">已发布</t-radio-button>
             <t-radio-button :value="2">未发布</t-radio-button>
           </t-radio-group>
         </div>
       </div>
-      <t-table row-key="id" :data="tabelData.arr" :columns="columns"  :selected-row-keys="selected.arr"
-          @select-change="rehandleSelectChange">
+      <t-table
+        row-key="id"
+        :data="tabelData.arr"
+        :columns="columns"
+        :selected-row-keys="selected.arr"
+        @select-change="rehandleSelectChange"
+      >
         <template #cover="{ row }">
           <img
-          v-if="row.articles"
-            style="width: 183px; height: 96px; object-fit: cover"
-            :src="domain + row.articles[0].path"
+            v-if="row.articles && row.articles.length > 0 && row.articles[0].mine.indexOf('image') !== -1"
+            style="width: 100%; height: 100%; object-fit: cover"
+            :src="row.articles[0].url"
             alt=""
           />
+          <div style="position: relative;width: 100%;height: 100%;" v-if="row.articles && row.articles.length > 0 && row.articles[0].mine.indexOf('video') !== -1">
+            <video
+              style="width: 100%; height: 100%; object-fit: cover"
+              :src="row.articles[0].url"
+            />
+            <img src="../../assets/icon/play_circle.png" style="position: absolute;top: 50%;left: 50%;transform: translate3d(-50%,-50%,0);width: 50px;height: 50px;" />
+          </div>
         </template>
-        <template #title="{row}">
+        <template #title="{ row }">
           <t-tooltip :content="row.title" theme="light">
-              <span>{{ ellipsis(row.title) }}</span>
-            </t-tooltip>
-          </template>
-        <template #projectName="{row}">
-          {{ row.project&&row.project.title }}
+            <span>{{ ellipsis(row.title) }}</span>
+          </t-tooltip>
         </template>
-        <template #description="{row}">
+        <template #projectName="{ row }">
+          {{ row.project && row.project.title }}
+        </template>
+        <template #description="{ row }">
           <t-tooltip :content="row.description" theme="light">
-              <span>{{ ellipsis(row.description) }}</span>
-            </t-tooltip>
-          </template>
-        <template #ai_json="{row}" >
-
-        {{ row.ai_json&&row.ai_json.title }}
-          </template>
-          <template #username="{row}">
-          {{ row.user&&row.user.name }}
+            <span>{{ ellipsis(row.description) }}</span>
+          </t-tooltip>
+        </template>
+        <template #ai_json="{ row }">
+          {{ row.ai_json && row.ai_json.title }}
+        </template>
+        <template #username="{ row }">
+          {{ row.user && row.user.name }}
         </template>
         <template #online_status="{ row }">
           <span :class="`status showStatus${row.online_status}`">{{
-            row.online_status == 2 ? '未发布' : '已发布'
+            row.online_status == 2 ? "未发布" : "已发布"
           }}</span>
         </template>
         <template #operat="{ row }">
@@ -70,7 +89,7 @@
             @click="
               setArticleStatus({
                 article_id: row.id,
-                online_status: 1
+                online_status: 1,
               })
             "
             >上架</span
@@ -81,12 +100,14 @@
             @click="
               setArticleStatus({
                 article_id: row.id,
-                online_status: 2
+                online_status: 2,
               })
             "
             >下架</span
           >
-          <span class="operat__btn operat__btn_del"  @click="dodelete(row.id)">删除</span>
+          <span class="operat__btn operat__btn_del" @click="dodelete(row.id)"
+            >删除</span
+          >
         </template>
       </t-table>
       <div class="pagination_box">
@@ -108,7 +129,7 @@ import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 const store = useStore()
-const domain = 'https://aigc-1311564431.cos.ap-guangzhou.myqcloud.com/'
+// const domain = 'https://aigc-1311564431.cos.ap-guangzhou.myqcloud.com/'
 const showValue = ref('all')
 const title = ref('')
 // 分页
@@ -125,8 +146,7 @@ function rehandleChange (changeParams) {
   articleList()
 }
 const tabelData = reactive({
-  arr: [
-  ]
+  arr: []
 })
 
 // 表头
@@ -169,6 +189,11 @@ const columns = reactive([
     width: '140'
   },
   {
+    colKey: 'like_count',
+    title: '点赞数',
+    width: '140'
+  },
+  {
     colKey: 'username',
     title: '创建人',
     width: '140'
@@ -196,14 +221,14 @@ const articleList = () => {
   if (showValue.value !== 'all') {
     params.online_status = showValue.value
   }
-  store.dispatch('articleList', params).then(res => {
+  store.dispatch('articleList', params).then((res) => {
     tabelData.arr = res.data
     pagination.obj.total = res.total
   })
 }
 // 设置命题状态
 function setArticleStatus (params) {
-  store.dispatch('setArticleStatus', params).then(res => {
+  store.dispatch('setArticleStatus', params).then((res) => {
     MessagePlugin.success('操作成功')
     articleList()
   })
@@ -220,7 +245,7 @@ function dodelete (id) {
     body: '删除后不可恢复',
     theme: 'warning',
     onConfirm: () => {
-      store.dispatch('delArticle', { ids: [id] }).then(res => {
+      store.dispatch('delArticle', { ids: [id] }).then((res) => {
         MessagePlugin.success('删除成功')
         articleList()
       })
@@ -244,16 +269,18 @@ function docheck (id) {
 const selected = reactive({
   arr: []
 })
-const rehandleSelectChange = value => {
+const rehandleSelectChange = (value) => {
   selected.arr = value
 }
 // 导出
 function exportArticle () {
   const confirmDia = DialogPlugin.confirm({
-    header: `确定导出${selected.arr.length !== 0 ? `所选择的${selected.arr.length}个` : '所有'}作品吗？`,
+    header: `确定导出${
+      selected.arr.length !== 0 ? `所选择的${selected.arr.length}个` : '所有'
+    }作品吗？`,
     theme: 'info',
     onConfirm: () => {
-      store.dispatch('exportArticle', { ids: selected.arr }).then(res => {
+      store.dispatch('exportArticle', { ids: selected.arr }).then((res) => {
         window.location.href = res.data.path
         MessagePlugin.success('导出成功')
       })

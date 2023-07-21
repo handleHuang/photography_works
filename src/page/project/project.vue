@@ -36,7 +36,7 @@
           <img
           v-if="row.cover"
             style="width: 183px; height: 96px; object-fit: cover"
-            :src="domain + row.cover.path"
+            :src="row.cover.url"
             alt=""
           />
         </template>
@@ -92,7 +92,7 @@ import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 const store = useStore()
-const domain = 'https://aigc-1311564431.cos.ap-guangzhou.myqcloud.com/'
+// const domain = 'https://aigc-1311564431.cos.ap-guangzhou.myqcloud.com/'
 const showValue = ref('all')
 const title = ref('')
 // 分页

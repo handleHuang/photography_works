@@ -91,6 +91,7 @@ const formData = reactive({
   }
 })
 function fileCover ({ list, names }) {
+  console.log(list)
   formData.obj[toRaw(names)] = toRaw(list)
 }
 const rules = {
@@ -101,7 +102,7 @@ const rules = {
 const onSubmit = ({ validateResult, firstError, e }) => {
   if (validateResult === true) {
     formData.obj.cover = formData.obj.tempcover[0]
-    delete formData.obj.cover.url
+    // delete formData.obj.cover.url
     delete formData.obj.cover.id
     if (formData.obj.id) {
       formData.obj.project_id = formData.obj.id
