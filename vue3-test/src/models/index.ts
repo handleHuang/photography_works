@@ -1,9 +1,13 @@
 import { http } from "../utils/http";
 
 // 调用测试
-export function getTest() {
+export function getTest(pages: any) {
   return http({
-    url: "/api/server", //此处为自己请求地址
+    url:
+      "/api/server?" +
+      `page=${pages.value.page}` +
+      `&pageSize=${pages.value.pageSize}` +
+      `${pages.value.keyword !== "" ? `&keyword=${pages.value.keyword}` : ""}`, //此处为自己请求地址
     method: "get",
   });
 }

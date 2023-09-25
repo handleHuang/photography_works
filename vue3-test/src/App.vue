@@ -3,15 +3,31 @@
     <input type="file" @change="uploadImage" />
     <button @click="submit">上传</button>
     <img :src="cover" />
+    <t-upload
+      ref="uploadRef1"
+      v-model="file1"
+      action="http://127.0.0.1:12134/api/uploadimg"
+      theme="image"
+      tips="图片不能超出2m"
+      accept="image/*"
+      :auto-upload="true"
+      :upload-all-files-in-one-request="true"
+      :size-limit="{ size: 2, unit: 'MB' }"
+      :max="5"
+      multiple
+      :abridge-name="[6, 6]"
+      :locale="{
+        triggerUploadText: {
+          image: '请选择图片',
+        },
+      }"
+      @fail="handleFail"
+      @Change="changeUpdata"
+    >
+    </t-upload>
     <div style="width: 350px">
       <Login />
       <Register />
-    </div>
-    <div style="width: 350px">
-      <t-input v-model="search" clearable placeholder="搜索"> </t-input>
-      <t-button theme="primary" type="submit" block @click="handleSearch"
-        >搜索</t-button
-      >
     </div>
     <div style="width: 350px">
       <t-input v-model="del" clearable placeholder="删除"> </t-input>
@@ -56,6 +72,21 @@
         </t-form-item>
       </t-form>
     </div>
+    <div style="width: 350px">
+      <t-input v-model="pages.keyword" clearable placeholder="搜索"> </t-input>
+      <t-button theme="primary" type="submit" block @click="getList"
+        >搜索</t-button
+      >
+    </div>
+    <div>
+      <div v-for="(item, index) in userList" :key="index">
+        {{ item.username }}
+      </div>
+      <div>
+        <span @click="handleNext">下一页</span
+        ><span @click="handlePrev">上一页</span>
+      </div>
+    </div>
   </div>
   <!-- <HelloWorld msg="Vite + Vue" /> -->
 </template>
@@ -66,28 +97,54 @@ import { onMounted, reactive, ref } from "vue";
 import Login from "./components/login.vue";
 import Register from "./components/register.vue";
 import {
-  postText,
+  // postText,
   getTest,
   postSearch,
   delUser,
   anemdUser,
-  uploadimg
+  uploadimg,
 } from "./models/index";
+import { MessagePlugin } from "tdesign-vue-next";
 
 let imgData: any = ref(null);
 const uploadImage = (e: any) => {
   imgData.value = e.target.files[0];
-  console.log(e.target.files[0])
+  console.log(e.target.files[0]);
 };
 
+// 列表
+let userList: any = ref([]);
+let pages: any = ref({
+  page: 1,
+  pageSize: 5,
+  keyword: "",
+});
 const getList = () => {
-  getTest()
-    .then((res) => {
+  getTest(pages)
+    .then((res: any) => {
       console.log(res);
+      userList.value = res.data;
     })
     .catch((err) => {
       console.log(err);
     });
+};
+
+const file1 = ref([]);
+const handleFail = (file: any) => {
+  MessagePlugin.error(`文件 ${file.name} 上传失败`);
+};
+const changeUpdata = (item: any) => {
+  console.log(item);
+};
+
+const handleNext = () => {
+  pages.value.page++;
+  getList();
+};
+const handlePrev = () => {
+  pages.value.page--;
+  getList();
 };
 
 onMounted(() => {
