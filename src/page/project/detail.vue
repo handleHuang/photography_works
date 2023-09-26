@@ -15,8 +15,8 @@
       <div class="body">
         <div class="item">
           <div class="title">{{ detailData.obj.title }}</div>
-          <span :class="`status showStatus${detailData.obj.online_status}`">{{
-            detailData.obj.online_status == 2 ? "未发布" : "已发布"
+          <span :class="`status showStatus${detailData.obj.online}`">{{
+            detailData.obj.online == 2 ? "未发布" : "已发布"
           }}</span>
         </div>
         <div class="item">
@@ -24,34 +24,34 @@
           <img
             v-if="detailData.obj.cover"
             class="cover"
-            :src="detailData.obj.cover.url"
+            :src="detailData.obj.cover"
             alt=""
           />
         </div>
         <div class="item">
           <span class="label">描述</span>
-          <div class="description">{{ detailData.obj.description }}</div>
+          <div class="description">{{ detailData.obj.cont }}</div>
         </div>
       </div>
       <div class="operate_box">
         <t-button
           variant="outline"
-          v-if="detailData.obj.online_status === 2"
+          v-if="detailData.obj.online === 2"
           @click="
             setProjectStatus({
-              project_id: projectId,
-              online_status: 1,
+              id: projectId,
+              online: 1,
             })
           "
           >上架</t-button
         >
         <t-button
           variant="outline"
-          v-if="detailData.obj.online_status === 1"
+          v-if="detailData.obj.online === 1"
           @click="
             setProjectStatus({
-              project_id: projectId,
-              online_status: 2,
+              id: projectId,
+              online: 2,
             })
           "
           >下架</t-button
@@ -75,7 +75,7 @@ const projectId = route.query.id
 // 详情
 const detailData = reactive({ obj: {} })
 const getDetail = () => {
-  store.dispatch('projectDetail', { project_id: projectId }).then((res) => {
+  store.dispatch('projectDetail', { id: projectId }).then((res) => {
     detailData.obj = res
   })
 }

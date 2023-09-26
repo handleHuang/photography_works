@@ -11,6 +11,11 @@ const routes = [
         redirect: '/project'
       },
       {
+        path: '/login',
+        name: 'login',
+        component: () => import('../page/login/index.vue')
+      },
+      {
         path: '/project',
         name: 'project',
         component: () => import('../page/project/project.vue')
@@ -49,21 +54,21 @@ const router = createRouter({
   routes
 })
 
-// router.beforeEach((to, from, next) => {
-//   if (to.meta.title) {
-//     document.title = to.meta.title
-//   }
-//   ifLogin(to, next)
-// })
-// const ifLogin = (to, next) => {
-//   const userInfo = localStorage.getItem('user_info')
-//   if (!userInfo && to.name !== 'login') {
-//     next('/login')
-//   } else if (userInfo && to.name === 'login') {
-//     next('/')
-//   } else {
-//     next()
-//   }
-// }
+router.beforeEach((to, from, next) => {
+  if (to.meta.title) {
+    document.title = to.meta.title
+  }
+  ifLogin(to, next)
+})
+const ifLogin = (to, next) => {
+  const userInfo = localStorage.getItem('user_info')
+  if (!userInfo && to.name !== 'login') {
+    next('/login')
+  } else if (userInfo && to.name === 'login') {
+    next('/')
+  } else {
+    next()
+  }
+}
 
 export default router

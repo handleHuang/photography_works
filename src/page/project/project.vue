@@ -17,7 +17,7 @@
       </div>
       <div class="search">
         <div class="search_left">
-          <t-input type="text" placeholder="请输入标题搜索" v-model="title" @change="handleChange">
+          <t-input type="text" placeholder="请输入标题搜索" v-model="keyword" @change="handleChange">
             <template #prefix-icon>
               <t-icon name="search" />
             </template>
@@ -36,13 +36,13 @@
           <img
           v-if="row.cover"
             style="width: 183px; height: 96px; object-fit: cover"
-            :src="row.cover.url"
+            :src="row.cover"
             alt=""
           />
         </template>
-        <template #online_status="{ row }">
-          <span :class="`status showStatus${row.online_status}`">{{
-            row.online_status == 2 ? '未发布' : '已发布'
+        <template #online="{ row }">
+          <span :class="`status showStatus${row.online}`">{{
+            row.online == 2 ? '未发布' : '已发布'
           }}</span>
         </template>
         <template #operat="{ row }">
@@ -50,22 +50,22 @@
           <span class="operat__btn"  @click="doeditor(row.id)">编辑</span>
           <span
             class="operat__btn"
-            v-if="row.online_status === 2"
+            v-if="row.online === 2"
             @click="
               setProjectStatus({
-                project_id: row.id,
-                online_status: 1
+                id: row.id,
+                online: 1
               })
             "
             >上架</span
           >
           <span
             class="operat__btn operat__btn_del"
-            v-if="row.online_status === 1"
+            v-if="row.online === 1"
             @click="
               setProjectStatus({
-                project_id: row.id,
-                online_status: 2
+                id: row.id,
+                online: 2
               })
             "
             >下架</span
@@ -94,7 +94,7 @@ const router = useRouter()
 const store = useStore()
 // const domain = 'https://aigc-1311564431.cos.ap-guangzhou.myqcloud.com/'
 const showValue = ref('all')
-const title = ref('')
+const keyword = ref('')
 // 分页
 const pagination = reactive({
   obj: {
@@ -116,7 +116,7 @@ const tabelData = reactive({
     //   description:
     //     '共绘⻓城故事，针对⻓城经典故事《孟姜女哭⻓城》、《冰山运石》、《嘉峪山传说》、《山羊驮砖》，选取其中一个故事，为故事章节/画面进行文生图配图，制作⻓城故事绘本。',
     //   file_id: 1,
-    //   online_status: 1,
+    //   online: 1,
     //   cover: {
     //     id: 1,
     //     path: 'uploads/2023/05/30/ab78e6caaf041bf44fe81528db2c3d09.png',
@@ -134,7 +134,7 @@ const tabelData = reactive({
     //   description:
     //     '探索孩子们想象丰富的世界和独特的视⻆，组委会将收集到的各地方、学校和年级的X位孩子们的画 作或文字，形成资料，提供给参赛者进行二次创作。',
     //   file_id: 2,
-    //   online_status: 0,
+    //   online: 0,
     //   cover: {
     //     id: 2,
     //     path: 'uploads/2023/05/30/929ae24ef553897140d1a80ea173e83a.png',
@@ -152,7 +152,7 @@ const tabelData = reactive({
     //   description:
     //     '共绘⻓城故事，针对⻓城经典故事《孟姜女哭⻓城》、《冰山运石》、《嘉峪山传说》、《山羊驮砖》，选取其中一个故事，为故事章节/画面进行文生图配图，制作⻓城故事绘本。',
     //   file_id: 1,
-    //   online_status: 1,
+    //   online: 1,
     //   cover: {
     //     id: 1,
     //     path: 'uploads/2023/05/30/ab78e6caaf041bf44fe81528db2c3d09.png',
@@ -170,7 +170,7 @@ const tabelData = reactive({
     //   description:
     //     '探索孩子们想象丰富的世界和独特的视⻆，组委会将收集到的各地方、学校和年级的X位孩子们的画 作或文字，形成资料，提供给参赛者进行二次创作。',
     //   file_id: 2,
-    //   online_status: 0,
+    //   online: 0,
     //   cover: {
     //     id: 2,
     //     path: 'uploads/2023/05/30/929ae24ef553897140d1a80ea173e83a.png',
@@ -188,7 +188,7 @@ const tabelData = reactive({
     //   description:
     //     '共绘⻓城故事，针对⻓城经典故事《孟姜女哭⻓城》、《冰山运石》、《嘉峪山传说》、《山羊驮砖》，选取其中一个故事，为故事章节/画面进行文生图配图，制作⻓城故事绘本。',
     //   file_id: 1,
-    //   online_status: 1,
+    //   online: 1,
     //   cover: {
     //     id: 1,
     //     path: 'uploads/2023/05/30/ab78e6caaf041bf44fe81528db2c3d09.png',
@@ -206,7 +206,7 @@ const tabelData = reactive({
     //   description:
     //     '探索孩子们想象丰富的世界和独特的视⻆，组委会将收集到的各地方、学校和年级的X位孩子们的画 作或文字，形成资料，提供给参赛者进行二次创作。',
     //   file_id: 2,
-    //   online_status: 1,
+    //   online: 1,
     //   cover: {
     //     id: 2,
     //     path: 'uploads/2023/05/30/929ae24ef553897140d1a80ea173e83a.png',
@@ -224,7 +224,7 @@ const tabelData = reactive({
     //   description:
     //     '共绘⻓城故事，针对⻓城经典故事《孟姜女哭⻓城》、《冰山运石》、《嘉峪山传说》、《山羊驮砖》，选取其中一个故事，为故事章节/画面进行文生图配图，制作⻓城故事绘本。',
     //   file_id: 1,
-    //   online_status: 1,
+    //   online: 1,
     //   cover: {
     //     id: 1,
     //     path: 'uploads/2023/05/30/ab78e6caaf041bf44fe81528db2c3d09.png',
@@ -242,7 +242,7 @@ const tabelData = reactive({
     //   description:
     //     '探索孩子们想象丰富的世界和独特的视⻆，组委会将收集到的各地方、学校和年级的X位孩子们的画 作或文字，形成资料，提供给参赛者进行二次创作。',
     //   file_id: 2,
-    //   online_status: 1,
+    //   online: 1,
     //   cover: {
     //     id: 2,
     //     path: 'uploads/2023/05/30/929ae24ef553897140d1a80ea173e83a.png',
@@ -279,12 +279,12 @@ const columns = reactive([
     }
   },
   {
-    colKey: 'description',
+    colKey: 'cont',
     title: '描述',
     width: '240'
   },
   {
-    colKey: 'online_status',
+    colKey: 'online',
     title: '状态',
     width: '100'
   },
@@ -300,15 +300,15 @@ const projectList = () => {
     per_page: pagination.obj.pageSize,
     page: pagination.obj.current
   }
-  if (title.value) {
-    params.title = title.value
+  if (keyword.value) {
+    params.keyword = keyword.value
   }
   if (showValue.value !== 'all') {
-    params.online_status = showValue.value
+    params.online = showValue.value
   }
   store.dispatch('projectList', params).then(res => {
     tabelData.arr = res.data
-    pagination.obj.total = res.total
+    pagination.obj.total = res.totalCount
   })
 }
 // 设置命题状态
@@ -332,7 +332,7 @@ function dodelete (id) {
     body: '删除后不可恢复',
     theme: 'warning',
     onConfirm: () => {
-      store.dispatch('delProject', { ids: [id] }).then(res => {
+      store.dispatch('delProject', { id: id }).then(res => {
         MessagePlugin.success('删除成功')
         projectList()
       }).catch(err => {

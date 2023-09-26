@@ -1,7 +1,7 @@
 <template>
   <t-layout id="app">
     <!-- header头部菜单 -->
-    <t-header class="container_header">
+    <t-header class="container_header" v-if="menuValue !== '/login'">
       <t-head-menu theme="dark" style="margin-top: 24px" v-model="menuValue">
         <template #logo>
           <span class="logo"> AIGC后台管理</span>
@@ -24,7 +24,11 @@
           作品管理
         </t-menu-item>
         <template #operations>
-          <a href="javascript:;"><t-icon class="t-menu__operations-icon" name="user" /></a>
+          <div class="t-demo-menu--dark">
+            <t-button variant="text" shape="square">
+              <template #icon><t-icon name="user" /></template>
+            </t-button>
+          </div>
         </template>
       </t-head-menu>
     </t-header>
@@ -45,16 +49,19 @@ import { useRoute } from 'vue-router'
 const route = useRoute()
 const menuValue = ref(route.path)
 
-watch(() => route.path, (to, from) => {
-  // 在这里处理路由信息的变化
-  menuValue.value = to
-  console.log('路由发生变化', menuValue.value)
-})
-
+watch(
+  () => route.path,
+  (to, from) => {
+    // 在这里处理路由信息的变化
+    menuValue.value = to
+    console.log('路由发生变化', menuValue.value)
+    console.log(from)
+  }
+)
 </script>
 
 <style lang="less" scoped>
-@import url('../assets/style/var/var.less');
+@import url("../assets/style/var/var.less");
 
 html,
 body {
@@ -102,15 +109,6 @@ body {
 
       .t-menu__operations {
         height: 56px;
-
-        a {
-          height: 100%;
-
-          svg.t-icon.t-icon-user.t-menu__operations-icon {
-            width: 24px;
-            height: 40px;
-          }
-        }
       }
 
       svg.t-icon {
@@ -130,6 +128,17 @@ body {
     .main {
       height: calc(100% - 48px);
       background-color: #f1f1f1;
+    }
+  }
+}
+
+.t-demo-menu--dark {
+  .t-button {
+    color: #fff;
+    &:hover {
+      background-color: #4b4b4b;
+      border-color: transparent;
+      --ripple-color: #383838;
     }
   }
 }

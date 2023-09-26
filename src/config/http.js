@@ -4,7 +4,7 @@ import baseURL from './apiUrl.js'
 // import { MessagePlugin } from 'tdesign-vue-next'
 const http = {}
 const instance = axios.create({
-  baseURL: baseURL + '/admin',
+  baseURL: baseURL,
   timeout: 1000 * 120
 })
 
