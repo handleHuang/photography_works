@@ -15,7 +15,7 @@ export function getTest(pages: any) {
 // 调用测试
 export function pushdata(params: any) {
   return http({
-    url: "/api/pushdata", //此处为自己请求地址
+    url: "/api/register", //此处为自己请求地址
     method: "post",
     data: params,
   });
@@ -38,13 +38,13 @@ export function login(params: any) {
   });
 }
 
-export function register(params: any) {
-  return http({
-    url: "/user/register", //此处为自己请求地址
-    method: "post",
-    data: params,
-  });
-}
+// export function register(params: any) {
+//   return http({
+//     url: "/user/register", //此处为自己请求地址
+//     method: "post",
+//     data: params,
+//   });
+// }
 
 export function postSearch(params: any) {
   return http({

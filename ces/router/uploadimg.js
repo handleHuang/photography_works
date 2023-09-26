@@ -3,10 +3,11 @@ const express = require("express");
 const router = express.Router();
 const mysql = require("mysql");
 const handle = require("../router_handler/uploadimg");
+const view = require("../views/classify")
 
 // 创建MySQL数据库连接
 const connection = mysql.createConnection({
-  host: "192.168.0.57",
+  host: "localhost",
   user: "root",
   password: "123456",
   database: "test",
@@ -19,6 +20,13 @@ connection.connect((err) => {
 
 // 上传图片
 router.post("/uploadimg", handle.uploadimg);
+//命题接口
+router.post("/addLabel", view.addLabel);
+router.get("/labelList", view.labelList);
+router.get("/labelDetails", view.labelDetails);
+router.post("/labelOline", view.labelOline);
+router.post("/labelAnemd", view.labelAnemd);
+router.delete("/labelDel", view.labelDel);
 
 // 获取数据列表
 router.get("/server", (req, res) => {
@@ -58,7 +66,7 @@ router.get("/server", (req, res) => {
 });
 
 // 注册
-router.post("/pushdata", async function (req, res) {
+router.post("/register", function (req, res) {
   try {
     const { username, password, newEmail } = req.body; // 获取前端传递的数据
 
@@ -70,16 +78,63 @@ router.post("/pushdata", async function (req, res) {
       });
     }
 
-    const sql =
-      "INSERT INTO `user_list` (`username`, `password`, `email`) VALUES (?,?,?);";
-    const values = [username, password, newEmail];
+    // 查询用户名是否已存在
+    const checkSql = "SELECT * FROM `user_list` WHERE `username` = ?";
+    const checkValues = [username];
 
-    await connection.query(sql, values); // 使用await等待查询结果
+    connection.query(checkSql, checkValues, function (err, results) {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({
+          status: 500,
+          message: "服务器内部错误",
+        });
+      }
 
-    // 返回响应给前端
-    res.status(200).json({
-      status: 200,
-      message: "注册成功",
+      if (results.length > 0) {
+        return res.status(400).json({
+          status: 400,
+          message: "用户名已存在",
+        });
+      }
+
+      // 可以插入新用户
+      const insertSql =
+        "INSERT INTO `user_list` (`username`, `password`, `email`) VALUES (?,?,?);";
+      const insertValues = [username, password, newEmail];
+
+      connection.query(insertSql, insertValues, function (err) {
+        if (err) {
+          console.error(err);
+          return res.status(500).json({
+            status: 500,
+            message: "服务器内部错误",
+          });
+        }
+
+        // 查询刚注册的用户信息
+        const selectSql = "SELECT * FROM `user_list` WHERE `username` = ?";
+        const selectValues = [username];
+
+        connection.query(selectSql, selectValues, function (err, results) {
+          if (err) {
+            console.error(err);
+            return res.status(500).json({
+              status: 500,
+              message: "服务器内部错误",
+            });
+          }
+
+          const user = results[0];
+
+          // 返回响应给前端，包括注册信息
+          res.status(200).json({
+            status: 200,
+            message: "注册成功",
+            user,
+          });
+        });
+      });
     });
   } catch (err) {
     console.error(err);

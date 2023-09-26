@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="login">
     <!-- <input type="file" @change="uploadImage" />
       <button @click="submit">上传</button> -->
     <!-- <img :src="cover" /> -->
@@ -75,4 +75,8 @@ const onSubmit = ({ validateResult, firstError }) => {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+:deep(.t-form__item) {
+  width: 100%;
+}
+</style>
