@@ -2,8 +2,25 @@
 import { projectList, setProjectStatus, delProject, projectCreate, projectUpdate, projectDetail } from '@/api/project'
 // 作品
 import { articleList, setArticleStatus, delArticle, articleDetail, exportArticle } from '@/api/articles'
+// 用户
+import { getUserList, delUser, detailsUser, anemdUser } from '@/api/userList'
 export default {
-  // 命题
+  // 用户列表
+  async getUserList (store, params) {
+    return await getUserList(params)
+  },
+  // 用户删除
+  async delUser (store, params) {
+    return await delUser(params)
+  },
+  // 用户详情
+  async detailsUser (store, params) {
+    return await detailsUser(params)
+  },
+  // 用户修改
+  async anemdUser (store, params) {
+    return await anemdUser(params)
+  },
 
   // 命题列表
   async projectList (store, params) {

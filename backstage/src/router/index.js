@@ -44,6 +44,16 @@ const routes = [
         path: '/article/detail',
         name: 'article_detail',
         component: () => import('../page/articles/detail.vue')
+      },
+      {
+        path: '/userList',
+        name: 'userList',
+        component: () => import('../page/userList/index.vue')
+      },
+      {
+        path: '/userList/updata',
+        name: 'userList_updata',
+        component: () => import('../page/userList/form.vue')
       }
     ]
   }

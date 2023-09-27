@@ -23,6 +23,12 @@
           </template>
           作品管理
         </t-menu-item>
+        <t-menu-item value="/userList" to="/userList">
+          <template #icon>
+            <t-icon name="user-talk" />
+          </template>
+          用户管理
+        </t-menu-item>
         <template #operations>
           <div class="t-demo-menu--dark">
             <t-button variant="text" shape="square">

@@ -99,7 +99,7 @@ function dodelete (id) {
     theme: 'warning',
     onConfirm: () => {
       store
-        .dispatch('delProject', { ids: [id] })
+        .dispatch('delProject', { id: id })
         .then((res) => {
           MessagePlugin.success('删除成功')
           router.push('/project')

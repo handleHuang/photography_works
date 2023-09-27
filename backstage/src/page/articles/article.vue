@@ -44,63 +44,52 @@
       >
         <template #cover="{ row }">
           <img
-            v-if="row.articles && row.articles.length > 0 && row.articles[0].mine.indexOf('image') !== -1"
             style="width: 100%; height: 100%; object-fit: cover"
-            :src="row.articles[0].url"
+            :src="row.cover[0]"
             alt=""
           />
-          <div style="position: relative;width: 100%;height: 100%;" v-if="row.articles && row.articles.length > 0 && row.articles[0].mine.indexOf('video') !== -1">
-            <video
-              style="width: 100%; height: 100%; object-fit: cover"
-              :src="row.articles[0].url"
-            />
-            <img src="../../assets/icon/play_circle.png" style="position: absolute;top: 50%;left: 50%;transform: translate3d(-50%,-50%,0);width: 50px;height: 50px;" />
-          </div>
         </template>
         <template #title="{ row }">
           <t-tooltip :content="row.title" theme="light">
             <span>{{ ellipsis(row.title) }}</span>
           </t-tooltip>
         </template>
-        <template #projectName="{ row }">
-          {{ row.project && row.project.title }}
+        <template #topic="{ row }">
+          {{ row.topic }}
         </template>
-        <template #description="{ row }">
-          <t-tooltip :content="row.description" theme="light">
-            <span>{{ ellipsis(row.description) }}</span>
+        <template #cont="{ row }">
+          <t-tooltip :content="row.cont" theme="light">
+            <span>{{ ellipsis(row.cont) }}</span>
           </t-tooltip>
         </template>
-        <template #ai_json="{ row }">
-          {{ row.ai_json && row.ai_json.title }}
+        <template #user_name="{ row }">
+          {{ row.user_name && row.user_name }}
         </template>
-        <template #username="{ row }">
-          {{ row.user && row.user.name }}
-        </template>
-        <template #online_status="{ row }">
-          <span :class="`status showStatus${row.online_status}`">{{
-            row.online_status == 2 ? "未发布" : "已发布"
+        <template #state="{ row }">
+          <span :class="`status showStatus${row.state}`">{{
+            row.state == 2 ? "未发布" : "已发布"
           }}</span>
         </template>
         <template #operat="{ row }">
           <span class="operat__btn" @click="docheck(row.id)">查看</span>
           <span
             class="operat__btn"
-            v-if="row.online_status === 2"
+            v-if="row.state === 2"
             @click="
               setArticleStatus({
-                article_id: row.id,
-                online_status: 1,
+                id: row.id,
+                state: 1,
               })
             "
             >上架</span
           >
           <span
             class="operat__btn operat__btn_del"
-            v-if="row.online_status === 1"
+            v-if="row.state === 1"
             @click="
               setArticleStatus({
-                article_id: row.id,
-                online_status: 2,
+                id: row.id,
+                state: 2,
               })
             "
             >下架</span
@@ -174,32 +163,27 @@ const columns = reactive([
     width: '240'
   },
   {
-    colKey: 'projectName',
+    colKey: 'topic',
     title: '参赛命题',
     width: '140'
   },
   {
-    colKey: 'description',
+    colKey: 'cont',
     title: '关键词描述',
     width: '200'
   },
   {
-    colKey: 'ai_json',
-    title: '所用AI平台',
+    colKey: 'collect_number',
+    title: '收藏数',
     width: '140'
   },
   {
-    colKey: 'like_count',
-    title: '点赞数',
-    width: '140'
-  },
-  {
-    colKey: 'username',
+    colKey: 'user_name',
     title: '创建人',
     width: '140'
   },
   {
-    colKey: 'online_status',
+    colKey: 'state',
     title: '状态',
     width: '100'
   },
@@ -219,11 +203,11 @@ const articleList = () => {
     params.title = title.value
   }
   if (showValue.value !== 'all') {
-    params.online_status = showValue.value
+    params.state = showValue.value
   }
   store.dispatch('articleList', params).then((res) => {
     tabelData.arr = res.data
-    pagination.obj.total = res.total
+    pagination.obj.total = res.totalCount
   })
 }
 // 设置命题状态
@@ -245,7 +229,7 @@ function dodelete (id) {
     body: '删除后不可恢复',
     theme: 'warning',
     onConfirm: () => {
-      store.dispatch('delArticle', { ids: [id] }).then((res) => {
+      store.dispatch('delArticle', { id: id }).then((res) => {
         MessagePlugin.success('删除成功')
         articleList()
       })

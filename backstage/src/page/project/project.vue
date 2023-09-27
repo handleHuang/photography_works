@@ -31,7 +31,7 @@
           </t-radio-group>
         </div>
       </div>
-      <t-table row-key="id" :data="tabelData.arr" :columns="columns">
+      <t-table row-key="id" :data="tabelData.arr" :columns="columns" :max-height="619">
         <template #cover="{ row }">
           <img
           v-if="row.cover"

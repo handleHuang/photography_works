@@ -90,20 +90,21 @@ const formData = reactive({
   username: '',
   password: '',
   rePassword: '',
-  newEmail: ''
+  newEmail: '',
+  identity: 1
 })
 // 登录
 const handleLogin = () => {
   login(formData)
     .then((res) => {
-      console.log(res.data)
+      // console.log(res.data)
       localStorage.setItem('user_info', JSON.stringify(res.data))
       console.log(JSON.parse(localStorage.getItem('user_info')))
       MessagePlugin.success(res.message)
       jump()
     })
     .catch((err) => {
-      console.log(err)
+      MessagePlugin.warning(err.response.data.message)
     })
 }
 // 登录
