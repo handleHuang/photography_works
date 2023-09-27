@@ -301,7 +301,7 @@ router.post("/anemdUser", (req, res) => {
   const { id, username, password, email, identity } = req.body;
 
   // 数据有效性验证
-  if (!id || !username || !password || !email || !identity) {
+  if (!id || !username || !password || !email) {
     return res.status(400).json({
       status: 400,
       message: "缺少必要参数",
