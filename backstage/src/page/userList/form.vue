@@ -65,19 +65,23 @@ const rules = {
   password: [{ required: true, message: '密码必填' }],
   email: [{ required: true, message: '邮箱必填' }]
 }
+const userIdentity = JSON.parse(localStorage.getItem('user_info')).identity
 const onSubmit = ({ validateResult, firstError, e }) => {
   if (validateResult === true) {
-    console.log(formData)
-    store
-      .dispatch('anemdUser', formData.value)
-      .then((res) => {
-        console.log(res)
-        MessagePlugin.success('修改成功')
-        router.push('/userList')
-      })
-      .catch((err) => {
-        MessagePlugin.warning(err.response.data.message)
-      })
+    if (userIdentity !== 0) {
+      MessagePlugin.warning('本账号权限不够')
+    } else {
+      store
+        .dispatch('anemdUser', formData.value)
+        .then((res) => {
+          console.log(res)
+          MessagePlugin.success('修改成功')
+          router.push('/userList')
+        })
+        .catch((err) => {
+          MessagePlugin.warning(err.response.data.message)
+        })
+    }
   } else {
     MessagePlugin.warning(firstError)
   }
