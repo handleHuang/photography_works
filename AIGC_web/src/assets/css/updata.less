@@ -1,0 +1,258 @@
+.updata {
+  width: 100%;
+  padding-top: 62px;
+
+  .updata_title {
+    width: 1404px;
+    margin: 0 auto;
+    color: #000000;
+    font-size: 24px;
+    font-weight: 400;
+    text-align: left;
+    margin-top: 47px;
+  }
+
+  .updata_box {
+    width: 1404px;
+    margin: 0 auto 139px;
+    background: #fff;
+    padding: 38px 30px;
+    box-sizing: border-box;
+    margin-top: 16px;
+
+    .t-form {
+      width: 100%;
+      text-align: left;
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: column;
+
+      .t-form__item {
+        width: 400px;
+        margin-bottom: 34px;
+
+        .formTips {
+          color: #979797;
+          font-size: 14px;
+          font-weight: 400;
+          margin-bottom: 16px;
+        }
+
+        .small {
+          display: none;
+        }
+
+        :deep(.t-form__controls) {
+          .t-form__controls-content {
+            flex-direction: column;
+            align-items: flex-start;
+
+            .t-radio-group {
+              margin-top: 16px;
+              align-items: normal;
+              flex-direction: column;
+
+              .t-radio + .t-radio {
+                margin-top: 12px;
+              }
+            }
+          }
+        }
+      }
+
+      .flex1 {
+        width: 100%;
+      }
+
+      .flex2 {
+        width: 198px;
+      }
+
+      .flex3 {
+        width: 400px;
+      }
+    }
+  }
+
+  .updata_foot {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    // height: 96px;
+    background: #ffffff;
+    z-index: 6;
+    .updata_foot_box {
+      width: 960px;
+      margin: 20px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      :deep(.t-button) {
+        width: 116px;
+        height: 40px;
+        border-radius: 4px;
+
+        & + .t-button {
+          margin-left: 24px;
+        }
+      }
+    }
+  }
+
+  .submit_box {
+    width: 564px;
+    padding: 120px;
+    background: #ffffff;
+    box-sizing: border-box;
+    margin: 117px auto 0;
+
+    .t-icon {
+      font-size: 64px;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .submit_box_title {
+      margin-top: 25px;
+      color: #101c29;
+      font-size: 20px;
+      font-weight: 500;
+      text-align: center;
+      line-height: 24px;
+    }
+
+    .submit_box_tips {
+      margin-top: 24px;
+      color: #979797;
+      font-size: 18px;
+      font-weight: 400;
+      text-align: center;
+      line-height: 24px;
+    }
+
+    .submit_box_btn {
+      margin-top: 24px;
+
+      .t-button {
+        width: 146px;
+        height: 40px;
+
+        & + .t-button {
+          margin-left: 8px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 750px) {
+  .updata {
+    padding-top: 197px;
+    .updata_title {
+      display: none;
+    }
+
+    .updata_box {
+      width: 1827px;
+      padding: 89px 69px 188px 60px;
+      margin: 0 auto 336px;
+
+      .t-form {
+        :deep(.t-form__item) {
+          margin-bottom: 114px;
+
+          .t-form__label {
+            line-height: 84px;
+            margin-bottom: 20px;
+          }
+
+          .t-form__label--top {
+            min-height: 84px;
+          }
+
+          .formTips {
+            font-size: 60px;
+            font-weight: 400;
+          }
+
+          .big {
+            display: none;
+          }
+
+          .small {
+            display: block;
+          }
+
+          .t-form__controls .t-form__controls-content .t-radio-group {
+            margin-top: 64px;
+          }
+        }
+        .flex2 {
+          width: 908px;
+        }
+        .flex3 {
+          width: 908px;
+        }
+      }
+    }
+
+    .updata_foot {
+      border-top: 1px solid rgba(16, 25, 41, 0.1);
+      .updata_foot_box {
+        margin: 60px auto;
+
+        .t-button {
+          width: 444px;
+          height: 158px;
+          border-radius: 20px;
+
+          & + .t-button {
+            margin-left: 79px;
+          }
+        }
+
+        .t-button--variant-base.t-button--theme-primary {
+          background: #0062ff;
+        }
+      }
+    }
+
+    .submit_box {
+      width: 1827px;
+      margin-top: 748px;
+      padding: 217px 242px 217px;
+      box-sizing: border-box;
+
+      .t-icon {
+        font-size: 316px;
+      }
+      .submit_box_title {
+        margin-top: 119px;
+        font-size: 99px;
+        line-height: 99px;
+        font-weight: 500;
+      }
+      .submit_box_tips {
+        margin-top: 119px;
+        font-size: 69px;
+        line-height: 69px;
+        font-weight: 400;
+      }
+      .submit_box_btn {
+        margin-top: 119px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .t-button--variant-base.t-button--theme-primary {
+          background: #0062ff;
+        }
+        .t-button {
+          width: 591px;
+          height: 197px;
+        }
+      }
+    }
+  }
+}

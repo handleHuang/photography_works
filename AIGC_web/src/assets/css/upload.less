@@ -1,0 +1,125 @@
+p.upload__text {
+  font-size: 12px;
+  color: #8e8e8e;
+}
+.upload_tips {
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 20px;
+}
+// /deep/.ten-image__placeholder,
+// .ten-image__error {
+//   width: 264px !important;
+//   height: 150px !important;
+// }
+.upload-imgs {
+  font-size: 0;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  li {
+    position: relative;
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .video_pic {
+      width: 40px;
+      height: 40px;
+      background: url("../img/index/play_circle.png") no-repeat;
+      background-size: 100% 100%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate3d(-50%, -50%, 0);
+    }
+  }
+}
+.upload-imgs li {
+  position: relative;
+  width: 264px;
+  height: 150px;
+  cursor: pointer;
+  border: 1px dashed #dcdcdc;
+  font-size: 14px;
+  display: inline-block;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  text-align: center;
+  vertical-align: middle;
+  background: rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+.upload-imgs .add img {
+  width: 24px !important;
+  height: 24px !important;
+  // margin-top: 63px;
+}
+.upload-imgs li .upload {
+  cursor: pointer;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.f_file {
+  display: none;
+}
+.demo-image-viewer__item {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  position: relative;
+  display: block;
+}
+.close {
+  width: 24px !important;
+  height: 24px !important;
+  display: block;
+  position: absolute;
+  right: -10px;
+  top: -10px;
+  width: 16px;
+  height: 16px;
+}
+.t-icon-close {
+  position: absolute;
+  right: -10px;
+  top: -10px;
+  z-index: 2;
+  cursor: pointer;
+  background-color: #e5e5e5;
+  border-radius: 50%;
+}
+.cover_img {
+  width: 160px;
+  height: 220px;
+  .upload {
+    width: 160px !important;
+    height: 220px !important;
+  }
+  li {
+    width: 160px !important;
+    height: 220px !important;
+  }
+  img.demo-image-viewer__item {
+    width: 160px !important;
+    object-fit: cover;
+  }
+  .add img {
+    margin-top: 92px;
+  }
+}
+
+@media (max-width: 750px) {
+  p.upload__text {
+    font-size: 60px;
+    color: #8e8e8e;
+  }
+}

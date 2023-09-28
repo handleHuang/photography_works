@@ -1,7 +1,7 @@
 // 命题
 import { projectList, setProjectStatus, delProject, projectCreate, projectUpdate, projectDetail } from '@/api/project'
 // 作品
-import { articleList, setArticleStatus, delArticle, articleDetail, exportArticle } from '@/api/articles'
+import { articleList, setArticleStatus, delArticle, articleDetail, exportArticle, postCollect } from '@/api/articles'
 // 用户
 import { getUserList, delUser, detailsUser, anemdUser } from '@/api/userList'
 export default {
@@ -20,6 +20,11 @@ export default {
   // 用户修改
   async anemdUser (store, params) {
     return await anemdUser(params)
+  },
+
+  // 收藏
+  async postCollect (store, params) {
+    return await postCollect(params)
   },
 
   // 命题列表

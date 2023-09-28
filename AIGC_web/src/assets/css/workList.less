@@ -1,0 +1,568 @@
+.workList {
+  padding-top: 62px;
+  .workList_box {
+    max-width: 1404px;
+    background: #ffffff;
+    text-align: left;
+    margin: 25px auto 94px;
+    padding: 23px 45px 45px 35px;
+    box-sizing: border-box;
+
+    .workList_title {
+      color: #101929;
+      font-size: 42px;
+      font-weight: 400;
+      line-height: 64px;
+    }
+
+    .workList_screen {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .screen_left {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: calc(100% - 364px);
+
+        .screen_left_small {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        .down {
+          background: rgba(16, 25, 41, 0.05);
+          border-radius: 2px;
+          overflow: hidden;
+          margin-left: 29px;
+
+          & + .down {
+            margin-left: 8px;
+          }
+
+          :deep(.t-button--variant-text) {
+            padding-left: 12px;
+            padding-right: 6px;
+          }
+        }
+
+        :deep(.t-input__wrap) {
+          width: 268px;
+          height: 36px;
+
+          .t-input {
+            height: 100%;
+            border-radius: 4px;
+          }
+        }
+      }
+
+      .screen_right {
+        display: flex;
+        background: #f5f5f5;
+        border-radius: 3px;
+        position: relative;
+        overflow: hidden;
+
+        .sizer {
+          width: 100%;
+          height: 40px;
+          display: flex;
+          justify-content: space-around;
+          align-items: center;
+          padding: 4px 5px;
+          box-sizing: border-box;
+          background: #f5f5f5;
+          border-radius: 4px;
+          position: relative;
+
+          .sizer_list {
+            width: 73px;
+            line-height: 22px;
+            color: #151515;
+            font-size: 14px;
+            font-weight: 400;
+            padding: 6px 7px;
+            text-align: center;
+            cursor: pointer;
+            box-sizing: border-box;
+            position: relative;
+            z-index: 6;
+          }
+
+          .sizer_block {
+            width: 70px;
+            height: 31px;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 5px;
+            background: #fff;
+            z-index: 4;
+            transition: all 0.35s;
+            border-radius: 2px;
+          }
+        }
+
+        .t-radio-group {
+          height: 40px;
+        }
+
+        .screen_right_list {
+          width: 80px;
+          padding: 10px 12px;
+          color: #151515;
+          font-size: 14px;
+          font-weight: 400;
+          position: relative;
+          z-index: 6;
+          cursor: pointer;
+          transition: all 0.35s;
+          box-sizing: border-box;
+
+          &.active {
+            color: #fff;
+          }
+        }
+
+        .screen_block {
+          width: 80px;
+          height: 100%;
+          transition: all 0.35s;
+          position: absolute;
+          top: 0;
+          left: 0;
+          background: #151515;
+          z-index: 4;
+        }
+      }
+    }
+
+    .workList_cont {
+      display: flex;
+      margin-top: 37px;
+      .workList_item {
+        width: calc(100% - 330px);
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        position: relative;
+
+        .no_data {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate3d(-50%, -50%, 0);
+          color: #101c29;
+          font-size: 16px;
+          font-weight: 600;
+          line-height: 24px;
+        }
+
+        .workList_list {
+          min-width: 218px;
+          flex: 0 0 calc(25% - 28px);
+          margin-bottom: 30px;
+          margin-right: 28px;
+          cursor: pointer;
+          position: relative;
+
+          // &:nth-child(3n) {
+          //   margin-right: 0;
+          // }
+
+          .workList_list_pic {
+            width: 100%;
+            height: 163px;
+            background: #000;
+            display: block;
+            object-fit: cover;
+            object-position: center;
+          }
+
+          .video_list {
+            width: 100%;
+            height: 163px;
+            position: relative;
+
+            .video_btn {
+              width: 60px;
+              height: 60px;
+              background: url("../img/index/play_circle.png") no-repeat;
+              background-size: 100% 100%;
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate3d(-50%, -50%, 0);
+              z-index: 10;
+            }
+          }
+
+          .workList_list_title {
+            height: 48px;
+            color: #101c29;
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 24px;
+            margin-top: 8px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* 控制行数 */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
+          .workList_list_cont {
+            display: flex;
+            margin-top: 8px;
+            align-items: center;
+            justify-content: space-between;
+
+            .workList_list_left {
+              display: flex;
+              align-items: center;
+              color: rgba(16, 28, 41, 0.6);
+              font-size: 12px;
+              font-weight: 400;
+              line-height: 24px;
+              .left_label {
+                font-size: 12px;
+                font-weight: 400;
+                line-height: 16px;
+                display: flex;
+                align-items: center;
+
+                .t-icon {
+                  font-size: 16px;
+                  margin-right: 4px;
+                }
+
+                & + .left_label {
+                  margin-left: 16px;
+                }
+              }
+
+              .header_pic {
+                width: 24px;
+                height: 24px;
+                margin-right: 8px;
+                border-radius: 50%;
+              }
+
+              .t-icon-user-circle {
+                margin-right: 8px;
+              }
+            }
+
+            .workList_list_right {
+              color: rgba(16, 28, 41, 0.6);
+              font-size: 12px;
+              font-weight: 400;
+              .right_label {
+                padding: 2px 9px;
+                background: #e7e7e7;
+                font-size: 12px;
+                font-weight: 400;
+                line-height: 20px;
+                color: rgba(0, 0, 0, 0.9);
+                border-radius: 16px;
+              }
+            }
+          }
+        }
+      }
+
+      .workList_rank {
+        border-radius: 10px;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        width: 330px;
+        height: 100%;
+        margin-left: 6px;
+        padding: 34px 20px;
+        box-sizing: border-box;
+        position: sticky;
+        top: 102px;
+
+        .rank_header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+
+          .rank_header_left {
+            color: #000000;
+            font-size: 22px;
+            font-weight: 500;
+          }
+
+          .rank_header_right {
+            display: flex;
+            background: #f5f5f5;
+            border-radius: 5px;
+            height: 27px;
+            position: relative;
+            overflow: hidden;
+            .screen_right_list {
+              width: 43px;
+              line-height: 27px;
+              text-align: center;
+              z-index: 6;
+              transition: all 0.35s;
+              color: #000000;
+              font-size: 12px;
+              font-weight: 500;
+              cursor: pointer;
+
+              &.active {
+                color: #ffffff;
+              }
+            }
+            .screen_block {
+              width: 43px;
+              height: 100%;
+              position: absolute;
+              top: 0;
+              left: 0;
+              background: #000000;
+              z-index: 4;
+              transition: all 0.35s;
+            }
+          }
+        }
+
+        .rank_title_list {
+          display: flex;
+          color: rgba(0, 0, 0, 0.4);
+          font-size: 12px;
+          font-weight: 500;
+          margin-top: 29px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+
+          .rank_title_list_left {
+            display: flex;
+            .title:nth-child(2) {
+              margin-left: 31px;
+            }
+          }
+
+          .new_title {
+            margin-right: 10px;
+          }
+
+          // .title:nth-child(3) {
+          //   margin-left: 172px;
+          // }
+        }
+
+        .rank_list {
+          margin-top: 13px;
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+          .rank_list_index {
+            width: 24px;
+            color: #0064ff;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+          }
+          .rank_list_img {
+            width: 34px;
+            height: 34px;
+            border-radius: 40px;
+            margin-left: 16px;
+          }
+
+          .rank_list_cont {
+            margin-left: 10px;
+            .rank_list_name {
+              color: #000000;
+              font-size: 15px;
+              font-weight: 600;
+              width: 149px;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+            }
+            .rank_list_text {
+              color: rgba(0, 0, 0, 0.5);
+              font-size: 12px;
+              font-weight: 600;
+              width: 149px;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+            }
+          }
+
+          .rank_list_like {
+            width: 55px;
+            color: #000000;
+            font-size: 15px;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.35s;
+          }
+        }
+
+        .rank_tips {
+          color: rgba(0, 0, 0, 0.4);
+          font-size: 12px;
+          font-weight: 500;
+          margin-top: 32px;
+        }
+      }
+    }
+
+    .pagination_box {
+      width: calc(100% - 364px);
+      margin-top: 91px;
+    }
+  }
+}
+
+// @media (max-width: 1390px) {
+//   //小屏幕时
+//   .workList .workList_box .workList_cont .workList_item {
+//     .workList_list {
+//       // &:nth-child(2n) {
+//       //   margin-right: 0;
+//       // }
+//       &:nth-child(3n) {
+//         margin-right: 28px;
+//       }
+//     }
+//   }
+// }
+
+@media (max-width: 750px) {
+  .workList {
+    padding-top: 197px;
+
+    .workList_box {
+      max-width: 1827px;
+      padding: 45px 55px 188px 60px;
+
+      .workList_title {
+        font-size: 79px;
+        font-weight: 600;
+        line-height: 109px;
+      }
+
+      .workList_screen {
+        .screen_left {
+          width: 100%;
+
+          .down {
+            margin-left: 60px;
+            border-radius: 20px;
+
+            .t-button--variant-text {
+              padding-left: 30px;
+              padding-right: 25px;
+            }
+          }
+
+          :deep(.t-input__wrap) {
+            width: 704px;
+            height: 119px;
+            .t-input {
+              border-radius: 20px;
+            }
+          }
+        }
+        .screen_right {
+          display: none;
+        }
+      }
+
+      .workList_cont {
+        .workList_item {
+          width: 100%;
+          margin-top: 100px;
+
+          .no_data {
+            color: #101929;
+            font-size: 79px;
+            font-weight: 400;
+            line-height: 109px;
+          }
+
+          .workList_list {
+            min-width: 100%;
+            margin-right: 0;
+            margin-bottom: 79px;
+
+            .workList_list_pic {
+              height: 1108px;
+            }
+            .video_list {
+              height: 1108px;
+
+              .video_btn {
+                width: 300px;
+                height: 300px;
+              }
+            }
+            .workList_list_title {
+              height: 110px;
+              font-size: 79px;
+              font-weight: 600;
+              line-height: 119px;
+              margin-top: 40px;
+            }
+            .workList_list_cont {
+              margin-top: 40px;
+
+              .workList_list_right {
+                font-size: 60px;
+                font-weight: 400;
+                .right_label {
+                  padding: 10px 40px;
+                  font-size: 60px;
+                  font-weight: 400;
+                  line-height: 99px;
+                  border-radius: 60px;
+                }
+              }
+              .workList_list_left {
+                font-size: 60px;
+                font-weight: 400;
+                line-height: 119px;
+                .header_pic {
+                  width: 119px;
+                  height: 119px;
+                  margin-right: 40px;
+                }
+                .left_label {
+                  font-size: 60px;
+                  font-weight: 400;
+                  line-height: 79px;
+
+                  .t-icon {
+                    font-size: 79px;
+                    margin-right: 20px;
+                  }
+
+                  & + .left_label {
+                    margin-left: 79px;
+                  }
+                }
+              }
+            }
+          }
+        }
+        .workList_rank {
+          display: none;
+        }
+      }
+
+      :deep(.pagination_box) {
+        display: none;
+      }
+    }
+  }
+}

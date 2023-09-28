@@ -5,6 +5,7 @@ const mysql = require("mysql");
 const handle = require("../router_handler/uploadimg");
 const classify = require("../views/classify");
 const work = require("../views/worklist");
+const collect = require("../views/collect");
 
 // 创建MySQL数据库连接
 const connection = mysql.createConnection({
@@ -33,6 +34,8 @@ router.get("/workList", work.workList);
 router.get("/workDetails", work.workDetails);
 router.post("/workOline", work.workOline);
 router.delete("/workDel", work.workDel);
+// 收藏
+router.post("/collect", collect.collect);
 
 // 获取数据列表
 router.get("/userList", (req, res) => {
@@ -200,31 +203,6 @@ router.post("/login", (req, res) => {
         message: "登录失败，用户名或密码错误",
       });
     }
-  });
-});
-
-// 搜索
-router.post("/search", (req, res) => {
-  const { keyword } = req.body;
-
-  // 数据有效性验证
-  if (!keyword) {
-    return res.status(400).json({
-      status: 400,
-      message: "缺少必要参数",
-    });
-  }
-
-  const query = "SELECT * FROM user_list WHERE username LIKE ?";
-  const queryParams = [`%${keyword}%`];
-
-  connection.query(query, queryParams, (error, results) => {
-    if (error) throw error;
-
-    res.status(200).send({
-      status: 200,
-      data: results,
-    });
   });
 });
 

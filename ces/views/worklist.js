@@ -1,7 +1,7 @@
 const connection = require("../db/index");
 const mysql = require("mysql");
 
-// 命题列表
+// 作品列表
 exports.workList = (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
@@ -78,6 +78,7 @@ const pool = mysql.createPool({
 // 作品详情
 exports.workDetails = (req, res) => {
   const id = req.query.id;
+  const user_id = req.query.user_id;
 
   // 从连接池中获取一个连接
   pool.getConnection((error, connection) => {
@@ -86,27 +87,51 @@ exports.workDetails = (req, res) => {
       return;
     }
 
-    // 执行查询语句
+    // 先查询collect表是否存在对应数据
     connection.query(
-      "SELECT * FROM works_list WHERE id = ?",
-      [id],
-      (error, rows) => {
-        connection.release(); // 释放连接
+      "SELECT * FROM collect WHERE item_id = ? AND user_id = ?",
+      [id, user_id],
+      (error, collectRows) => {
         if (error) {
+          connection.release(); // 释放连接
           res.status(500).json({ error: "查询失败" });
           return;
         }
 
-        if (rows.length === 0) {
-          res.status(404).json({ error: "未找到对应的信息" });
-          return;
-        }
+        // 执行查询语句
+        connection.query(
+          "SELECT * FROM works_list WHERE id = ?",
+          [id],
+          (error, rows) => {
+            if (error) {
+              connection.release(); // 释放连接
+              res.status(500).json({ error: "查询失败" });
+              return;
+            }
 
-        rows[0].cover = rows[0].cover.match(/'([^']+)'/g).map(function (match) {
-          return "http://127.0.0.1:12134/upload/" + match.slice(1, -1);
-        });
+            if (rows.length === 0) {
+              connection.release(); // 释放连接
+              res.status(404).json({ error: "未找到对应的信息" });
+              return;
+            }
 
-        res.json(rows[0]);
+            rows[0].cover = rows[0].cover
+              .match(/'([^']+)'/g)
+              .map(function (match) {
+                return "http://127.0.0.1:12134/upload/" + match.slice(1, -1);
+              });
+
+            // 如果collect表中有对应数据，则将collect字段改为1
+            if (collectRows.length > 0) {
+              rows[0].collect = 1;
+            }else {
+              rows[0].collect = 0;
+            }
+
+            connection.release(); // 释放连接
+            res.json(rows[0]);
+          }
+        );
       }
     );
   });
@@ -145,6 +170,7 @@ exports.workOline = (req, res) => {
   });
 };
 
+// 删除
 exports.workDel = (req, res) => {
   const id = req.query.id;
   console.log(id);

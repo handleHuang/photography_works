@@ -20,3 +20,8 @@ export function articleDetail (params) {
 export function exportArticle (params) {
   return axios.post('/articles/export', params)
 }
+
+// 收藏
+export function postCollect (params) {
+  return axios.post('/collect', params)
+}
