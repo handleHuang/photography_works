@@ -49,8 +49,8 @@
             {{ item.title }}
           </div>
           <div class="introduce_list_box">
-            <img class="introduce_list_pic" :src="item.cover?.url" />
-            <div class="introduce_list_text">{{ item.description }}</div>
+            <img class="introduce_list_pic" :src="item.cover" />
+            <div class="introduce_list_text">{{ item.cont }}</div>
             <div class="introduce_list_btn" @click="handleUpdata">立即参加</div>
           </div>
         </div>
@@ -143,7 +143,7 @@ const getWorkListData = () => {
   };
   getProjectsList(param)
     .then((res: any) => {
-      introduceData.value = res;
+      introduceData.value = res.data;
     })
     .catch((error: any) => {
       console.log("获取失败！");

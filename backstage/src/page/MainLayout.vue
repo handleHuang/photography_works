@@ -31,9 +31,16 @@
         </t-menu-item>
         <template #operations>
           <div class="t-demo-menu--dark">
-            <t-button variant="text" shape="square">
-              <template #icon><t-icon name="user" /></template>
-            </t-button>
+            <t-dropdown
+              :options="[
+                { content: '退出登录', value: 0 },
+              ]"
+              @click="handleOutlogin"
+            >
+              <t-button variant="text" shape="square">
+                <template #icon><t-icon name="user" /></template>
+              </t-button>
+            </t-dropdown>
           </div>
         </template>
       </t-head-menu>
@@ -50,10 +57,17 @@
 
 <script setup>
 import { watch, ref } from 'vue'
-import { useRoute } from 'vue-router'
-
+import { useRoute, useRouter } from 'vue-router'
+const router = useRouter()
 const route = useRoute()
 const menuValue = ref(route.path)
+
+const handleOutlogin = () => {
+  localStorage.clear()
+  router.push({
+    path: '/login'
+  })
+}
 
 watch(
   () => route.path,

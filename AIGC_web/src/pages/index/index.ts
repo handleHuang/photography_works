@@ -1,6 +1,6 @@
 export interface introduce {
   cover?: any;
   title?: string;
-  description?: string;
+  cont?: string;
   id?: number;
 }
