@@ -1,80 +1,85 @@
 <template>
   <div class="login">
-    <div class="title">管理后台</div>
-    <!-- 登录 -->
-    <div style="width: 350px" v-if="loginValue">
-      <t-form
-        ref="form"
-        :data="formData"
-        :colon="true"
-        :label-width="0"
-        @submit="onSubmit"
-      >
-        <t-form-item name="account">
-          <t-input
-            v-model="formData.username"
-            clearable
-            placeholder="请输入账户名"
-          >
-            <template #prefix-icon>
-              <desktop-icon />
-            </template>
-          </t-input>
-        </t-form-item>
-
-        <t-form-item name="password">
-          <t-input
-            v-model="formData.password"
-            type="password"
-            clearable
-            placeholder="请输入密码"
-          >
-            <template #prefix-icon>
-              <lock-on-icon />
-            </template>
-          </t-input>
-        </t-form-item>
-
-        <t-form-item>
-          <t-button theme="primary" type="submit" block>登录</t-button>
-          <t-button theme="default" @click="handle(2)">注册</t-button>
-        </t-form-item>
-      </t-form>
+    <div>
+      <img class="login_logo" src="../../assets/svg/login-box-bg.svg" />
+      <div class="title white">摄影作品展示平台管理</div>
     </div>
-
-    <!-- 注册 -->
-    <div style="width: 350px" v-if="!loginValue">
-      <t-form ref="form" :data="formData" :rules="rules" @submit="onSubmit1" label-align="top">
-        <t-form-item label="用户名" name="username">
-          <t-input v-model="formData.username"></t-input>
-        </t-form-item>
-
-        <t-form-item
-          label="密码"
-          name="password"
-          help="请输入密码"
+    <div>
+      <!-- 登录 -->
+      <div style="width: 350px" v-if="loginValue">
+        <div class="title">登录</div>
+        <t-form
+          ref="form"
+          :data="formData"
+          :colon="true"
+          :label-width="0"
+          @submit="onSubmit"
         >
-          <t-input v-model="formData.password" type="password"></t-input>
-        </t-form-item>
+          <t-form-item name="account">
+            <t-input
+              v-model="formData.username"
+              clearable
+              placeholder="请输入账户名"
+            >
+              <template #prefix-icon>
+                <desktop-icon />
+              </template>
+            </t-input>
+          </t-form-item>
 
-        <t-form-item
-          label="确认密码"
-          name="rePassword"
-          help="请确认密码"
+          <t-form-item name="password">
+            <t-input
+              v-model="formData.password"
+              type="password"
+              clearable
+              placeholder="请输入密码"
+            >
+              <template #prefix-icon>
+                <lock-on-icon />
+              </template>
+            </t-input>
+          </t-form-item>
+
+          <t-form-item>
+            <t-button theme="primary" type="submit" block>登录</t-button>
+            <t-button theme="default" @click="handle(2)">注册</t-button>
+          </t-form-item>
+        </t-form>
+      </div>
+
+      <!-- 注册 -->
+      <div style="width: 350px" v-if="!loginValue">
+        <div class="title">注册</div>
+        <t-form
+          ref="form"
+          :data="formData"
+          :rules="rules"
+          @submit="onSubmit1"
+          label-align="top"
         >
-          <t-input v-model="formData.rePassword" type="password"></t-input>
-        </t-form-item>
-        <t-form-item label="邮箱" name="newEmail" help="请输入邮箱">
-          <t-input v-model="formData.newEmail"></t-input>
-        </t-form-item>
+          <t-form-item label="用户名" name="username">
+            <t-input v-model="formData.username"></t-input>
+          </t-form-item>
 
-        <t-form-item>
-          <t-space size="small">
-            <t-button theme="primary" type="submit">注册</t-button>
-            <t-button theme="default" @click="handle(1)">返回</t-button>
-          </t-space>
-        </t-form-item>
-      </t-form>
+          <t-form-item label="密码" name="password" help="请输入密码">
+            <t-input v-model="formData.password" type="password"></t-input>
+          </t-form-item>
+
+          <t-form-item label="确认密码" name="rePassword" help="请确认密码">
+            <t-input v-model="formData.rePassword" type="password"></t-input>
+          </t-form-item>
+          <t-form-item label="邮箱" name="newEmail" help="请输入邮箱">
+            <t-input v-model="formData.newEmail"></t-input>
+          </t-form-item>
+
+          <t-form-item>
+            <t-space size="small">
+              <t-button theme="primary" type="submit">注册</t-button>
+              <t-button theme="default" @click="handle(1)">返回</t-button>
+            </t-space>
+          </t-form-item>
+        </t-form>
+      </div>
     </div>
   </div>
 </template>
@@ -99,6 +104,10 @@ const handleLogin = () => {
     .then((res) => {
       // console.log(res.data)
       localStorage.setItem('user_info', JSON.stringify(res.data))
+      localStorage.setItem(
+        'token',
+        JSON.parse(localStorage.getItem('user_info')).token
+      )
       console.log(JSON.parse(localStorage.getItem('user_info')))
       MessagePlugin.success(res.message)
       jump()
@@ -125,6 +134,7 @@ const onSubmit1 = ({ validateResult, firstError, e }) => {
       .then((res) => {
         console.log(res)
         localStorage.setItem('user_info', JSON.stringify(res.user))
+        localStorage.setItem('token', res.token)
         MessagePlugin.success(res.message)
         jump()
       })
@@ -212,12 +222,43 @@ const jump = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
+  background: #fff;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    margin-left: -48%;
+    background-image: url("../../../src/assets/svg/login-bg.svg");
+    background-position: 100%;
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+    z-index: 2;
+  }
+
+  .login_logo {
+    width: 50%;
+    position: relative;
+    z-index: 6;
+    margin-bottom: 20px;
+  }
 
   .title {
-    font-size: 20px;
-    text-align: center;
+    font-size: 30px;
+    line-height: 30px;
+    text-align: left;
     margin-bottom: 10px;
+    position: relative;
+    z-index: 6;
+  }
+
+  .white {
+    color: #fff;
+    width: 50%;
+    text-align: center;
   }
 }
 </style>

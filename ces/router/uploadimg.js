@@ -6,6 +6,8 @@ const handle = require("../router_handler/uploadimg");
 const classify = require("../views/classify");
 const work = require("../views/worklist");
 const collect = require("../views/collect");
+const jwt = require("jsonwebtoken");
+const verifyToken = require("../fun/verify_token")
 
 // 创建MySQL数据库连接
 const connection = mysql.createConnection({
@@ -21,24 +23,24 @@ connection.connect((err) => {
 });
 
 // 上传图片
-router.post("/uploadimg", handle.uploadimg);
+router.post("/uploadimg", verifyToken, handle.uploadimg);
 //命题接口
-router.post("/addLabel", classify.addLabel);
-router.get("/labelList", classify.labelList);
-router.get("/labelDetails", classify.labelDetails);
-router.post("/labelOline", classify.labelOline);
-router.post("/labelAnemd", classify.labelAnemd);
-router.delete("/labelDel", classify.labelDel);
+router.post("/addLabel", verifyToken, classify.addLabel);
+router.get("/labelList", verifyToken, classify.labelList);
+router.get("/labelDetails", verifyToken, classify.labelDetails);
+router.post("/labelOline", verifyToken, classify.labelOline);
+router.post("/labelAnemd", verifyToken, classify.labelAnemd);
+router.delete("/labelDel", verifyToken, classify.labelDel);
 //作品管理
-router.get("/workList", work.workList);
-router.get("/workDetails", work.workDetails);
-router.post("/workOline", work.workOline);
-router.delete("/workDel", work.workDel);
+router.get("/workList", verifyToken, work.workList);
+router.get("/workDetails", verifyToken, work.workDetails);
+router.post("/workOline", verifyToken, work.workOline);
+router.delete("/workDel", verifyToken, work.workDel);
 // 收藏
-router.post("/collect", collect.collect);
+router.post("/collect", verifyToken, collect.collect);
 
 // 获取数据列表
-router.get("/userList", (req, res) => {
+router.get("/userList", verifyToken, (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const pageSize = parseInt(req.query.pageSize) || 5;
   const offset = (page - 1) * pageSize;
@@ -139,11 +141,15 @@ router.post("/register", function (req, res) {
           const user = results[0];
           user.domian = "http://127.0.0.1:12134/upload/";
 
-          // 返回响应给前端，包括注册信息
+          // 生成token
+          const token = jwt.sign({ username: user.username }, "hon71234", { expiresIn: "2h" });
+
+          // 返回响应给前端，包括注册信息和token
           res.status(200).json({
             status: 200,
             message: "注册成功",
             user,
+            token,
           });
         });
       });
@@ -175,11 +181,11 @@ router.post("/login", (req, res) => {
 
   connection.query(selectSQL, selectParams, (err, result) => {
     if (err) throw err;
-    console.log(result[0]);
 
     if (result.length > 0) {
       const identity = result[0].identity;
       if (identity === 0 || identity === 1) {
+        const token = jwt.sign({ username: result[0].username }, "hon71234", { expiresIn: "2h" });
         res.status(200).send({
           status: 200,
           message: "登录成功",
@@ -189,6 +195,7 @@ router.post("/login", (req, res) => {
             password: result[0].password,
             domian: "http://127.0.0.1:12134/upload/",
             identity: identity,
+            token: token,
           },
         });
       } else {
@@ -207,7 +214,7 @@ router.post("/login", (req, res) => {
 });
 
 // 删除
-router.delete("/delUser", (req, res) => {
+router.delete("/delUser", verifyToken, (req, res) => {
   const userId = req.query.id;
   const identity = req.query.identity;
 
@@ -242,7 +249,8 @@ const pool = mysql.createPool({
   connectionLimit: 10,
 });
 // 用户详情
-router.get("/detailsUser", (req, res) => {
+router.get("/detailsUser", verifyToken, (req, res) => {
+  getToken(req, res);
   const id = req.query.id;
 
   // 从连接池中获取一个连接
@@ -275,7 +283,8 @@ router.get("/detailsUser", (req, res) => {
 });
 
 // 修改
-router.post("/anemdUser", (req, res) => {
+router.post("/anemdUser", verifyToken, (req, res) => {
+  getToken(req, res);
   const { id, username, password, email, identity } = req.body;
 
   // 数据有效性验证

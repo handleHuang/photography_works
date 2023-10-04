@@ -309,6 +309,9 @@ const projectList = () => {
   store.dispatch('projectList', params).then(res => {
     tabelData.arr = res.data
     pagination.obj.total = res.totalCount
+  }).catch((err) => {
+    console.log(err)
+    MessagePlugin.warning(err.response.data.message)
   })
 }
 // 设置命题状态

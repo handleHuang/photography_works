@@ -4,7 +4,7 @@
     <t-header class="container_header" v-if="menuValue !== '/login'">
       <t-head-menu theme="dark" style="margin-top: 24px" v-model="menuValue">
         <template #logo>
-          <span class="logo"> AIGC后台管理</span>
+          <span class="logo"> 摄影作品展示平台管理</span>
           <!-- <img
             width="136"
             :src="require('../assets/icon/TRX RGB White.png')"
