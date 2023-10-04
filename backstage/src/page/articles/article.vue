@@ -7,7 +7,7 @@
           <span>作品列表</span>
         </div>
         <div class="header_right">
-          <t-button @click="exportArticle">导出作品</t-button>
+          <t-switch v-model="checked" size="large" :label="['收藏数最多', '正常']" @change="handleSwitch"></t-switch>
         </div>
       </div>
       <div class="search">
@@ -205,6 +205,9 @@ const articleList = () => {
   if (showValue.value !== 'all') {
     params.state = showValue.value
   }
+  if (checked.value) {
+    params.top = 1
+  }
   store.dispatch('articleList', params).then((res) => {
     tabelData.arr = res.data
     pagination.obj.total = res.totalCount
@@ -256,24 +259,11 @@ const selected = reactive({
 const rehandleSelectChange = (value) => {
   selected.arr = value
 }
-// 导出
-function exportArticle () {
-  const confirmDia = DialogPlugin.confirm({
-    header: `确定导出${
-      selected.arr.length !== 0 ? `所选择的${selected.arr.length}个` : '所有'
-    }作品吗？`,
-    theme: 'info',
-    onConfirm: () => {
-      store.dispatch('exportArticle', { ids: selected.arr }).then((res) => {
-        window.location.href = res.data.path
-        MessagePlugin.success('导出成功')
-      })
-      confirmDia.destroy()
-    },
-    onClose: () => {
-      confirmDia.hide()
-    }
-  })
+
+// 开关
+const checked = ref(true)
+const handleSwitch = () => {
+  articleList()
 }
 const ellipsis = (value) => {
   if (!value) return ''

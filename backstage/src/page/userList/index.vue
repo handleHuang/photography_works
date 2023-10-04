@@ -47,6 +47,20 @@
         :columns="columns"
         :max-height="619"
       >
+        <template #cover="{ row }">
+          <img
+            v-if="row.cover"
+            style="width: 50px; height: 50px; object-fit: cover"
+            :src="row.cover"
+            alt=""
+          />
+          <img
+            v-else
+            style="width: 50px; height: 50px; object-fit: cover"
+            src="../../assets/icon/userimg.jpg"
+            alt=""
+          />
+        </template>
         <template #identity="{ row }">
           <span :class="`status showStatus${row.identity}`">{{
             row.identity == 2
@@ -58,9 +72,7 @@
         </template>
         <template #operat="{ row }">
           <span class="operat__btn" @click="doeditor(row.id)">编辑</span>
-          <span
-            class="operat__btn operat__btn_del"
-            @click="dodelete(row.id)"
+          <span class="operat__btn operat__btn_del" @click="dodelete(row.id)"
             >删除</span
           >
         </template>
@@ -110,6 +122,11 @@ const columns = reactive([
     colKey: 'id',
     title: 'ID',
     width: '60'
+  },
+  {
+    colKey: 'cover',
+    title: '头像',
+    width: '50'
   },
   {
     colKey: 'username',

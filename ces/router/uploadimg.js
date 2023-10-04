@@ -24,6 +24,7 @@ connection.connect((err) => {
 
 // 上传图片
 router.post("/uploadimg", verifyToken, handle.uploadimg);
+router.post("/upUserImg", handle.upUserImg);
 //命题接口
 router.post("/addLabel", verifyToken, classify.addLabel);
 router.get("/labelList", verifyToken, classify.labelList);
@@ -81,7 +82,7 @@ router.get("/userList", verifyToken, (req, res) => {
 // 注册
 router.post("/register", function (req, res) {
   try {
-    const { username, password, newEmail, identity } = req.body; // 获取前端传递的数据
+    const { username, password, newEmail, identity, cover } = req.body; // 获取前端传递的数据
 
     // 数据有效性验证
     if (!username || !password || !newEmail) {
@@ -113,8 +114,8 @@ router.post("/register", function (req, res) {
 
       // 可以插入新用户
       const insertSql =
-        "INSERT INTO `user_list` (`username`, `password`, `email`, `identity`) VALUES (?,?,?,?);";
-      const insertValues = [username, password, newEmail, identity];
+        "INSERT INTO `user_list` (`username`, `password`, `email`, `identity`, `cover`) VALUES (?,?,?,?,?);";
+      const insertValues = [username, password, newEmail, identity, cover];
 
       connection.query(insertSql, insertValues, function (err) {
         if (err) {
@@ -250,7 +251,6 @@ const pool = mysql.createPool({
 });
 // 用户详情
 router.get("/detailsUser", verifyToken, (req, res) => {
-  getToken(req, res);
   const id = req.query.id;
 
   // 从连接池中获取一个连接
@@ -284,7 +284,6 @@ router.get("/detailsUser", verifyToken, (req, res) => {
 
 // 修改
 router.post("/anemdUser", verifyToken, (req, res) => {
-  getToken(req, res);
   const { id, username, password, email, identity } = req.body;
 
   // 数据有效性验证

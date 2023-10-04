@@ -2,13 +2,15 @@ const connection = require("../db/index");
 const mysql = require("mysql");
 
 // 作品列表
+		
 exports.workList = (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const pageSize = parseInt(req.query.per_page) || 5;
     const offset = (page - 1) * pageSize;
     const keyword = req.query.title || "";
-    const state = req.query.state || ""; // 新增的state筛选条件
+    const state = req.query.state || "";
+    const isTop = req.query.top === "1"; // 判断是否传递了top参数并且值为1
 
     let countQueryBase =
       "SELECT COUNT(*) AS total FROM works_list WHERE title LIKE ?";
@@ -21,6 +23,10 @@ exports.workList = (req, res) => {
       queryBase += " AND state = ?";
       countParams.push(state);
       queryParams.push(state);
+    }
+
+    if (isTop) {
+      queryBase += " ORDER BY collect_number DESC"; // 根据collect_number字段降序排序
     }
 
     const countQuery = countQueryBase;

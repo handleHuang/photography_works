@@ -68,8 +68,33 @@
           <t-form-item label="确认密码" name="rePassword" help="请确认密码">
             <t-input v-model="formData.rePassword" type="password"></t-input>
           </t-form-item>
+
           <t-form-item label="邮箱" name="newEmail" help="请输入邮箱">
             <t-input v-model="formData.newEmail"></t-input>
+          </t-form-item>
+
+          <t-form-item  label="头像" name="userCover" help="请上传头像">
+            <t-upload
+              ref="uploadRef1"
+              v-model="file1"
+              action="http://127.0.0.1:12134/api/upUserImg"
+              theme="image"
+              tips="图片不能超出2m"
+              accept="image/*"
+              :auto-upload="true"
+              :upload-all-files-in-one-request="true"
+              :size-limit="{ size: 2, unit: 'MB' }"
+              :max="1"
+              :abridge-name="[6, 6]"
+              :locale="{
+                triggerUploadText: {
+                  image: '请选择图片',
+                },
+              }"
+              @fail="handleFail"
+              @Change="changeUpdata"
+            >
+            </t-upload>
           </t-form-item>
 
           <t-form-item>
@@ -96,7 +121,8 @@ const formData = reactive({
   password: '',
   rePassword: '',
   newEmail: '',
-  identity: 1
+  identity: 1,
+  cover: ''
 })
 // 登录
 const handleLogin = () => {
@@ -196,6 +222,9 @@ const rules = {
     // 自定义校验规则
     { required: true, message: '密码必填', type: 'error' },
     { validator: rePassword, message: '两次密码不一致' }
+  ],
+  newEmail: [
+    { required: true, message: '', type: 'error' }
   ]
 }
 
@@ -213,6 +242,15 @@ const jump = () => {
   router.push({
     path: '/project'
   })
+}
+
+const file1 = ref([])
+const handleFail = (file) => {
+  MessagePlugin.error(`文件 ${file.name} 上传失败`)
+}
+const changeUpdata = (item) => {
+  formData.cover = item[0].url
+  console.log(item)
 }
 </script>
 <style lang="less">
