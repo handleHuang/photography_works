@@ -41,7 +41,7 @@ import { useRoute, useRouter } from "vue-router";
 // import { useI18n } from "vue-i18n";
 import { _debounce } from "./utils/throttle";
 import { getUserData } from "./models/user";
-import { getLogin } from "./models/index";
+// import { getLogin } from "./models/index";
 // const { t, locale } = useI18n();
 
 const route = useRoute();
@@ -100,36 +100,36 @@ onMounted(() => {
   //   .catch((error) => {
   //     console.log("获取失败！");
   //   });
-  getUserDatas()
+  // getUserDatas()
 });
-const getUserDatas = ()=>{
-  let params: any = {
-    page: 1,
-    per_page: 2,
-    column: 'title',
-    // online_status: 1,
-  };
-  getUserData(params)
-    .then((res: any) => {
-      // console.log(res);
-      headerPic.value = res.user.avatar;
-    })
-    .catch((error: any) => {
-      console.log("获取失败！");
-    });
-}
-const getStatus = ref(null);
-const setLogin = () => {
-  getLogin()
-    .then((res: any) => {
-      getStatus.value = res.status;
-      window.localStorage.setItem("status", JSON.stringify(res.status));
-    })
-    .catch((error: any) => {
-      console.log("获取失败！");
-    });
-};
-setLogin();
+// const getUserDatas = ()=>{
+//   let params: any = {
+//     page: 1,
+//     per_page: 2,
+//     column: 'title',
+//     // online_status: 1,
+//   };
+//   getUserData(params)
+//     .then((res: any) => {
+//       // console.log(res);
+//       headerPic.value = res.user.avatar;
+//     })
+//     .catch((error: any) => {
+//       console.log("获取失败！");
+//     });
+// }
+// const getStatus = ref(null);
+// const setLogin = () => {
+  // getLogin()
+  //   .then((res: any) => {
+  //     getStatus.value = res.status;
+  //     window.localStorage.setItem("status", JSON.stringify(res.status));
+  //   })
+  //   .catch((error: any) => {
+  //     console.log("获取失败！");
+  //   });
+// };
+// setLogin();
 
 const menu = ref([
   {
@@ -179,7 +179,11 @@ const handleMenuList = (url: string) => {
   router.push({ path: url });
 };
 const handleHeaderPhoto = () => {
-  router.push({ path: "user" });
+  if(localStorage.getItem('user_info')) {
+    router.push({ path: "user" });
+  }else {
+    router.push({ path: "login" });
+  }
 };
 </script>
 

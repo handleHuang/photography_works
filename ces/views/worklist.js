@@ -10,7 +10,7 @@ exports.workList = (req, res) => {
     const offset = (page - 1) * pageSize;
     const keyword = req.query.title || "";
     const state = req.query.state || "";
-    const isTop = req.query.top === "1"; // 判断是否传递了top参数并且值为1
+    const isTop = req.query.top === "1"; // 收藏数最多的
 
     let countQueryBase =
       "SELECT COUNT(*) AS total FROM works_list WHERE title LIKE ?";

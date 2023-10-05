@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 
 function verifyToken(req, res, next) {
   const token = req.headers.authorization;
+  console.log(req.headers)
 
   jwt.verify(token, "hon71234", (err, decoded) => {
     if (err) {

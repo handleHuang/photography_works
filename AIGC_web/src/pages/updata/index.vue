@@ -3,63 +3,142 @@
     <div class="Upload_works" v-show="!popSubmit">
       <div class="updata_title">上传作品</div>
       <div class="updata_box">
-        <t-form ref="form" :data="formData" label-align="top" :rules="rules" @submit="onSubmit">
-          <t-form-item label="参赛人" name="username" class="flex2" v-if="!user_id">
+        <t-form
+          ref="form"
+          :data="formData"
+          label-align="top"
+          :rules="rules"
+          @submit="onSubmit"
+        >
+          <t-form-item
+            label="参赛人"
+            name="username"
+            class="flex2"
+            v-if="!userData.id"
+          >
             <t-input v-model="formData.username" placeholder="请输入作者姓名" />
           </t-form-item>
-          <t-form-item label="参赛命题" name="project_id" v-if="propositionData.length !== 0" class="flex3">
+          <t-form-item
+            label="参赛命题"
+            name="project_id"
+            v-if="propositionData.length !== 0"
+            class="flex3"
+          >
             <t-select v-model="formData.project_id" placeholder="请选择命题">
-              <t-option v-for="item in propositionData" :key="item.id" :value="item.id" :label="item.title"></t-option>
+              <t-option
+                v-for="item in propositionData"
+                :key="item.id"
+                :value="item.id"
+                :label="item.title"
+              ></t-option>
             </t-select>
           </t-form-item>
           <t-form-item label="作品名称" name="title" class="flex3">
             <t-input v-model="formData.title" placeholder="请输入作品名称" />
           </t-form-item>
-          <t-form-item label="所用AI平台" name="ai_json_title" class="flex3">
-            <t-select v-model="formData.ai_json_title" placeholder="请选择工具">
-              <t-option v-for="item in platformData" :key="item.id" :value="item.id" :label="item.title"></t-option>
-            </t-select>
-          </t-form-item>
 
-          <t-form-item label="Stable Diffusion具体版本: LORA名称" name="ai_json_content1" class="flex3" v-if="formData.ai_json_title === 1">
-            <t-input v-model="formData.ai_json_content1" placeholder="请输入" />
-          </t-form-item>
-          <t-form-item label="Midjourney版本类型" name="ai_json_content2" class="flex3" v-if="formData.ai_json_title === 2">
-            <t-radio-group v-model="formData.ai_json_content2" @change="onChangeMidjourney">
-              <t-radio value="1">v4</t-radio>
-              <t-radio value="2">v5</t-radio>
-            </t-radio-group>
-          </t-form-item>
-          <t-form-item label="请填写其他创作工具" name="ai_json_content3" class="flex3" v-if="formData.ai_json_title === 6">
-            <t-input v-model="formData.ai_json_content3" placeholder="请输入" />
-          </t-form-item>
-
-          <t-form-item label="生成关键词描述（prompt）" name="description" class="flex1">
-            <t-textarea v-model="formData.description" placeholder="请输入生成结果的关键描述" name="description" :autosize="{ minRows: 6, maxRows: 6 }" />
+          <t-form-item
+            label="生成关键词描述（prompt）"
+            name="description"
+            class="flex1"
+          >
+            <t-textarea
+              v-model="formData.description"
+              placeholder="请输入生成结果的关键描述"
+              name="description"
+              :autosize="{ minRows: 6, maxRows: 6 }"
+            />
           </t-form-item>
           <t-form-item label="添加作品" name="article" class="flex1">
-            <div class="formTips big">支持 jpg、png、gif 格式，最佳尺寸 600*450px，文件大小不超过 5M</div>
+            <div class="formTips big">
+              支持 jpg、png、gif 格式，最佳尺寸 600*450px，文件大小不超过 2M
+            </div>
             <div class="formTips small">单个图片/文件大小不超过300MB</div>
-            <uploads :upload-number="9" :names="'article'" :text="'点击上传图片'" :list="formData.article" :accept="'audio/mp4,video/mp4,image/*'" :width="'120px'" :height="'120px'" :userName="userName" @fileList="worksChange"></uploads>
+            <t-upload
+              ref="uploadRef1"
+              v-model="file1"
+              action="http://127.0.0.1:12134/api/uploadimg"
+              theme="image"
+              tips="图片不能超出2m"
+              accept="image/*"
+              :auto-upload="true"
+              :upload-all-files-in-one-request="true"
+              :size-limit="{ size: 2, unit: 'MB' }"
+              :max="5"
+              :abridge-name="[6, 6]"
+              :locale="{
+                triggerUploadText: {
+                  image: '请选择图片',
+                },
+              }"
+              @fail="handleFail1"
+              @Change="changeUpdata1"
+            >
+            </t-upload>
           </t-form-item>
-          <t-form-item label="除了文生图以外的的生成方式" name="way" class="flex1">
+          <t-form-item
+            label="除了文生图以外的的生成方式"
+            name="way"
+            class="flex1"
+          >
             <t-radio-group v-model="formData.have" @change="onChangeWay">
               <t-radio :value="1">有</t-radio>
               <t-radio :value="2">没有</t-radio>
             </t-radio-group>
           </t-form-item>
 
-          <t-form-item label="创作过程描述：其他输入和控制手段" name="process" class="flex1" v-if="wayActive === 1">
-            <t-textarea v-model="formData.process" placeholder="请输入生成结果的关键描述" :maxlength="200" name="description" :autosize="{ minRows: 6, maxRows: 6 }" />
+          <t-form-item
+            label="创作过程描述：其他输入和控制手段"
+            name="process"
+            class="flex1"
+            v-if="wayActive === 1"
+          >
+            <t-textarea
+              v-model="formData.process"
+              placeholder="请输入生成结果的关键描述"
+              :maxlength="200"
+              name="description"
+              :autosize="{ minRows: 6, maxRows: 6 }"
+            />
           </t-form-item>
-          <t-form-item label="创作过程：参考文件，工程文件截图" name="file" class="flex1" v-if="wayActive === 1">
-            <div class="formTips">支持 jpg、png、gif 格式，文件大小不超过 5M，可以提交多张，不超过9张</div>
-            <uploads :upload-number="9" :names="'file'" :text="'点击上传图片'" :list="formData.file" :accept="'audio/mp4,video/mp4,image/*'" :width="'120px'" :height="'120px'" :userName="userName" @fileList="coursefilesList"></uploads>
+          <t-form-item
+            label="创作过程：参考文件，工程文件截图"
+            name="file"
+            class="flex1"
+            v-if="wayActive === 1"
+          >
+            <div class="formTips">
+              支持 jpg、png、gif 格式，文件大小不超过
+              2M，可以提交多张，不超过9张
+            </div>
+            <t-upload
+              ref="uploadRef1"
+              v-model="file2"
+              action="http://127.0.0.1:12134/api/uploadimg"
+              theme="image"
+              tips="图片不能超出2m"
+              accept="image/*"
+              :auto-upload="true"
+              :upload-all-files-in-one-request="true"
+              :size-limit="{ size: 2, unit: 'MB' }"
+              :max="9"
+              :abridge-name="[6, 6]"
+              :locale="{
+                triggerUploadText: {
+                  image: '请选择图片',
+                },
+              }"
+              @fail="handleFail2"
+              @Change="changeUpdata2"
+            >
+            </t-upload>
           </t-form-item>
           <div class="updata_foot">
             <div class="updata_foot_box">
               <t-button theme="primary" type="submit">提交</t-button>
-              <t-button variant="outline" theme="default" @click="handleCancel">取消</t-button>
+              <t-button variant="outline" theme="default" @click="handleCancel"
+                >取消</t-button
+              >
             </div>
           </div>
         </t-form>
@@ -71,12 +150,18 @@
       <div class="submit_box_title">提交成功</div>
       <div class="submit_box_tips">你可以为自己拉票，或继续参加其他命题</div>
       <div class="submit_box_btn">
-        <t-button theme="primary" @click="handleCloseConfirm">返回首页</t-button>
+        <t-button theme="primary" @click="handleCloseConfirm"
+          >返回首页</t-button
+        >
         <t-button theme="default" @click="handleMyWorks">查看我的作品</t-button>
       </div>
     </div>
 
-    <t-dialog v-model:visible="visibleSubmit" header="确认要提交吗？" body="提交后可在个人中心对作品进行修改" attach="body"
+    <t-dialog
+      v-model:visible="visibleSubmit"
+      header="确认要提交吗？"
+      body="提交后可在个人中心对作品进行修改"
+      attach="body"
       ><template #footer>
         <div>
           <t-button theme="default" @click="handleclose">取消</t-button>
@@ -85,11 +170,18 @@
       </template>
     </t-dialog>
 
-    <t-dialog v-model:visible="visiblecancel" theme="info" header="确定要返回吗？" body="返回后已编辑内容将全部丢失">
+    <t-dialog
+      v-model:visible="visiblecancel"
+      theme="info"
+      header="确定要返回吗？"
+      body="返回后已编辑内容将全部丢失"
+    >
       <template #footer>
         <div>
           <t-button theme="default" @click="handleCloseCancel">取消</t-button>
-          <t-button theme="primary" @click="handleCloseConfirm">确认返回</t-button>
+          <t-button theme="primary" @click="handleCloseConfirm"
+            >确认返回</t-button
+          >
         </div>
       </template>
     </t-dialog>
@@ -104,20 +196,22 @@ import { onBeforeRouteLeave, useRouter, useRoute } from "vue-router";
 import uploads from "../../components/uploads.vue";
 import { getProjectsList } from "../../models/index";
 import { postArticle } from "../../models/updata";
-import { getUserData, updataEdit } from "../../models/user";
+import { updataEdit } from "../../models/user";
 import { getArticlesDetail } from "../../models/detail";
 
 const router = useRouter();
 const route = useRoute();
+
+const userData: any = ref(
+  JSON.parse(localStorage.getItem("user_info") as string)
+);
+console.log(userData.value);
 
 let formData: any = reactive({
   username: "",
   title: "",
   project_id: "",
   ai_json_title: "",
-  ai_json_content1: "",
-  ai_json_content2: "",
-  ai_json_content3: "",
   description: "",
   article: [],
   process: "",
@@ -131,38 +225,12 @@ const rules = {
   title: [{ required: true, message: "作品名称必填" }],
   ai_json_title: [{ required: true, message: "所用AI平台必填" }],
 
-  ai_json_content1: [{ required: true, message: "LORA名称必填" }],
-  ai_json_content2: [{ required: true, message: "Midjourney版本类型必填" }],
-  ai_json_content3: [{ required: true, message: "创作工具必填" }],
-
   description: [{ required: true, message: "生成关键描述必填" }],
   article: [{ required: true, message: "添加作品必填" }],
   project_id: [{ required: true, message: "命题为必填" }],
   process: [{ required: true, message: "创作过程描述" }],
   file: [{ required: true, message: "创作过程必填" }],
 };
-
-const user_id = ref(0);
-const userName = ref("");
-const haerUserData = () => {
-  const page: any = ref(1);
-  const per_page: any = ref(20);
-  let params: any = {
-    page: page.value,
-    per_page: per_page.value,
-    column: "created_at",
-    // online_status: 1,
-  };
-  getUserData(params)
-    .then((res: any) => {
-      user_id.value = res.user.id;
-      userName.value = res.user.name;
-    })
-    .catch((error: any) => {
-      console.log("获取失败！");
-    });
-};
-haerUserData();
 
 // 命题列表
 const propositionData: any = ref([]); //命题列表
@@ -171,38 +239,11 @@ let params = {
 };
 getProjectsList(params)
   .then((res: any) => {
-    propositionData.value = res;
+    propositionData.value = res.data;
   })
   .catch((error: any) => {
     console.log("获取失败！");
   });
-
-const platformData: any = ref([
-  {
-    id: 1,
-    title: "Stable Diffusion",
-  },
-  {
-    id: 2,
-    title: "Midjourney",
-  },
-  {
-    id: 3,
-    title: "Dall-E 2",
-  },
-  {
-    id: 4,
-    title: "Kandinsky",
-  },
-  {
-    id: 5,
-    title: "Photoshop Beta",
-  },
-  {
-    id: 6,
-    title: "其他",
-  },
-]);
 
 let MidjourneyActive: any = ref("0");
 const onChangeMidjourney = (e: any) => {
@@ -216,12 +257,20 @@ const onChangeWay = (e: any) => {
 
 // 上传
 // 添加作品
-const worksChange = (val: any) => {
-  formData.article = val.list;
+const file1 = ref([]);
+const handleFail1 = (file: any) => {
+  MessagePlugin.error(`文件 ${file.name} 上传失败`);
+};
+const changeUpdata1 = (item: any) => {
+  console.log(item);
 };
 // 创作过程：参考文件，工程文件截图
-const coursefilesList = (val: any) => {
-  formData.file = val.list;
+const file2 = ref([]);
+const handleFail2 = (file: any) => {
+  MessagePlugin.error(`文件 ${file.name} 上传失败`);
+};
+const changeUpdata2 = (item: any) => {
+  console.log(item);
 };
 
 const popSubmit = ref(false);
@@ -246,66 +295,42 @@ const handleConfirm = () => {
   // }
   let param: any = {
     title: formData.title,
-    // ai_json: formData.ai_json,
     description: formData.description,
-    // process: formData.process,
-    files: formData.files,
     online_status: 1,
-    ai_json: {
-      title: platformData.value[formData.ai_json_title - 1].title,
-    },
   };
-  if (!user_id.value) {
+  if (!userData.value.id) {
     param.username = formData.username;
-  }else {
-    param.username = userName.value;
+  } else {
+    param.username = userData.value.username;
   }
   if (formData.project_id !== "") {
     param.project_id = formData.project_id;
-  }
-  if (formData.ai_json_title === 1) {
-    param.ai_json = {
-      title: platformData.value[formData.ai_json_title - 1].title,
-      content: formData.ai_json_content1,
-    };
-  }
-  if (formData.ai_json_title === 6) {
-    param.ai_json = {
-      title: platformData.value[formData.ai_json_title - 1].title,
-      content: formData.ai_json_content3,
-    };
-  }
-  if (formData.ai_json_title === 2) {
-    param.ai_json = {
-      title: platformData.value[formData.ai_json_title - 1].title,
-      content: MidjourneyActive.value === "1" ? "v4" : "v5",
-    };
   }
   if (wayActive.value === 1) {
     param.process = formData.process;
   }
   console.log(param);
-  if (route.query.id) {
-    param.id = route.query.id;
-    param.way = wayActive.value;
-    updataEdit(param)
-      .then((res: any) => {
-        // console.log(res);
-        popSubmit.value = true;
-      })
-      .catch((error: any) => {
-        console.log("获取失败！");
-      });
-  } else {
-    postArticle(param)
-      .then((res: any) => {
-        // console.log(res);
-        popSubmit.value = true;
-      })
-      .catch((error: any) => {
-        console.log("获取失败！");
-      });
-  }
+  // if (route.query.id) {
+  //   param.id = route.query.id;
+  //   param.way = wayActive.value;
+  //   updataEdit(param)
+  //     .then((res: any) => {
+  //       // console.log(res);
+  //       popSubmit.value = true;
+  //     })
+  //     .catch((error: any) => {
+  //       console.log("获取失败！");
+  //     });
+  // } else {
+  //   postArticle(param)
+  //     .then((res: any) => {
+  //       // console.log(res);
+  //       popSubmit.value = true;
+  //     })
+  //     .catch((error: any) => {
+  //       console.log("获取失败！");
+  //     });
+  // }
   visibleSubmit.value = false;
 };
 
@@ -330,9 +355,6 @@ const judge = () => {
     title: "",
     project_id: "",
     ai_json_title: "",
-    ai_json_content1: "",
-    ai_json_content2: "",
-    ai_json_content3: "",
     description: "",
     article: [],
     process: "",
@@ -371,15 +393,6 @@ const detailsData = () => {
         formData.username = res.username;
         formData.title = res.title;
         formData.project_id = +res.project_id;
-
-        for (let i = 0; i < platformData.value.length; i++) {
-          if (platformData.value[i].title === res.ai_json.title) {
-            formData.ai_json_title = platformData.value[i].id;
-          }
-        }
-        formData.ai_json_content1 = res.ai_json.content;
-        formData.ai_json_content2 = res.ai_json.content;
-        formData.ai_json_content3 = res.ai_json.content;
         formData.description = res.description;
         formData.have = res.file.length !== 0 ? 1 : 2;
         if (res.file.length !== 0) {

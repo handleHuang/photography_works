@@ -8,6 +8,26 @@ export function getLogin() {
   });
 }
 
+// 登录
+export function login (params:any) {
+  // return axios.post('/login', params)
+  return http({
+    url: "/api/login", //此处为自己请求地址
+    method: "post",
+    data: params,
+  });
+}
+
+// 注册
+export function register (params: any) {
+  // return axios.post('/register', params)
+  return http({
+    url: "/api/register", //此处为自己请求地址
+    method: "post",
+    data: params,
+  });
+}
+
 // 命题列表
 export function getProjectsList(params: any) {
   return http({

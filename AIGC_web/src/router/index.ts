@@ -4,6 +4,7 @@ import Updata from '../pages/updata/index.vue'
 import Detail from '../pages/detail/index.vue'
 import WorkList from '../pages/workList/index.vue'
 import User from '../pages/user/index.vue'
+import Login from '../pages/login/index.vue'
 
 const routes: RouteRecordRaw[] = [
   // {
@@ -20,6 +21,11 @@ const routes: RouteRecordRaw[] = [
         path: 'index',
         name: 'index',
         component: Index,
+      },
+      {
+        path: 'login',
+        name: 'login',
+        component: Login,
       },
       {
         path: 'updata',

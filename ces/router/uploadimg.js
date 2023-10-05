@@ -27,7 +27,7 @@ router.post("/uploadimg", verifyToken, handle.uploadimg);
 router.post("/upUserImg", handle.upUserImg);
 //命题接口
 router.post("/addLabel", verifyToken, classify.addLabel);
-router.get("/labelList", verifyToken, classify.labelList);
+router.get("/labelList", classify.labelList);
 router.get("/labelDetails", verifyToken, classify.labelDetails);
 router.post("/labelOline", verifyToken, classify.labelOline);
 router.post("/labelAnemd", verifyToken, classify.labelAnemd);
@@ -284,7 +284,7 @@ router.get("/detailsUser", verifyToken, (req, res) => {
 
 // 修改
 router.post("/anemdUser", verifyToken, (req, res) => {
-  const { id, username, password, email, identity } = req.body;
+  const { id, username, password, email, identity, cover } = req.body;
 
   // 数据有效性验证
   if (!id || !username || !password || !email) {
@@ -295,8 +295,8 @@ router.post("/anemdUser", verifyToken, (req, res) => {
   }
 
   const updateSQL =
-    "UPDATE user_list SET username = ?, password = ?, email = ?, identity = ? WHERE id = ?";
-  const updateParams = [username, password, email, identity, id];
+    "UPDATE user_list SET username = ?, password = ?, email = ?, identity = ?, cover = ? WHERE id = ?";
+  const updateParams = [username, password, email, identity, cover, id];
 
   connection.query(updateSQL, updateParams, (err, result) => {
     if (err) {
