@@ -2,7 +2,6 @@ const connection = require("../db/index");
 const mysql = require("mysql");
 
 // 作品列表
-		
 exports.workList = (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
@@ -49,11 +48,14 @@ exports.workList = (req, res) => {
         }
 
         result.forEach((element, index) => {
-          element.cover = element.cover
-            .match(/'([^']+)'/g)
-            .map(function (match) {
-              return "http://127.0.0.1:12134/upload/" + match.slice(1, -1);
-            });
+          let chuli = JSON.parse(element.cover.replace(/'/g, '"'));
+          element.cover = chuli.map(function (match) {
+            return "http://127.0.0.1:12134/upload/" + match;
+          });
+          let chuli1 = JSON.parse(element.beiyong1.replace(/'/g, '"'));
+          element.beiyong1 = chuli1.map(function (match) {
+            return "http://127.0.0.1:12134/upload/" + match;
+          });
         });
 
         res.status(200).send({
@@ -121,16 +123,21 @@ exports.workDetails = (req, res) => {
               return;
             }
 
-            rows[0].cover = rows[0].cover
-              .match(/'([^']+)'/g)
-              .map(function (match) {
-                return "http://127.0.0.1:12134/upload/" + match.slice(1, -1);
+            rows.forEach((element, index) => {
+              let chuli = JSON.parse(element.cover.replace(/'/g, '"'));
+              element.cover = chuli.map(function (match) {
+                return "http://127.0.0.1:12134/upload/" + match;
               });
+              let chuli1 = JSON.parse(element.beiyong1.replace(/'/g, '"'));
+              element.beiyong1 = chuli1.map(function (match) {
+                return "http://127.0.0.1:12134/upload/" + match;
+              });
+            });
 
             // 如果collect表中有对应数据，则将collect字段改为1
             if (collectRows.length > 0) {
               rows[0].collect = 1;
-            }else {
+            } else {
               rows[0].collect = 0;
             }
 
@@ -195,4 +202,71 @@ exports.workDel = (req, res) => {
       message: "数据删除成功",
     });
   });
+};
+
+// 新建作品
+exports.addWork = (req, res) => {
+  try {
+    const {
+      username,
+      title,
+      topic,
+      cont,
+      process,
+      cover,
+      beiyong1,
+      collect,
+      collect_number,
+      state,
+    } = req.body;
+    console.log(
+      username,
+      title,
+      topic,
+      cont,
+      process,
+      cover,
+      beiyong1,
+      collect,
+      collect_number,
+      state
+    );
+
+    // 插入数据
+    const sql = `INSERT INTO works_list (user_name, title, topic, cont, process, cover, beiyong1, collect, collect_number, state) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    const values = [
+      username,
+      title,
+      topic,
+      cont,
+      process,
+      cover,
+      beiyong1,
+      collect,
+      collect_number,
+      state,
+    ];
+
+    connection.query(sql, values, (error, results) => {
+      if (error) {
+        console.error(error);
+        return res.status(500).json({
+          status: 500,
+          message: "服务器内部错误",
+        });
+      }
+
+      // 插入成功
+      return res.status(200).json({
+        status: 200,
+        message: "上传成功",
+      });
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      status: 500,
+      message: "服务器内部错误",
+    });
+  }
 };

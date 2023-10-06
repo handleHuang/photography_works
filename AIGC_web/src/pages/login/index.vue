@@ -127,18 +127,18 @@
   // 登录
   const handleLogin = () => {
     login(formData)
-      .then((res) => {
+      .then((res: any) => {
         // console.log(res.data)
         localStorage.setItem('user_info', JSON.stringify(res.data))
         localStorage.setItem(
           'token',
-          JSON.parse(localStorage.getItem('user_info')).token
+          JSON.parse(localStorage.getItem('user_info') || '').token
         )
-        console.log(JSON.parse(localStorage.getItem('user_info')))
+        console.log(JSON.parse(localStorage.getItem('user_info') || ''))
         MessagePlugin.success(res.message)
         jump()
       })
-      .catch((err) => {
+      .catch((err:any) => {
         MessagePlugin.warning(err.response.data.message)
       })
   }
@@ -157,14 +157,14 @@
     e.preventDefault()
     if (validateResult === true) {
       register(formData)
-        .then((res) => {
+        .then((res: any) => {
           console.log(res)
           localStorage.setItem('user_info', JSON.stringify(res.user))
           localStorage.setItem('token', res.token)
           MessagePlugin.success(res.message)
           jump()
         })
-        .catch((err) => {
+        .catch((err: any) => {
           MessagePlugin.warning(err.response.data.message)
           console.log(err.response.data.message)
         })
@@ -174,7 +174,7 @@
     }
   }
   
-  const rePassword = (val) =>
+  const rePassword = (val: any) =>
     new Promise((resolve) => {
       const timer = setTimeout(() => {
         resolve(formData.password === val)
@@ -182,7 +182,7 @@
       })
     })
   
-  const passwordValidator = (val) => {
+  const passwordValidator = (val:any) => {
     if (val.length > 0 && val.length <= 2) {
       return {
         result: false,
@@ -230,7 +230,7 @@
   
   // 注册、返回按钮
   const loginValue = ref(true)
-  const handle = (index) => {
+  const handle = (index:any) => {
     if (index === 1) {
       loginValue.value = true
     } else {
@@ -245,10 +245,10 @@
   }
   
   const file1 = ref([])
-  const handleFail = (file) => {
+  const handleFail = (file:any) => {
     MessagePlugin.error(`文件 ${file.name} 上传失败`)
   }
-  const changeUpdata = (item) => {
+  const changeUpdata = (item:any) => {
     formData.cover = item[0].url
     console.log(item)
   }

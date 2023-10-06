@@ -23,7 +23,7 @@ connection.connect((err) => {
 });
 
 // 上传图片
-router.post("/uploadimg", verifyToken, handle.uploadimg);
+router.post("/uploadimg", handle.uploadimg);
 router.post("/upUserImg", handle.upUserImg);
 //命题接口
 router.post("/addLabel", verifyToken, classify.addLabel);
@@ -36,6 +36,7 @@ router.delete("/labelDel", verifyToken, classify.labelDel);
 router.get("/workList", verifyToken, work.workList);
 router.get("/workDetails", verifyToken, work.workDetails);
 router.post("/workOline", verifyToken, work.workOline);
+router.post("/addWork", work.addWork);
 router.delete("/workDel", verifyToken, work.workDel);
 // 收藏
 router.post("/collect", verifyToken, collect.collect);

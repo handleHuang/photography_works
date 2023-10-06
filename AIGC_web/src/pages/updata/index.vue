@@ -11,24 +11,16 @@
           @submit="onSubmit"
         >
           <t-form-item
-            label="参赛人"
-            name="username"
-            class="flex2"
-            v-if="!userData.id"
-          >
-            <t-input v-model="formData.username" placeholder="请输入作者姓名" />
-          </t-form-item>
-          <t-form-item
             label="参赛命题"
-            name="project_id"
+            name="topic"
             v-if="propositionData.length !== 0"
             class="flex3"
           >
-            <t-select v-model="formData.project_id" placeholder="请选择命题">
+            <t-select v-model="formData.topic" placeholder="请选择命题">
               <t-option
                 v-for="item in propositionData"
                 :key="item.id"
-                :value="item.id"
+                :value="item.title"
                 :label="item.title"
               ></t-option>
             </t-select>
@@ -39,13 +31,13 @@
 
           <t-form-item
             label="生成关键词描述（prompt）"
-            name="description"
+            name="cont"
             class="flex1"
           >
             <t-textarea
-              v-model="formData.description"
+              v-model="formData.cont"
               placeholder="请输入生成结果的关键描述"
-              name="description"
+              name="cont"
               :autosize="{ minRows: 6, maxRows: 6 }"
             />
           </t-form-item>
@@ -65,6 +57,7 @@
               :upload-all-files-in-one-request="true"
               :size-limit="{ size: 2, unit: 'MB' }"
               :max="5"
+              multiple
               :abridge-name="[6, 6]"
               :locale="{
                 triggerUploadText: {
@@ -97,7 +90,7 @@
               v-model="formData.process"
               placeholder="请输入生成结果的关键描述"
               :maxlength="200"
-              name="description"
+              name="cont"
               :autosize="{ minRows: 6, maxRows: 6 }"
             />
           </t-form-item>
@@ -122,6 +115,7 @@
               :upload-all-files-in-one-request="true"
               :size-limit="{ size: 2, unit: 'MB' }"
               :max="9"
+              multiple
               :abridge-name="[6, 6]"
               :locale="{
                 triggerUploadText: {
@@ -208,28 +202,23 @@ const userData: any = ref(
 console.log(userData.value);
 
 let formData: any = reactive({
-  username: "",
+  username: userData.value.username,
   title: "",
-  project_id: "",
-  ai_json_title: "",
-  description: "",
-  article: [],
+  topic: "",
+  cont: "",
   process: "",
-  have: 2,
-  file: [],
-  files: [],
+  cover: "", //添加作品
+  beiyong1: "", //过程
+  collect: 0,
+  collect_number: 0,
+  state: 1, //未发布
 });
 
 const rules = {
-  username: [{ required: true, message: "参赛人姓名必填" }],
   title: [{ required: true, message: "作品名称必填" }],
-  ai_json_title: [{ required: true, message: "所用AI平台必填" }],
-
-  description: [{ required: true, message: "生成关键描述必填" }],
-  article: [{ required: true, message: "添加作品必填" }],
-  project_id: [{ required: true, message: "命题为必填" }],
+  cont: [{ required: true, message: "生成关键描述必填" }],
+  topic: [{ required: true, message: "命题为必填" }],
   process: [{ required: true, message: "创作过程描述" }],
-  file: [{ required: true, message: "创作过程必填" }],
 };
 
 // 命题列表
@@ -245,11 +234,6 @@ getProjectsList(params)
     console.log("获取失败！");
   });
 
-let MidjourneyActive: any = ref("0");
-const onChangeMidjourney = (e: any) => {
-  MidjourneyActive.value = e;
-};
-
 let wayActive: any = ref(2);
 const onChangeWay = (e: any) => {
   wayActive.value = e;
@@ -262,7 +246,11 @@ const handleFail1 = (file: any) => {
   MessagePlugin.error(`文件 ${file.name} 上传失败`);
 };
 const changeUpdata1 = (item: any) => {
-  console.log(item);
+  let worksList = [];
+  for (let i = 0; i < item.length; i++) {
+    worksList.push(item[i].url.replace("http://127.0.0.1:12134/upload/", ""));
+  }
+  formData.cover = JSON.stringify(worksList);
 };
 // 创作过程：参考文件，工程文件截图
 const file2 = ref([]);
@@ -270,7 +258,11 @@ const handleFail2 = (file: any) => {
   MessagePlugin.error(`文件 ${file.name} 上传失败`);
 };
 const changeUpdata2 = (item: any) => {
-  console.log(item);
+  let worksList = [];
+  for (let i = 0; i < item.length; i++) {
+    worksList.push(item[i].url.replace("http://127.0.0.1:12134/upload/", ""));
+  }
+  formData.beiyong1 = JSON.stringify(worksList);
 };
 
 const popSubmit = ref(false);
@@ -289,27 +281,27 @@ const handleclose = () => {
   visibleSubmit.value = false;
 };
 const handleConfirm = () => {
-  formData.files = formData.article.concat(formData.file);
-  // for (let i = 0; i < formData.file.length; i++) {
-  //   formData.files.push(formData.file[i]);
+  // formData.files = formData.article.concat(formData.file);
+  // // for (let i = 0; i < formData.file.length; i++) {
+  // //   formData.files.push(formData.file[i]);
+  // // }
+  // let param: any = {
+  //   title: formData.title,
+  //   cont: formData.cont,
+  //   online: 1,
+  // };
+  // if (!userData.value.id) {
+  //   param.username = formData.username;
+  // } else {
+  //   param.username = userData.value.username;
   // }
-  let param: any = {
-    title: formData.title,
-    description: formData.description,
-    online_status: 1,
-  };
-  if (!userData.value.id) {
-    param.username = formData.username;
-  } else {
-    param.username = userData.value.username;
-  }
-  if (formData.project_id !== "") {
-    param.project_id = formData.project_id;
-  }
-  if (wayActive.value === 1) {
-    param.process = formData.process;
-  }
-  console.log(param);
+  // if (formData.topic !== "") {
+  //   param.topic = formData.topic;
+  // }
+  // if (wayActive.value === 1) {
+  //   param.process = formData.process;
+  // }
+  console.log(formData);
   // if (route.query.id) {
   //   param.id = route.query.id;
   //   param.way = wayActive.value;
@@ -322,14 +314,13 @@ const handleConfirm = () => {
   //       console.log("获取失败！");
   //     });
   // } else {
-  //   postArticle(param)
-  //     .then((res: any) => {
-  //       // console.log(res);
-  //       popSubmit.value = true;
-  //     })
-  //     .catch((error: any) => {
-  //       console.log("获取失败！");
-  //     });
+  postArticle(formData)
+    .then((res: any) => {
+      popSubmit.value = true;
+    })
+    .catch((error: any) => {
+      console.log("获取失败！");
+    });
   // }
   visibleSubmit.value = false;
 };
@@ -351,16 +342,16 @@ const handleCancel = () => {
 // 判空处理
 const judge = () => {
   const old: any = reactive({
-    username: "",
+    username: userData.value.username,
     title: "",
-    project_id: "",
-    ai_json_title: "",
-    description: "",
-    article: [],
+    topic: "",
+    cont: "",
     process: "",
-    have: 2,
-    file: [],
-    files: [],
+    cover: "", //添加作品
+    beiyong1: "", //过程
+    collect: 0,
+    collect_number: 0,
+    state: 1, //未发布
   });
   let newData = JSON.stringify(formData);
   let oldData = JSON.stringify(old);
@@ -392,8 +383,8 @@ const detailsData = () => {
         formData.article = res.articles;
         formData.username = res.username;
         formData.title = res.title;
-        formData.project_id = +res.project_id;
-        formData.description = res.description;
+        formData.topic = +res.topic;
+        formData.cont = res.cont;
         formData.have = res.file.length !== 0 ? 1 : 2;
         if (res.file.length !== 0) {
           wayActive.value = 1;

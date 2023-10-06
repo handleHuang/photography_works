@@ -45,11 +45,11 @@
               <img class="item" :key="index" :src="cover" />
             </div>
           </div>
-          <div class="course_title" v-if="detailData.obj.cover">
+          <div class="course_title" v-if="detailData.obj.beiyong1">
             创作过程：参考文件，工程文件截图
           </div>
           <div class="article_course">
-            <div v-for="(cover, index) in detailData.obj.cover" :key="index">
+            <div v-for="(cover, index) in detailData.obj.beiyong1" :key="index">
               <img class="item" :key="index" :src="cover" />
             </div>
           </div>
