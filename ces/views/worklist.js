@@ -8,14 +8,22 @@ exports.workList = (req, res) => {
     const pageSize = parseInt(req.query.per_page) || 5;
     const offset = (page - 1) * pageSize;
     const keyword = req.query.title || "";
-    const state = req.query.state || "";
-    const isTop = req.query.top === "1"; // 收藏数最多的
+    const state = req.query.state || ""; // 是否发布 1/2 1已发布、2未发布
+    const top = parseInt(req.query.top) || 0; // 1收藏数最多的 //0最新作品
+    const topic = req.query.topic; // 新增的topic参数
 
     let countQueryBase =
       "SELECT COUNT(*) AS total FROM works_list WHERE title LIKE ?";
     let queryBase = "SELECT * FROM works_list WHERE title LIKE ?";
     let countParams = [`%${keyword}%`];
     let queryParams = [`%${keyword}%`];
+
+    if (topic) {
+      countQueryBase += " AND topic = ?";
+      queryBase += " AND topic = ?";
+      countParams.push(topic);
+      queryParams.push(topic);
+    }
 
     if (state) {
       countQueryBase += " AND state = ?";
@@ -24,8 +32,10 @@ exports.workList = (req, res) => {
       queryParams.push(state);
     }
 
-    if (isTop) {
+    if (top === 1) {
       queryBase += " ORDER BY collect_number DESC"; // 根据collect_number字段降序排序
+    } else {
+      queryBase += " ORDER BY created_at DESC"; // 根据created_at字段降序排序
     }
 
     const countQuery = countQueryBase;

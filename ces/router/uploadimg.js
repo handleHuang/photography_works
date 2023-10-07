@@ -33,7 +33,7 @@ router.post("/labelOline", verifyToken, classify.labelOline);
 router.post("/labelAnemd", verifyToken, classify.labelAnemd);
 router.delete("/labelDel", verifyToken, classify.labelDel);
 //作品管理
-router.get("/workList", verifyToken, work.workList);
+router.get("/workList", work.workList);
 router.get("/workDetails", verifyToken, work.workDetails);
 router.post("/workOline", verifyToken, work.workOline);
 router.post("/addWork", work.addWork);

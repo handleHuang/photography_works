@@ -8,7 +8,14 @@
           <div class="header_logo" @click="handleTitle"></div>
           <!-- <img height="30" src="./assets/img/logo.png" alt="logo" /> -->
           <div class="menu">
-            <div class="menu_list" :class="{ active: menuIndex === item.url }" v-for="(item, index) in menu" :key="index" @click="handleMenuList(item.url)" v-show="item.getStatusList">
+            <div
+              class="menu_list"
+              :class="{ active: menuIndex === item.url }"
+              v-for="(item, index) in menu"
+              :key="index"
+              @click="handleMenuList(item.url)"
+              v-show="item.getStatusList"
+            >
               {{ item.title }}
             </div>
           </div>
@@ -16,7 +23,13 @@
         <div class="header_right">
           <!-- <div class="lang" :class="{ active: index === langIndex }" v-for="(item, index) in lang" :key="index" @click="handleLang(item, index)">{{ item }}</div> -->
           <div class="user" @click="handleHeaderPhoto">
-            <t-icon class="t-menu__operations-icon" name="user-circle" size="32px" color="#ffffff" v-show="!headerPic" />
+            <t-icon
+              class="t-menu__operations-icon"
+              name="user-circle"
+              size="32px"
+              color="#ffffff"
+              v-show="!headerPic"
+            />
             <img :src="headerPic" class="user_pic" v-show="headerPic" />
           </div>
         </div>
@@ -28,7 +41,10 @@
     <div class="footer_wrap">
       <div class="footer" v-if="menuIndex === 'index'">
         <div class="max-content">
-          <div class="copyright">Copyright © 1998-{{ new Date().getFullYear() }} Tencent. All Rights Reserved. 腾讯公司 版权所有</div>
+          <div class="copyright">
+            Copyright © 1998-{{ new Date().getFullYear() }} Tencent. All Rights
+            Reserved. 腾讯公司 版权所有
+          </div>
         </div>
       </div>
     </div>
@@ -120,14 +136,14 @@ onMounted(() => {
 // }
 // const getStatus = ref(null);
 // const setLogin = () => {
-  // getLogin()
-  //   .then((res: any) => {
-  //     getStatus.value = res.status;
-  //     window.localStorage.setItem("status", JSON.stringify(res.status));
-  //   })
-  //   .catch((error: any) => {
-  //     console.log("获取失败！");
-  //   });
+// getLogin()
+//   .then((res: any) => {
+//     getStatus.value = res.status;
+//     window.localStorage.setItem("status", JSON.stringify(res.status));
+//   })
+//   .catch((error: any) => {
+//     console.log("获取失败！");
+//   });
 // };
 // setLogin();
 
@@ -159,7 +175,10 @@ let headerBgShow = ref(false);
 
 const scrollToTop = _debounce(async () => {
   // console.log(val)
-  var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+  var scrollTop =
+    window.pageYOffset ||
+    document.documentElement.scrollTop ||
+    document.body.scrollTop;
   if (scrollTop >= 560) {
     headerBgShow.value = true;
   } else {
@@ -176,12 +195,20 @@ const scrollToTop = _debounce(async () => {
 
 // 菜单跳转
 const handleMenuList = (url: string) => {
-  router.push({ path: url });
+  if (url === "updata") {
+    if (localStorage.getItem("user_info")) {
+      router.push({ path: url });
+    } else {
+      router.push({ path: "login" });
+    }
+  }else {
+    router.push({ path: url });
+  }
 };
 const handleHeaderPhoto = () => {
-  if(localStorage.getItem('user_info')) {
+  if (localStorage.getItem("user_info")) {
     router.push({ path: "user" });
-  }else {
+  } else {
     router.push({ path: "login" });
   }
 };

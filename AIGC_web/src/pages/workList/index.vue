@@ -81,17 +81,9 @@
             :key="index"
           >
             <img
-              :src="item.file && item.articles[0]?.url"
-              v-show="item.articles[0]?.mine.indexOf('image') !== -1"
+              :src="item.cover[0]"
               class="workList_list_pic"
             />
-            <div
-              class="video_list"
-              v-show="item.articles[0]?.mine.indexOf('video') !== -1"
-            >
-              <video class="workList_list_pic" :src="item.articles[0]?.url" />
-              <div class="video_btn"></div>
-            </div>
             <div class="workList_list_title">{{ item.title }}</div>
             <div class="workList_list_cont">
               <div class="workList_list_right">
@@ -100,18 +92,13 @@
                 </div>
               </div>
               <div class="workList_list_left">
-                <div class="left_label">
-                  <icon name="browse" style="color: rgba(16, 28, 41, 0.6)" />{{
-                    getArea(item.visit_count)
-                  }}
-                </div>
                 <div class="left_label" @click.stop="handleLikeBtn(item)">
                   <icon
                     name="thumb-up"
                     :style="{
                       color: item.liked ? '#0064ff' : 'rgba(16, 28, 41, 0.6)'
                     }"
-                  />{{ getArea(item.like_count) }}
+                  />{{ getArea(item.collect_number) }}
                 </div>
               </div>
             </div>
@@ -128,7 +115,7 @@
                   class="header_pic"
                 />
                 <!-- <icon v-show="!item.user?.avatar" name="user-circle" style="color: rgba(16, 28, 41, 0.6)" size="24px" /> -->
-                {{ item.user?.name }}
+                {{ item.user_name }}
               </div>
               <div class="workList_list_right">
                 {{ createdData(item.created_at) }}
@@ -278,11 +265,12 @@ const optionsTheme: any = [{ content: '全部主题', value: 0, id: 0 }]
 let params = {}
 getProjectsList(params)
   .then((res: any) => {
-    for (let i = 0; i < res.length; i++) {
+    console.log(res)
+    for (let i = 0; i < res.data.length; i++) {
       optionsTheme[i + 1] = {
-        content: res[i].title,
+        content: res.data[i].title,
         value: i + 1,
-        id: res[i].id
+        id: res.data[i].id
       }
     }
   })
@@ -353,8 +341,8 @@ function getArea(area: Number) {
   return String(area).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
 function createdData(value: any) {
-  var dateTime = value.toString().replace(/\-/g, '/')
-  var date = new Date(dateTime)
+  // var dateTime = value.toString().replace(/\-/g, '/')
+  var date = new Date(value)
   var y = date.getFullYear()
   var m: any = date.getMonth() + 1
   m = m < 10 ? '0' + m : m
@@ -402,14 +390,14 @@ const handleGetArticles = () => {
   let params: any = {
     page: page.value,
     per_page: per_page.value,
-    online_status: 1,
-    column: sizerIndex.value === 0 ? 'created_at' : 'like_count'
+    state: 1,
+    top: sizerIndex.value
   }
   if (searchInput.value !== '') {
-    params.title = searchInput.value
+    params.keyword = searchInput.value
   }
   if (theme.value !== 0) {
-    params.project_id = theme.value
+    params.topic = themeText.value
   }
   getArticles(params)
     .then((res: any) => {
@@ -420,11 +408,11 @@ const handleGetArticles = () => {
           behavior: 'smooth'
         })
         setTimeout(() => {
-          total.value = res.total
+          total.value = res.totalCount
           listData.value = res.data
         }, 100)
       } else {
-        total.value = res.total
+        total.value = res.totalCount
         listData.value = listData.value.concat(res.data)
       }
     })

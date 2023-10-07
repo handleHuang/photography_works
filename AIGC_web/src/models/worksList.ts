@@ -3,9 +3,9 @@ import { http } from "../utils/http";
 // 参赛作品列表
 export function getArticles(params: any) {
   return http({
-    url: `/api/articles?per_page=${params.per_page}&page=${params.page}&column=${params.column}&online_status=${params.online_status}${params.title ? "&title=" + params.title : ""}${
-      params.project_id ? "&project_id=" + params.project_id : ""
-    }`,
+    url: `/api/workList?per_page=${params.per_page}&page=${params.page}&state=${params.state}&top=${params.top}
+    ${params.keyword ? "&title=" + params.keyword : ""}
+    ${params.topic ? "&topic=" + params.topic : ""}`,
     method: "get",
   });
 }
