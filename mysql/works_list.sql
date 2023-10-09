@@ -11,7 +11,7 @@
  Target Server Version : 80034
  File Encoding         : 65001
 
- Date: 06/10/2023 17:03:58
+ Date: 09/10/2023 16:39:14
 */
 
 SET NAMES utf8mb4;
@@ -36,7 +36,7 @@ CREATE TABLE `works_list`  (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
   `process` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '控制手段',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of works_list
@@ -49,6 +49,7 @@ INSERT INTO `works_list` VALUES (7, 'Lu Zitao', 0, 790, '[\'shutterstock_5536513
 INSERT INTO `works_list` VALUES (8, 'Hui On Kay', 1, 424, '[\'shutterstock_553651330.jpg_1140x855.png\',\'shutterstock_553651330.jpg_1140x855.png\']', 'Miss.', 'xZbaDQ5WMG', '2dBYFiIPgL', 1, '[\"userimg.jpg\",\"testpic.png\"]', 0, '2023-10-06 17:01:59', NULL);
 INSERT INTO `works_list` VALUES (9, 'Miura Momoe', 1, 61, '[\'shutterstock_553651330.jpg_1140x855.png\',\'shutterstock_553651330.jpg_1140x855.png\']', 'Mr.', 'rRuETRiBYF', 'LyHGKjjOhJ', 1, '[\"userimg.jpg\",\"testpic.png\"]', 0, '2023-10-06 17:02:00', NULL);
 INSERT INTO `works_list` VALUES (10, 'Ying Yu Ling', 0, 602, '[\'shutterstock_553651330.jpg_1140x855.png\',\'shutterstock_553651330.jpg_1140x855.png\']', 'Miss.', '4FxUrE3xBS', 'GmvMn8iIHP', 2, '[\"userimg.jpg\",\"testpic.png\"]', 0, '2023-10-06 17:02:04', NULL);
-INSERT INTO `works_list` VALUES (11, 'admin', 0, 0, '[\"ä¸è½½.jpg\",\"userimg.jpg\"]', 'qwe', 'qweqwe', 'qweqwe', 0, '[\"userimg.jpg\",\"testpic.png\"]', NULL, '2023-10-06 16:16:31', 'qweqwe');
+INSERT INTO `works_list` VALUES (11, 'admin', 0, 0, '[\"ä¸è½½.jpg\",\"userimg.jpg\"]', 'qwe', 'qweqwe', 'qweqwe', 1, '[\"userimg.jpg\",\"testpic.png\"]', NULL, '2023-10-07 10:28:02', 'qweqwe');
+INSERT INTO `works_list` VALUES (12, 'admin', 0, 0, '[\"testpic.png\"]', '123123', '123', '123123123', 1, '[\"asdf.jpg\"]', NULL, '2023-10-07 15:09:39', '123123');
 
 SET FOREIGN_KEY_CHECKS = 1;
