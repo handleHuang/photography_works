@@ -27,9 +27,9 @@ export function getArticlesTime() {
 }
 
 // 用户排行列表
-export function getUsers(params: any) {
+export function getUsers() {
   return http({
-    url: `/api/users?column=${params.column}`,
+    url: `/api/rankList`,
     method: "get",
   });
 }

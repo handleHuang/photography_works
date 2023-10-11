@@ -203,6 +203,8 @@ console.log(userData.value);
 
 let formData: any = reactive({
   username: userData.value.username,
+  user_img: userData.value.cover,
+  beiyong2: userData.value.id,
   title: "",
   topic: "",
   cont: "",
@@ -343,6 +345,8 @@ const handleCancel = () => {
 const judge = () => {
   const old: any = reactive({
     username: userData.value.username,
+    user_img: userData.value.cover,
+    beiyong2: userData.value.id,
     title: "",
     topic: "",
     cont: "",

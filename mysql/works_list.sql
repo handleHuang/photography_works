@@ -11,7 +11,7 @@
  Target Server Version : 80034
  File Encoding         : 65001
 
- Date: 09/10/2023 16:39:14
+ Date: 11/10/2023 17:35:38
 */
 
 SET NAMES utf8mb4;
@@ -35,21 +35,27 @@ CREATE TABLE `works_list`  (
   `beiyong2` int NULL DEFAULT NULL COMMENT '备用',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
   `process` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '控制手段',
+  `user_img` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '用户头像',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of works_list
 -- ----------------------------
-INSERT INTO `works_list` VALUES (3, 'Kondo Mitsuki', 0, 212, '[\'shutterstock_553651330.jpg_1140x855.png\',\'shutterstock_553651330.jpg_1140x855.png\']', 'Miss.', 'tRHTmY8VJH', 'r1qEXgxj4S', 2, '[\"userimg.jpg\",\"testpic.png\"]', 0, '2023-10-06 17:01:54', NULL);
-INSERT INTO `works_list` VALUES (4, 'Jack Rivera', 1, 482, '[\'shutterstock_553651330.jpg_1140x855.png\',\'shutterstock_553651330.jpg_1140x855.png\']', 'Mr.', 'dlMJ510v6y', 'FEm07hq7Ph', 1, '[\"userimg.jpg\",\"testpic.png\"]', 0, '2023-10-06 17:01:55', NULL);
-INSERT INTO `works_list` VALUES (5, 'Michelle Smith', 1, 608, '[\'shutterstock_553651330.jpg_1140x855.png\',\'shutterstock_553651330.jpg_1140x855.png\']', 'Ms.', 'FKAWnsmoYD', '3SH0DvGDiW', 2, '[\"userimg.jpg\",\"testpic.png\"]', 0, '2023-10-06 17:01:57', NULL);
-INSERT INTO `works_list` VALUES (6, 'Kong Lik Sun', 1, 702, '[\'shutterstock_553651330.jpg_1140x855.png\',\'shutterstock_553651330.jpg_1140x855.png\']', 'Miss.', 'EYSqHvjwzm', 'QykkleQqO5', 2, '[\"userimg.jpg\",\"testpic.png\"]', 0, '2023-10-06 17:01:58', NULL);
-INSERT INTO `works_list` VALUES (7, 'Lu Zitao', 0, 790, '[\'shutterstock_553651330.jpg_1140x855.png\',\'shutterstock_553651330.jpg_1140x855.png\']', 'Prof.', 'fy0LVCaWAz', 'qI1AxWQhc8', 1, '[\"userimg.jpg\",\"testpic.png\"]', 0, '2023-10-06 17:01:59', NULL);
-INSERT INTO `works_list` VALUES (8, 'Hui On Kay', 1, 424, '[\'shutterstock_553651330.jpg_1140x855.png\',\'shutterstock_553651330.jpg_1140x855.png\']', 'Miss.', 'xZbaDQ5WMG', '2dBYFiIPgL', 1, '[\"userimg.jpg\",\"testpic.png\"]', 0, '2023-10-06 17:01:59', NULL);
-INSERT INTO `works_list` VALUES (9, 'Miura Momoe', 1, 61, '[\'shutterstock_553651330.jpg_1140x855.png\',\'shutterstock_553651330.jpg_1140x855.png\']', 'Mr.', 'rRuETRiBYF', 'LyHGKjjOhJ', 1, '[\"userimg.jpg\",\"testpic.png\"]', 0, '2023-10-06 17:02:00', NULL);
-INSERT INTO `works_list` VALUES (10, 'Ying Yu Ling', 0, 602, '[\'shutterstock_553651330.jpg_1140x855.png\',\'shutterstock_553651330.jpg_1140x855.png\']', 'Miss.', '4FxUrE3xBS', 'GmvMn8iIHP', 2, '[\"userimg.jpg\",\"testpic.png\"]', 0, '2023-10-06 17:02:04', NULL);
-INSERT INTO `works_list` VALUES (11, 'admin', 0, 0, '[\"ä¸è½½.jpg\",\"userimg.jpg\"]', 'qwe', 'qweqwe', 'qweqwe', 1, '[\"userimg.jpg\",\"testpic.png\"]', NULL, '2023-10-07 10:28:02', 'qweqwe');
-INSERT INTO `works_list` VALUES (12, 'admin', 0, 0, '[\"testpic.png\"]', '123123', '123', '123123123', 1, '[\"asdf.jpg\"]', NULL, '2023-10-07 15:09:39', '123123');
+INSERT INTO `works_list` VALUES (3, 'Kondo Mitsuki', 0, 212, '[\'shutterstock_553651330.jpg_1140x855.png\',\'shutterstock_553651330.jpg_1140x855.png\']', 'Miss.', 'tRHTmY8VJH', 'r1qEXgxj4S', 2, '[\"userimg.jpg\",\"testpic.png\"]', 0, '2023-10-06 17:01:54', NULL, NULL);
+INSERT INTO `works_list` VALUES (4, 'Jack Rivera', 1, 482, '[\'shutterstock_553651330.jpg_1140x855.png\',\'shutterstock_553651330.jpg_1140x855.png\']', 'Mr.', 'dlMJ510v6y', 'FEm07hq7Ph', 1, '[\"userimg.jpg\",\"testpic.png\"]', 0, '2023-10-06 17:01:55', NULL, NULL);
+INSERT INTO `works_list` VALUES (5, 'Michelle Smith', 1, 608, '[\'shutterstock_553651330.jpg_1140x855.png\',\'shutterstock_553651330.jpg_1140x855.png\']', 'Ms.', 'FKAWnsmoYD', '3SH0DvGDiW', 2, '[\"userimg.jpg\",\"testpic.png\"]', 0, '2023-10-06 17:01:57', NULL, NULL);
+INSERT INTO `works_list` VALUES (6, 'Kong Lik Sun', 1, 702, '[\'shutterstock_553651330.jpg_1140x855.png\',\'shutterstock_553651330.jpg_1140x855.png\']', 'Miss.', 'EYSqHvjwzm', 'QykkleQqO5', 2, '[\"userimg.jpg\",\"testpic.png\"]', 0, '2023-10-06 17:01:58', NULL, NULL);
+INSERT INTO `works_list` VALUES (7, 'Lu Zitao', 0, 790, '[\'shutterstock_553651330.jpg_1140x855.png\',\'shutterstock_553651330.jpg_1140x855.png\']', 'Prof.', 'fy0LVCaWAz', 'qI1AxWQhc8', 1, '[\"userimg.jpg\",\"testpic.png\"]', 0, '2023-10-11 15:56:41', NULL, NULL);
+INSERT INTO `works_list` VALUES (8, 'Hui On Kay', 1, 424, '[\'shutterstock_553651330.jpg_1140x855.png\',\'shutterstock_553651330.jpg_1140x855.png\']', 'Miss.', 'xZbaDQ5WMG', '2dBYFiIPgL', 1, '[\"userimg.jpg\",\"testpic.png\"]', 0, '2023-10-06 17:01:59', NULL, NULL);
+INSERT INTO `works_list` VALUES (9, 'Miura Momoe', 1, 61, '[\'shutterstock_553651330.jpg_1140x855.png\',\'shutterstock_553651330.jpg_1140x855.png\']', 'Mr.', 'rRuETRiBYF', 'LyHGKjjOhJ', 1, '[\"userimg.jpg\",\"testpic.png\"]', 0, '2023-10-06 17:02:00', NULL, NULL);
+INSERT INTO `works_list` VALUES (10, 'Ying Yu Ling', 0, 602, '[\'shutterstock_553651330.jpg_1140x855.png\',\'shutterstock_553651330.jpg_1140x855.png\']', 'Miss.', '4FxUrE3xBS', 'GmvMn8iIHP', 2, '[\"userimg.jpg\",\"testpic.png\"]', 0, '2023-10-06 17:02:04', NULL, NULL);
+INSERT INTO `works_list` VALUES (11, 'admin', 0, 0, '[\"ä¸è½½.jpg\",\"userimg.jpg\"]', 'qwe', 'qweqwe', 'qweqwe', 1, '[\"userimg.jpg\",\"testpic.png\"]', NULL, '2023-10-07 10:28:02', 'qweqwe', NULL);
+INSERT INTO `works_list` VALUES (12, 'admin', 0, 1, '[\"testpic.png\"]', '123123', '123', '123123123', 1, '[\"asdf.jpg\"]', NULL, '2023-10-11 16:17:27', '123123', NULL);
+INSERT INTO `works_list` VALUES (13, 'admin', 0, 1, '[\"2.jpg\",\"111.jpg\"]', '测试收藏', 'qweqwe', '123123', 1, '[\"640 (1).jpg\",\"640.jpg\"]', 5, '2023-10-11 16:17:01', '123123', NULL);
+INSERT INTO `works_list` VALUES (14, 'admin', 0, 1, '[\"111.jpg\"]', '测试上传2', 'qweqwe', '123123123', 1, '[\"640 (1).jpg\"]', 5, '2023-10-11 16:18:26', '123123', NULL);
+INSERT INTO `works_list` VALUES (15, 'admin', 0, 0, '[\"2.jpg\"]', '测试头像', 'qweqwe', '123123', 1, '[\"asdf.jpg\"]', 5, '2023-10-11 16:51:52', '123', NULL);
+INSERT INTO `works_list` VALUES (16, 'admin', 0, 0, '[\"userimg.jpg\"]', '测试头像2', 'qweqwe', '123213', 1, '[\"ä¸è½½.jpg\"]', 5, '2023-10-11 16:54:44', '123123', NULL);
+INSERT INTO `works_list` VALUES (17, 'admin', 0, 1, '[\"ä¸è½½.jpg\"]', '测试头像23', 'qweqwe', '123123', 1, '[\"2.jpg\"]', 5, '2023-10-11 17:14:25', '123123', 'http://127.0.0.1:12134/user/dipsad.jpg');
 
 SET FOREIGN_KEY_CHECKS = 1;

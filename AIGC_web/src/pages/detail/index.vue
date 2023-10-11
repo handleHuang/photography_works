@@ -8,24 +8,22 @@
             <div class="detail_label_item">
               <div class="header_box">
                 <!-- <div class="header_pic"></div> -->
-                <img src="../../assets/img/index/user.jpeg" class="header_pic" v-show="!detailsData.user?.avatar" />
-                <img :src="detailsData.user?.avatar" class="header_pic" v-show="detailsData.user?.avatar" />
-                {{ detailsData.username ? detailsData.username : detailsData.user?.name }}
+                <img src="../../assets/img/index/user.jpeg" class="header_pic" v-show="!detailsData.user_img" />
+                <img :src="detailsData.user_img" class="header_pic" v-show="detailsData.user_img" />
+                {{ detailsData.user_name }}
               </div>
               <div class="label_list">
                 {{ createdData(detailsData.created_at) }}
               </div>
-              <div class="label_list"><icon name="browse" style="color: rgba(16, 28, 41, 0.6)" />{{ detailsData.visit_count }}</div>
-              <div class="label_list"><icon name="thumb-up" style="color: rgba(16, 28, 41, 0.6)" />{{ detailsData.like_count }}</div>
+              <div class="label_list"><icon name="thumb-up" style="color: rgba(16, 28, 41, 0.6)" />{{ detailsData.collect_number }}</div>
             </div>
           </div>
           <div class="wrap_btn_box">
-            <div class="wrap_btn" :class="{ active: detailsData.liked }" @click="handleBtn">
-              <icon name="thumb-up" style="color: #ffffff" v-show="!detailsData.liked" />
-              <div class="wrap_btn_icon" v-show="detailsData.liked"></div>
-              {{ detailsData.liked ? "已点赞" : "点赞" }}
+            <div class="wrap_btn" :class="{ active: detailsData.collect === 1 }" @click="handleBtn">
+              <icon name="thumb-up" style="color: #ffffff" v-show="detailsData.collect !== 1" />
+              <div class="wrap_btn_icon" v-show="detailsData.collect"></div>
+              {{ detailsData.collect === 1 ? "已收藏" : "收藏" }}
             </div>
-            <div class="antistop" @click="handleAntistop">生成关键词</div>
           </div>
         </div>
         <div class="top_item">
@@ -33,69 +31,32 @@
             <div class="top_list_title">参赛命题</div>
             <div class="top_list_text">{{ detailsData.project?.title }}</div>
           </div>
-          <div class="top_list">
-            <div class="top_list_title">所用AI平台</div>
-            <div class="top_list_text">
-              {{ detailsData.ai_json?.title }}<span v-show="detailsData.ai_json?.content"> - {{ detailsData.ai_json?.content }}</span>
-            </div>
-          </div>
-          <!-- <div class="top_list">
-            <div class="top_list_title">标签</div>
-            <div class="top_list_label">
-              <div class="label_list">长城</div>
-              <div class="label_list">长城</div>
-              <div class="label_list">长城</div>
-              <div class="label_list">长城</div>
-              <div class="label_list">长城</div>
-              <div class="label_list">长城</div>
-              <div class="label_list">长城</div>
-              <div class="label_list">长城</div>
-            </div>
-          </div> -->
         </div>
       </div>
       <div class="detail_wrap">
         <div class="detail_wrap_left">
           <div class="video_item">
-            <div class="video_list" v-for="(item, index) in detailsData.articles" :key="index">
-              <img :src="item.url" class="right_pic" @click="handlePicList('articles', index)" v-show="item.mine.indexOf('image') !== -1" />
-              <div @click="handlePicList('video', index)" style="width: 100%; height: 100%" v-show="item.mine.indexOf('video') !== -1">
-                <video class="right_pic" :src="item.url" :controls="controls" />
-                <div class="video_btn"></div>
-              </div>
+            <div class="video_list" v-for="(item, index) in detailsData.cover" :key="index">
+              <img :src="item" class="right_pic" @click="handlePicList('articles', index)"/>
             </div>
           </div>
           <div v-if="detailsData.file?.length !== 0">
             <div class="left_text">创作过程：参考文件，工程文件截图</div>
             <div class="right_pic_item">
-              <div class="video_list" v-for="(item, index) in detailsData.file" :key="index">
-                <img :src="item.url" class="right_pic" @click="handlePicList('file', index + detailsData.articles.length)" v-show="item.mine.indexOf('image') !== -1" />
-                <div @click="handlePicList('video', index + detailsData.articles.length)" style="width: 100%; height: 100%" v-show="item.mine.indexOf('video') !== -1">
-                  <video class="right_pic" :src="item.url" :controls="controls" />
-                  <div class="video_btn"></div>
-                </div>
+              <div class="video_list" v-for="(item, index) in detailsData.beiyong1" :key="index">
+                <img :src="item" class="right_pic" @click="handlePicList('file', index + detailsData.beiyong1.length)" />
               </div>
             </div>
           </div>
-            <div class="btns">
-              <span @click="otherClick(otherData.first.id)" v-if="otherData?.first">上一篇:{{ otherData.first?.title }}</span>
-              <span @click="otherClick(otherData.next.id)" v-if="otherData?.next">下一篇:{{ otherData.next?.title }}</span>
-            </div>
         </div>
         <div class="detail_wrap_right">
-          <div class="wrap_list" v-if="detailsData.project?.title">
+          <div class="wrap_list">
             <div class="list_title">参赛命题</div>
-            <div class="list_text">{{ detailsData.project?.title }}</div>
-          </div>
-          <div class="wrap_list" v-if="detailsData.ai_json">
-            <div class="list_title">所用AI平台</div>
-            <div class="list_text">
-              {{ detailsData.ai_json?.title }}<span v-show="detailsData.ai_json?.content"> - {{ detailsData.ai_json?.content }}</span>
-            </div>
+            <div class="list_text">{{ detailsData.topic }}</div>
           </div>
           <div class="wrap_list">
             <div class="list_title">生成关键描述</div>
-            <div class="list_text">{{ detailsData.description }}</div>
+            <div class="list_text">{{ detailsData.cont }}</div>
           </div>
           <div class="wrap_list" v-if="detailsData.process">
             <div class="list_title">创作过程描述：其他输入和控制手段</div>
@@ -105,28 +66,6 @@
       </div>
     </div>
     <t-image-viewer :key="viewerIndex" v-model:visible="visible" :defaultIndex="viewerIndex" :images="imageViewerData"> </t-image-viewer>
-    <div class="antistop_pup" v-if="antistopShow">
-      <div class="antistop_pup_bg"></div>
-      <div class="antistop_pup_box">
-        <icon name="close" style="color: #000" @click="handleAntistop" />
-        <div class="antistop_pup_list">
-          <div class="antistop_pup_title">生成关键词描述</div>
-          <div class="antistop_pup_text">{{ detailsData.description }}</div>
-        </div>
-        <div class="antistop_pup_list" v-if="detailsData.process">
-          <div class="antistop_pup_title">创作过程描述：其他输入和控制手段</div>
-          <div class="antistop_pup_text">
-            {{ detailsData.process }}
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="pupop" v-if="videoShow">
-      <div class="pupop_bg" @click="handleVideoShow"></div>
-      <div class="pupop_box">
-        <video class="right_pic" :src="videoUrl" autoplay loop controls />
-      </div>
-    </div>
   </div>
 </template>
 
@@ -138,7 +77,7 @@ import { MessagePlugin } from "tdesign-vue-next";
 import { getArticlesDetail, postlike } from "../../models/detail";
 const route = useRoute();
 const router = useRouter();
-const userId: any = ref(route.query.id);
+const item_Id: any = ref(route.query.id);
 const domain = "https://aigc-1311564431.cos.ap-guangzhou.myqcloud.com/";
 const detailsData: any = ref({});
 const otherData: any = ref({});
@@ -158,19 +97,23 @@ router.beforeEach((to, from, next) => {
     });
 // 弹窗
 const videoUrl = ref("");
-const videoShow = ref(false);
 let innerWidth = window.innerWidth;
 const controls = ref(false);
+const userData: any = ref(
+  JSON.parse(localStorage.getItem("user_info") as string)
+);
 const handleDetails = () => {
-  getArticlesDetail(userId.value)
+  let params = {
+    id: item_Id.value,
+    user_id: userData.value.id,
+  }
+  getArticlesDetail(params)
     .then((res: any) => {
-      detailsData.value = res.article;
+      detailsData.value = res;
       otherData.value = {first:res.first,next:res.next};
-      newPic.value = res.articles?.articles.concat(res.file);
-      for (let i = 0; i < newPic.value?.length; i++) {
-        if (newPic.value[i].mine.indexOf("image") !== -1) {
-          imageViewerData.value.push(newPic.value[i].url);
-        }
+      newPic.value = res.cover.concat(res.beiyong1);
+      for (let i = 0; i < newPic.value.length; i++) {
+        imageViewerData.value.push(newPic.value[i]);
       }
       if (innerWidth <= 750) {
         controls.value = true;
@@ -181,21 +124,11 @@ const handleDetails = () => {
     });
 };
 
-const otherClick = (id:any)=>{
-  console.log(id);
-  userId.value = id
-  router.push({
-    name: 'detail',
-    query: {id: id }
-  })
-  handleDetails()
-}
-
 const handlePicList = (type: any, index: any) => {
   if (type === "articles" || type === "file") {
     for (let i = 0; i < newPic.value.length; i++) {
       for (let j = 0; j < imageViewerData.value.length; j++) {
-        if (newPic.value[index].url === imageViewerData.value[j]) {
+        if (newPic.value[index] === imageViewerData.value[j]) {
           viewerIndex.value = j;
           visible.value = true;
           return false;
@@ -203,27 +136,16 @@ const handlePicList = (type: any, index: any) => {
       }
     }
   }
-  if (innerWidth <= 750) {
-  } else {
-    if (type === "video") {
-      videoUrl.value = newPic.value[index].url;
-      videoShow.value = true;
-    }
-  }
-};
-
-const handleVideoShow = () => {
-  videoShow.value = false;
 };
 
 const handleBtn = () => {
   let params: any = {
-    likeable_id: userId.value,
-    likeable_type: "articles",
+    item_id: item_Id.value,
+    author_id: detailsData.value.beiyong2,
+    user_id: userData.value.id,
   };
   postlike(params)
     .then((res: any) => {
-      // console.log(res);
       handleDetails();
       MessagePlugin.success(`${res.message}`);
     })
@@ -232,20 +154,13 @@ const handleBtn = () => {
     });
 };
 
-//弹窗
-const antistopShow = ref(false);
-const handleAntistop = () => {
-  antistopShow.value = !antistopShow.value;
-};
-
 onMounted(() => {
   handleDetails();
 });
 
 function createdData(value: any) {
   if (value) {
-    var dateTime = value.toString().replace(/\-/g, "/");
-    var date = new Date(dateTime);
+    var date = new Date(value);
     var y = date.getFullYear();
     var m: any = date.getMonth() + 1;
     m = m < 10 ? "0" + m : m;

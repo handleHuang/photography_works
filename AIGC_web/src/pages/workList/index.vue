@@ -34,7 +34,7 @@
               >
                 <t-space>
                   <t-button variant="text">
-                    {{ themeText ? themeText : '全部主题' }}
+                    {{ themeText ? themeText : "全部主题" }}
                     <template #suffix>
                       <t-icon name="chevron-down" size="16"
                     /></template>
@@ -80,10 +80,7 @@
             v-for="(item, index) in listData"
             :key="index"
           >
-            <img
-              :src="item.cover[0]"
-              class="workList_list_pic"
-            />
+            <img :src="item.cover[0]" class="workList_list_pic" />
             <div class="workList_list_title">{{ item.title }}</div>
             <div class="workList_list_cont">
               <div class="workList_list_right">
@@ -96,7 +93,7 @@
                   <icon
                     name="thumb-up"
                     :style="{
-                      color: item.liked ? '#0064ff' : 'rgba(16, 28, 41, 0.6)'
+                      color: item.liked ? '#0064ff' : 'rgba(16, 28, 41, 0.6)',
                     }"
                   />{{ getArea(item.collect_number) }}
                 </div>
@@ -105,16 +102,15 @@
             <div class="workList_list_cont">
               <div class="workList_list_left">
                 <img
-                  v-show="item.user?.avatar"
-                  :src="item.user?.avatar"
+                  v-show="item.user_img"
+                  :src="item.user_img"
                   class="header_pic"
                 />
                 <img
                   src="../../assets/img/index/user.jpeg"
-                  v-show="!item.user?.avatar"
+                  v-show="!item.user_img"
                   class="header_pic"
                 />
-                <!-- <icon v-show="!item.user?.avatar" name="user-circle" style="color: rgba(16, 28, 41, 0.6)" size="24px" /> -->
                 {{ item.user_name }}
               </div>
               <div class="workList_list_right">
@@ -126,21 +122,6 @@
         <div class="workList_rank">
           <div class="rank_header">
             <div class="rank_header_left">AIGC绘图人气榜</div>
-            <div class="rank_header_right">
-              <div
-                class="screen_right_list"
-                v-for="(item, index) in selectRankData"
-                :key="index"
-                :class="{ active: rankActive === index }"
-                @click="handleRankList(index)"
-              >
-                {{ item.label }}
-              </div>
-              <div
-                class="screen_block"
-                :style="{ left: `${43 * rankActive}px` }"
-              ></div>
-            </div>
           </div>
           <div class="rank_title_list">
             <div class="rank_title_list_left">
@@ -159,12 +140,12 @@
             <img
               src="../../assets/img/index/user.jpeg"
               class="rank_list_img"
-              v-show="!item.avatar"
+              v-show="!item.cover"
             />
             <img
-              :src="item?.avatar"
+              :src="item?.cover"
               class="rank_list_img"
-              v-show="item.avatar"
+              v-show="item.cover"
             />
             <div class="rank_list_cont">
               <div class="rank_list_name">{{ item.name }}</div>
@@ -173,14 +154,14 @@
               </div> -->
             </div>
             <div class="rank_list_like">
-              {{ rankActive === 0 ? item.mouth_like_count : item.like_count }}
+              {{ item.like_number }}
             </div>
           </div>
           <div class="rank_tips">
             *个人榜每小时更新（更新于{{ createdData(new Date()) }}
             {{
               new Date().getHours() < 10
-                ? '0' + new Date().getHours()
+                ? "0" + new Date().getHours()
                 : new Date().getHours()
             }}:00）
           </div>
@@ -202,202 +183,184 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, onMounted, nextTick } from 'vue'
-import { Icon, SearchIcon } from 'tdesign-icons-vue-next'
-import { MessagePlugin } from 'tdesign-vue-next'
-import { _debounce } from '../../utils/throttle'
-import { useRouter, useRoute } from 'vue-router'
+import { ref, reactive, onMounted, nextTick } from "vue";
+import { Icon, SearchIcon } from "tdesign-icons-vue-next";
+import { MessagePlugin } from "tdesign-vue-next";
+import { _debounce } from "../../utils/throttle";
+import { useRouter, useRoute } from "vue-router";
 import {
   getArticles,
   getArticlesTime,
   getArticlesYears,
-  getUsers
-} from '../../models/worksList'
-import { getProjectsList } from '../../models/index'
-import { postlike } from '../../models/detail'
-const router = useRouter()
-const route = useRoute()
-const domain = 'https://aigc-1311564431.cos.ap-guangzhou.myqcloud.com/'
+  getUsers,
+} from "../../models/worksList";
+import { getProjectsList } from "../../models/index";
+import { postlike } from "../../models/detail";
+const router = useRouter();
+const route = useRoute();
+const domain = "https://aigc-1311564431.cos.ap-guangzhou.myqcloud.com/";
 // 年份
-let year = ref<string>('')
-const optionsYear: any = [{ content: '全部年份', value: 0 }]
+let year = ref<string>("");
+const optionsYear: any = [{ content: "全部年份", value: 0 }];
 const clickHandlerYear = (data: any) => {
-  year.value = data.content
+  year.value = data.content;
   getArticlesTime()
     .then((res: any) => {
       for (let i = 0; i < res.length; i++) {
         optionsMonth[i + 1] = {
           content: res[i],
-          value: i + 1
-        }
+          value: i + 1,
+        };
       }
     })
     .catch((error: any) => {
-      console.log('获取失败！')
-    })
+      console.log("获取失败！");
+    });
   // MessagePlugin.success(`选中【${data.content}】`);
-}
+};
 
 // 月份
-let month = ref<string>('')
-const optionsMonth = [{ content: '全部月份', value: 0 }]
+let month = ref<string>("");
+const optionsMonth = [{ content: "全部月份", value: 0 }];
 const clickHandlerMonth = (data: any) => {
-  month.value = data.content
+  month.value = data.content;
   // MessagePlugin.success(`选中【${data.content}】`);
-}
+};
 getArticlesYears()
   .then((res: any) => {
     for (let i = 0; i < res.length; i++) {
       optionsYear[i + 1] = {
         content: res[i],
-        value: i + 1
-      }
+        value: i + 1,
+      };
     }
   })
   .catch((error: any) => {
-    console.log('获取失败！')
-  })
+    console.log("获取失败！");
+  });
 
 // 主题
-let theme = ref<number>(0)
-let themeText = ref<string>('')
-const optionsTheme: any = [{ content: '全部主题', value: 0, id: 0 }]
-let params = {}
+let theme = ref<number>(0);
+let themeText = ref<string>("");
+const optionsTheme: any = [{ content: "全部主题", value: 0, id: 0 }];
+let params = {};
 getProjectsList(params)
   .then((res: any) => {
-    console.log(res)
+    console.log(res);
     for (let i = 0; i < res.data.length; i++) {
       optionsTheme[i + 1] = {
         content: res.data[i].title,
         value: i + 1,
-        id: res.data[i].id
-      }
+        id: res.data[i].id,
+      };
     }
   })
   .catch((error: any) => {
-    console.log('获取失败！')
-  })
+    console.log("获取失败！");
+  });
 const clickHandlerTheme = (data: any) => {
-  theme.value = data.id
-  themeText.value = data.content
-  listData.value = []
+  theme.value = data.id;
+  themeText.value = data.content;
+  listData.value = [];
   // MessagePlugin.success(`选中【${data.content}】`);
-  handleGetArticles()
-}
+  handleGetArticles();
+};
 
-const selectActive: any = ref('1')
+const selectActive: any = ref("1");
 const screenChange = (e: any) => {
-  selectActive.value = e
-  listData.value = []
-  handleGetArticles()
-}
+  selectActive.value = e;
+  listData.value = [];
+  handleGetArticles();
+};
 
-const selectRankData = reactive([
-  {
-    label: `${new Date().getMonth() + 1}月`,
-    value: 0
-  },
-  {
-    label: '累计',
-    value: 1
-  }
-])
-const rankList: any = ref([])
-const rankActive = ref(0)
-const handleRankList = (index: number) => {
-  rankActive.value = index
-  incidentRankList()
-}
+const rankList: any = ref([]);
 const incidentRankList = () => {
-  let params: any = {
-    column: rankActive.value === 0 ? 'mouth_like_count' : 'like_count'
-  }
-  getUsers(params)
+  getUsers()
     .then((res: any) => {
-      rankList.value = res.data
+      rankList.value = res;
     })
     .catch((error: any) => {
-      console.log('获取失败！')
-    })
-}
-incidentRankList()
+      console.log("获取失败！");
+    });
+};
+incidentRankList();
 
 const sizerItem: any = ref([
   {
-    title: '最新上传'
+    title: "最新上传",
   },
   {
-    title: '点赞最多'
-  }
-])
-let sizerIndex: any = ref(0)
+    title: "点赞最多",
+  },
+]);
+let sizerIndex: any = ref(0);
 const handleSizer = (index: any) => {
-  sizerIndex.value = index
-  listData.value = []
-  handleGetArticles()
-}
+  sizerIndex.value = index;
+  listData.value = [];
+  handleGetArticles();
+};
 
 function getArea(area: Number) {
-  return String(area).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  return String(area).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 function createdData(value: any) {
   // var dateTime = value.toString().replace(/\-/g, '/')
-  var date = new Date(value)
-  var y = date.getFullYear()
-  var m: any = date.getMonth() + 1
-  m = m < 10 ? '0' + m : m
-  var d: any = date.getDate()
-  d = d < 10 ? '0' + d : d
-  var h: any = date.getHours()
-  h = h < 10 ? '0' + h : h
-  return y + '-' + m + '-' + d
+  var date = new Date(value);
+  var y = date.getFullYear();
+  var m: any = date.getMonth() + 1;
+  m = m < 10 ? "0" + m : m;
+  var d: any = date.getDate();
+  d = d < 10 ? "0" + d : d;
+  var h: any = date.getHours();
+  h = h < 10 ? "0" + h : h;
+  return y + "-" + m + "-" + d;
 }
-let total = ref(0)
-const page: any = ref(Number(route.meta.page) || 1)
-const per_page: any = ref(Number(route.meta.pageSize) || 20)
+let total = ref(0);
+const page: any = ref(Number(route.meta.page) || 1);
+const per_page: any = ref(Number(route.meta.pageSize) || 20);
 const onChange = (pageInfo: any) => {
-  console.log(pageInfo)
-  per_page.value = pageInfo.pageSize
-  page.value = pageInfo.current
-}
+  console.log(pageInfo);
+  per_page.value = pageInfo.pageSize;
+  page.value = pageInfo.current;
+};
 
 function handleList(index: any, id: number) {
   router.push({
-    name: 'detail',
-    query: { page: page.value, pageSize: per_page.value, id: id }
-  })
+    name: "detail",
+    query: { page: page.value, pageSize: per_page.value, id: id },
+  });
 }
 const onPageSizeChange = (size: any) => {
-  per_page.value = size
-  listData.value = []
-  handleGetArticles()
-}
+  per_page.value = size;
+  listData.value = [];
+  handleGetArticles();
+};
 const onCurrentChange = (index: Number, pageInfo: any) => {
-  page.value = index
-  listData.value = []
-  handleGetArticles()
-}
-let listData: any = ref([])
-let searchInput = ref('')
+  page.value = index;
+  listData.value = [];
+  handleGetArticles();
+};
+let listData: any = ref([]);
+let searchInput = ref("");
 const searchChange = () => {
-  page.value = 1
-  per_page.value = 20
-  listData.value = []
-  handleGetArticles()
-}
+  page.value = 1;
+  per_page.value = 20;
+  listData.value = [];
+  handleGetArticles();
+};
 // 参赛作品列表
 const handleGetArticles = () => {
   let params: any = {
     page: page.value,
     per_page: per_page.value,
     state: 1,
-    top: sizerIndex.value
-  }
-  if (searchInput.value !== '') {
-    params.keyword = searchInput.value
+    top: sizerIndex.value,
+  };
+  if (searchInput.value !== "") {
+    params.keyword = searchInput.value;
   }
   if (theme.value !== 0) {
-    params.topic = themeText.value
+    params.topic = themeText.value;
   }
   getArticles(params)
     .then((res: any) => {
@@ -405,76 +368,78 @@ const handleGetArticles = () => {
         window.scrollTo({
           top: 0,
           left: 0,
-          behavior: 'smooth'
-        })
+          behavior: "smooth",
+        });
         setTimeout(() => {
-          total.value = res.totalCount
-          listData.value = res.data
-        }, 100)
+          total.value = res.totalCount;
+          listData.value = res.data;
+        }, 100);
       } else {
-        total.value = res.totalCount
-        listData.value = listData.value.concat(res.data)
+        total.value = res.totalCount;
+        listData.value = listData.value.concat(res.data);
       }
     })
     .catch((error: any) => {
-      console.log('获取失败！')
-    })
-}
-handleGetArticles()
+      console.log("获取失败！");
+    });
+};
+handleGetArticles();
 
-const keyOpen = ref(false)
-let scrollContainer: any = ref(null)
-let child: any = document.documentElement.clientHeight
+const keyOpen = ref(false);
+let scrollContainer: any = ref(null);
+let child: any = document.documentElement.clientHeight;
 onMounted(() => {
   // 添加滚动事件监听
-  let innerWidth = window.innerWidth
+  let innerWidth = window.innerWidth;
   if (innerWidth <= 750) {
-    const scroll = window.addEventListener('scroll', scrollToTop)
+    const scroll = window.addEventListener("scroll", scrollToTop);
   } else {
-    keyOpen.value = true
+    keyOpen.value = true;
   }
-})
+});
 
 const scrollToTop = _debounce(async () => {
-  let scrollHeight = scrollContainer.value?.clientHeight
+  let scrollHeight = scrollContainer.value?.clientHeight;
   var scrollTop =
     window.pageYOffset ||
     document.documentElement.scrollTop ||
-    document.body.scrollTop
+    document.body.scrollTop;
   // // 判断是否滚动到底部
   if (scrollTop + child >= scrollHeight - 100) {
     if (listData.value.length < total.value) {
-      page.value++
-      handleGetArticles()
+      page.value++;
+      handleGetArticles();
     }
   }
-}, 100)
-
+}, 100);
+const userData: any = ref(
+  JSON.parse(localStorage.getItem("user_info") as string)
+);
 const handleLikeBtn = (item: any) => {
   let params: any = {
-    likeable_id: item.id,
-    likeable_type: 'articles'
-  }
+    item_id: item.id,
+    author_id: item.beiyong2,
+    user_id: userData.value.id,
+  };
   postlike(params)
     .then((res: any) => {
-      console.log(res)
-      if (res.message === '取消点赞！') {
-        item.like_count -= 1
-        item.liked = false
-      } else if (res.message === '点赞成功!') {
-        item.like_count += 1
-        item.liked = true
+      console.log(res);
+      handleGetArticles();
+      if (res.message === "作品收藏已取消") {
+        item.liked = false;
+      } else {
+        item.liked = true;
       }
-      MessagePlugin.success(`${res.message}`)
+      MessagePlugin.success(`${res.message}`);
     })
     .catch((error: any) => {
-      console.log('获取失败！')
-    })
-}
+      console.log("获取失败！");
+    });
+};
 
 const toUserPage = (id: number) => {
-  router.push({ path: 'user', query: { id: id } })
-}
+  router.push({ path: "user", query: { id: id } });
+};
 
 // function ellipsis (value) {
 //   if (!value) return '0'

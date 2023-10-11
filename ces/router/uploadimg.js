@@ -40,6 +40,7 @@ router.post("/addWork", work.addWork);
 router.delete("/workDel", verifyToken, work.workDel);
 // 收藏
 router.post("/collect", verifyToken, collect.collect);
+router.get("/rankList", verifyToken, collect.collectList);
 
 // 获取数据列表
 router.get("/userList", verifyToken, (req, res) => {
@@ -178,7 +179,7 @@ router.post("/login", (req, res) => {
   }
 
   const selectSQL =
-    "SELECT id, username, password, identity FROM user_list WHERE username=? AND password=?";
+    "SELECT id, username, password, identity, cover FROM user_list WHERE username=? AND password=?";
   const selectParams = [username, password];
 
   connection.query(selectSQL, selectParams, (err, result) => {
@@ -188,6 +189,7 @@ router.post("/login", (req, res) => {
       const identity = result[0].identity;
       if (identity === 0 || identity === 1) {
         const token = jwt.sign({ username: result[0].username }, "hon71234", { expiresIn: "2h" });
+        console.log(result[0])
         res.status(200).send({
           status: 200,
           message: "登录成功",
@@ -198,6 +200,7 @@ router.post("/login", (req, res) => {
             domian: "http://127.0.0.1:12134/upload/",
             identity: identity,
             token: token,
+            cover: result[0].cover
           },
         });
       } else {

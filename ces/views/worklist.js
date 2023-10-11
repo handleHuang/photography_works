@@ -219,39 +219,31 @@ exports.addWork = (req, res) => {
   try {
     const {
       username,
+      user_img,
       title,
       topic,
       cont,
       process,
       cover,
       beiyong1,
+      beiyong2,
       collect,
       collect_number,
       state,
     } = req.body;
-    console.log(
-      username,
-      title,
-      topic,
-      cont,
-      process,
-      cover,
-      beiyong1,
-      collect,
-      collect_number,
-      state
-    );
 
     // 插入数据
-    const sql = `INSERT INTO works_list (user_name, title, topic, cont, process, cover, beiyong1, collect, collect_number, state) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    const sql = `INSERT INTO works_list (user_name, user_img, title, topic, cont, process, cover, beiyong1, beiyong2, collect, collect_number, state) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
     const values = [
       username,
+      user_img,
       title,
       topic,
       cont,
       process,
       cover,
       beiyong1,
+      beiyong2,
       collect,
       collect_number,
       state,
