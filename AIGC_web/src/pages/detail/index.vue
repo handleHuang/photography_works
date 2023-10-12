@@ -100,7 +100,7 @@ const videoUrl = ref("");
 let innerWidth = window.innerWidth;
 const controls = ref(false);
 const userData: any = ref(
-  JSON.parse(localStorage.getItem("user_info") as string)
+  JSON.parse(localStorage.getItem("user_info") as string) || ''
 );
 const handleDetails = () => {
   let params = {

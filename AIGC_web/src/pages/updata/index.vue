@@ -214,6 +214,7 @@ let formData: any = reactive({
   collect: 0,
   collect_number: 0,
   state: 1, //未发布
+  have: 2,
 });
 
 const rules = {
@@ -243,7 +244,7 @@ const onChangeWay = (e: any) => {
 
 // 上传
 // 添加作品
-const file1 = ref([]);
+const file1: any = ref([]);
 const handleFail1 = (file: any) => {
   MessagePlugin.error(`文件 ${file.name} 上传失败`);
 };
@@ -255,7 +256,7 @@ const changeUpdata1 = (item: any) => {
   formData.cover = JSON.stringify(worksList);
 };
 // 创作过程：参考文件，工程文件截图
-const file2 = ref([]);
+const file2: any = ref([]);
 const handleFail2 = (file: any) => {
   MessagePlugin.error(`文件 ${file.name} 上传失败`);
 };
@@ -283,47 +284,24 @@ const handleclose = () => {
   visibleSubmit.value = false;
 };
 const handleConfirm = () => {
-  // formData.files = formData.article.concat(formData.file);
-  // // for (let i = 0; i < formData.file.length; i++) {
-  // //   formData.files.push(formData.file[i]);
-  // // }
-  // let param: any = {
-  //   title: formData.title,
-  //   cont: formData.cont,
-  //   online: 1,
-  // };
-  // if (!userData.value.id) {
-  //   param.username = formData.username;
-  // } else {
-  //   param.username = userData.value.username;
-  // }
-  // if (formData.topic !== "") {
-  //   param.topic = formData.topic;
-  // }
-  // if (wayActive.value === 1) {
-  //   param.process = formData.process;
-  // }
-  console.log(formData);
-  // if (route.query.id) {
-  //   param.id = route.query.id;
-  //   param.way = wayActive.value;
-  //   updataEdit(param)
-  //     .then((res: any) => {
-  //       // console.log(res);
-  //       popSubmit.value = true;
-  //     })
-  //     .catch((error: any) => {
-  //       console.log("获取失败！");
-  //     });
-  // } else {
-  postArticle(formData)
-    .then((res: any) => {
-      popSubmit.value = true;
-    })
-    .catch((error: any) => {
-      console.log("获取失败！");
-    });
-  // }
+  if (route.query.id) {
+    formData.id = +route.query.id;
+    updataEdit(formData)
+      .then((res: any) => {
+        popSubmit.value = true;
+      })
+      .catch((error: any) => {
+        console.log("获取失败！");
+      });
+  } else {
+    postArticle(formData)
+      .then((res: any) => {
+        popSubmit.value = true;
+      })
+      .catch((error: any) => {
+        console.log("获取失败！");
+      });
+  }
   visibleSubmit.value = false;
 };
 
@@ -382,20 +360,49 @@ const handleCloseCancel = () => {
 const detailsData = () => {
   if (route.query.id) {
     // console.log(route.query.id);
-    getArticlesDetail(route.query.id)
+    let params = {
+      id: route.query.id,
+      user_id: userData.value.id,
+    };
+    getArticlesDetail(params)
       .then((res: any) => {
-        formData.article = res.articles;
-        formData.username = res.username;
         formData.title = res.title;
-        formData.topic = +res.topic;
+        formData.topic = res.topic;
         formData.cont = res.cont;
-        formData.have = res.file.length !== 0 ? 1 : 2;
-        if (res.file.length !== 0) {
+        if (res.cover.length) {
+          let oldCover = [];
+          for (let i = 0; i < res.cover.length; i++) {
+            file1.value[i] = {
+              url: res.cover[i],
+              name: res.cover[i],
+              status: "success",
+            };
+            oldCover.push(
+              res.cover[i].replace("http://127.0.0.1:12134/upload/", "")
+            );
+            formData.cover = JSON.stringify(oldCover);
+          }
+        }
+        formData.have = res.beiyong1.length !== 0 ? 1 : 2;
+        if (res.beiyong1.length !== 0) {
           wayActive.value = 1;
         }
         formData.process = res.process;
-        formData.file = res.file;
-        console.log(formData);
+        if (res.beiyong1.length) {
+          let oldCover = []
+          for (let i = 0; i < res.beiyong1.length; i++) {
+            file2.value[i] = {
+              url: res.beiyong1[i],
+              name: res.beiyong1[i],
+              status: "success",
+            };
+            oldCover.push(
+              res.beiyong1[i].replace("http://127.0.0.1:12134/upload/", "")
+            );
+            formData.beiyong1 = JSON.stringify(oldCover);
+          }
+        }
+        console.log(res);
       })
       .catch((error: any) => {
         console.log("获取失败！");

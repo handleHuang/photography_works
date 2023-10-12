@@ -10,7 +10,7 @@ exports.workList = (req, res) => {
     const keyword = req.query.title || "";
     const state = req.query.state || ""; // 是否发布 1/2 1已发布、2未发布
     const top = parseInt(req.query.top) || 0; // 1收藏数最多的 //0最新作品
-    const topic = req.query.topic; // 新增的topic参数
+    const topic = req.query.topic; // 命题筛选
 
     let countQueryBase =
       "SELECT COUNT(*) AS total FROM works_list WHERE title LIKE ?";
@@ -58,14 +58,18 @@ exports.workList = (req, res) => {
         }
 
         result.forEach((element, index) => {
-          let chuli = JSON.parse(element.cover.replace(/'/g, '"'));
-          element.cover = chuli.map(function (match) {
-            return "http://127.0.0.1:12134/upload/" + match;
-          });
-          let chuli1 = JSON.parse(element.beiyong1.replace(/'/g, '"'));
-          element.beiyong1 = chuli1.map(function (match) {
-            return "http://127.0.0.1:12134/upload/" + match;
-          });
+          if (element.cover !== "") {
+            let chuli = JSON.parse(element.cover.replace(/'/g, '"'));
+            element.cover = chuli.map(function (match) {
+              return "http://127.0.0.1:12134/upload/" + match;
+            });
+          }
+          if (element.beiyong1 !== "") {
+            let chuli1 = JSON.parse(element.beiyong1.replace(/'/g, '"'));
+            element.beiyong1 = chuli1.map(function (match) {
+              return "http://127.0.0.1:12134/upload/" + match;
+            });
+          }
         });
 
         res.status(200).send({
@@ -134,14 +138,18 @@ exports.workDetails = (req, res) => {
             }
 
             rows.forEach((element, index) => {
-              let chuli = JSON.parse(element.cover.replace(/'/g, '"'));
-              element.cover = chuli.map(function (match) {
-                return "http://127.0.0.1:12134/upload/" + match;
-              });
-              let chuli1 = JSON.parse(element.beiyong1.replace(/'/g, '"'));
-              element.beiyong1 = chuli1.map(function (match) {
-                return "http://127.0.0.1:12134/upload/" + match;
-              });
+              if (element.cover !== "") {
+                let chuli = JSON.parse(element.cover.replace(/'/g, '"'));
+                element.cover = chuli.map(function (match) {
+                  return "http://127.0.0.1:12134/upload/" + match;
+                });
+              }
+              if (element.beiyong1 !== "") {
+                let chuli1 = JSON.parse(element.beiyong1.replace(/'/g, '"'));
+                element.beiyong1 = chuli1.map(function (match) {
+                  return "http://127.0.0.1:12134/upload/" + match;
+                });
+              }
             });
 
             // 如果collect表中有对应数据，则将collect字段改为1
@@ -207,9 +215,20 @@ exports.workDel = (req, res) => {
       return res.status(500).send("Internal Server Error");
     }
 
-    res.status(200).json({
-      status: 200,
-      message: "数据删除成功",
+    // 数据删除成功后，查询并删除collect表中对应item_id的数据
+    const collectDeleteQuery = "DELETE FROM collect WHERE item_id = ?";
+    const collectDeleteParams = [id];
+
+    connection.query(collectDeleteQuery, collectDeleteParams, (err, result) => {
+      if (err) {
+        console.log("[Collect Delete ERROR] - ", err.message);
+        return res.status(500).send("Internal Server Error");
+      }
+
+      res.status(200).json({
+        status: 200,
+        message: "数据删除成功",
+      });
     });
   });
 };
@@ -262,6 +281,67 @@ exports.addWork = (req, res) => {
       return res.status(200).json({
         status: 200,
         message: "上传成功",
+      });
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      status: 500,
+      message: "服务器内部错误",
+    });
+  }
+};
+
+// 编辑
+exports.edit = (req, res) => {
+  try {
+    const {
+      id,
+      username,
+      user_img,
+      title,
+      topic,
+      cont,
+      process,
+      cover,
+      beiyong1,
+      beiyong2,
+      collect,
+      collect_number,
+      state,
+    } = req.body;
+
+    // 更新数据
+    const sql = `UPDATE works_list SET user_name = ?, user_img = ?, title = ?, topic = ?, cont = ?, process = ?, cover = ?, beiyong1 = ?, beiyong2 = ?, collect = ?, collect_number = ?, state = ? WHERE id = ?`;
+    const values = [
+      username,
+      user_img,
+      title,
+      topic,
+      cont,
+      process,
+      cover,
+      beiyong1,
+      beiyong2,
+      collect,
+      collect_number,
+      state,
+      id,
+    ];
+
+    connection.query(sql, values, (error, results) => {
+      if (error) {
+        console.error(error);
+        return res.status(500).json({
+          status: 500,
+          message: "服务器内部错误",
+        });
+      }
+
+      // 更新成功
+      return res.status(200).json({
+        status: 200,
+        message: "修改成功",
       });
     });
   } catch (error) {

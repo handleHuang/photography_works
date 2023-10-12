@@ -3,9 +3,7 @@ import { http } from "../utils/http";
 // 个人中心
 export function getUserData(params: any) {
   return http({
-    url: `/api/user?per_page=${params.per_page}&page=${params.page}${params.project_id ? "&project_id=" + params.project_id : ""}${
-      params.year && params.year !== "全部年份" ? "&year=" + params.year : ""
-    }${params.month && params.month !== "全部月份" ? "&month=" + params.month : ""}${"&column=" + params.column}${params.online_status ? "&online_status=" + params.online_status : ""}`,
+    url: `/api/userWorkList?per_page=${params.per_page}&page=${params.page}&beiyong2=${params.beiyong2}&top=${params.top}${params.topic ? params.topic : ''}`,
     method: "get",
   });
 }
@@ -13,9 +11,7 @@ export function getUserData(params: any) {
 // 个人中心点赞
 export function getUserLikes(params: any) {
   return http({
-    url: `/api/likes?per_page=${params.per_page}&page=${params.page}${params.project_id ? "&project_id=" + params.project_id : ""}${
-      params.year && params.year !== "全部年份" ? "&year=" + params.year : ""
-    }${params.month && params.month !== "全部月份" ? "&month=" + params.month : ""}${"&column=" + params.column}`,
+    url: `/api/userlinkList?per_page=${params.per_page}&page=${params.page}&beiyong2=${params.beiyong2}&top=${params.top}${params.topic ? params.topic : ''}`,
     method: "get",
   });
 }
@@ -23,16 +19,15 @@ export function getUserLikes(params: any) {
 // 删除作品
 export function articlesDel(params: any) {
   return http({
-    url: `/api/articles/delete/ids`,
+    url: `/api/workDel?id=${params.id}`,
     method: "delete",
-    data: params,
   });
 }
 
 // 上下架作品
 export function articlesStatus(params: any) {
   return http({
-    url: `/api/articles/set/${params.id}/status`,
+    url: `/api/workOline`,
     method: "post",
     data: params,
   });
@@ -41,8 +36,8 @@ export function articlesStatus(params: any) {
 // 作品编辑
 export function updataEdit(params: any) {
   return http({
-    url: `/api/update/${params.id}`,
-    method: "patch",
+    url: `/api/edit`,
+    method: "post",
     data: params,
   });
 }

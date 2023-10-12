@@ -11,7 +11,7 @@
  Target Server Version : 80034
  File Encoding         : 65001
 
- Date: 11/10/2023 17:35:19
+ Date: 12/10/2023 17:07:36
 */
 
 SET NAMES utf8mb4;
@@ -37,7 +37,7 @@ CREATE TABLE `user_list`  (
 -- ----------------------------
 INSERT INTO `user_list` VALUES (2, 'cesces', 'anemdCes', 'anemdCes', 1, 'http://127.0.0.1:12134/user/9588.jpg_wh300.png', 0);
 INSERT INTO `user_list` VALUES (3, 'cesces11', 'zxczxc', '123123', 2, NULL, 0);
-INSERT INTO `user_list` VALUES (5, 'admin', '123123', '123123', 0, 'http://127.0.0.1:12134/user/dipsad.jpg', 3);
+INSERT INTO `user_list` VALUES (5, 'admin', '123123', '123123', 0, 'http://127.0.0.1:12134/user/dipsad.jpg', 4);
 INSERT INTO `user_list` VALUES (6, 'ceszhuce', '123123', '123123', 2, NULL, 0);
 INSERT INTO `user_list` VALUES (7, 'cesfanye', '123123', '123123', 2, NULL, 0);
 INSERT INTO `user_list` VALUES (8, 'cesfanye1', 'qweqwe', 'qweqwe', 2, NULL, 0);

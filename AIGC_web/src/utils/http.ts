@@ -1,4 +1,5 @@
 import axios from "axios";
+import router from '../router';
 import { Message } from "tdesign-vue-next";
 
 export const http = (options: any) => {
@@ -35,8 +36,11 @@ export const http = (options: any) => {
         return response.data;
       },
       (error) => {
-        console.log("err" + error); // for debug
-        if (error.response.status == 403) {
+        if (error.response.status === 401) {
+          router.push('/login'); // 跳转到登录页面
+          Message.error("登录过期，请重新登录");
+          localStorage.clear()
+        } else if (error.response.status === 403) {
           Message.error("错了");
         } else {
           Message.error("服务器请求错误，请稍后再试");

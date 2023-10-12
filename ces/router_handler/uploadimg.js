@@ -12,9 +12,9 @@ exports.uploadimg = (req, res) => {
   fs.access(filePath, fs.constants.F_OK, (err) => {
     if (err) {
       console.log(err)
-      console.error(`文件不存在: ${filePath}`);
+      // console.error(`文件不存在: ${filePath}`);
     } else {
-      console.log(`文件存在: ${filePath}`);
+      // console.log(`文件存在: ${filePath}`);
     }
   });
   res.send({
@@ -35,9 +35,9 @@ exports.upUserImg = (req, res) => {
   fs.access(filePath, fs.constants.F_OK, (err) => {
     if (err) {
       console.log(err)
-      console.error(`文件不存在: ${filePath}`);
+      // console.error(`文件不存在: ${filePath}`);
     } else {
-      console.log(`文件存在: ${filePath}`);
+      // console.log(`文件存在: ${filePath}`);
     }
   });
   res.send({

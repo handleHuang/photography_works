@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+import router from '../router'
 import baseURL from './apiUrl.js'
 // import { MessagePlugin } from 'tdesign-vue-next'
 const http = {}
@@ -53,7 +53,8 @@ instance.interceptors.response.use(
     switch (error.response.status) {
       case 403:
       case 401:
-        // localStorage.clear()
+        localStorage.clear()
+        router.push('/login')
         // window.location.reload()
         break
       default:

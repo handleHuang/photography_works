@@ -6,6 +6,7 @@ const handle = require("../router_handler/uploadimg");
 const classify = require("../views/classify");
 const work = require("../views/worklist");
 const collect = require("../views/collect");
+const user = require("../views/user")
 const jwt = require("jsonwebtoken");
 const verifyToken = require("../fun/verify_token")
 
@@ -38,9 +39,13 @@ router.get("/workDetails", verifyToken, work.workDetails);
 router.post("/workOline", verifyToken, work.workOline);
 router.post("/addWork", work.addWork);
 router.delete("/workDel", verifyToken, work.workDel);
+router.post("/edit", verifyToken, work.edit);
 // 收藏
 router.post("/collect", verifyToken, collect.collect);
 router.get("/rankList", verifyToken, collect.collectList);
+// 用户作品列表
+router.get("/userWorkList", verifyToken, user.userList);
+router.get("/userlinkList", verifyToken, user.userlinkList);
 
 // 获取数据列表
 router.get("/userList", verifyToken, (req, res) => {
