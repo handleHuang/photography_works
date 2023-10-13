@@ -67,6 +67,13 @@
               </t-space>
             </t-dropdown>
           </div>
+          <div class="search">
+            <t-input placeholder="" v-model="searchInput" @change="searchChange">
+            <template #suffixIcon>
+              <search-icon :style="{ cursor: 'pointer' }" />
+            </template>
+          </t-input>
+          </div>
         </div>
         <div class="screen_right">
           <t-radio-group
@@ -156,7 +163,7 @@
                   class="header_pic"
                   v-show="item.user_img"
                 />
-                {{ item.username }}
+                {{ item.user_name }}
               </div>
               <div class="workList_list_right">
                 {{ createdData(item.created_at) }}
@@ -206,7 +213,7 @@
 
 <script lang="ts" setup>
 import { reactive, ref, onMounted, watch } from "vue";
-import { Icon } from "tdesign-icons-vue-next";
+import { Icon, SearchIcon } from "tdesign-icons-vue-next";
 import { useRoute, useRouter } from "vue-router";
 import { MessagePlugin } from "tdesign-vue-next";
 import {
@@ -334,6 +341,14 @@ const onChange = (pageInfo: any) => {
 const userinfo: any = ref(
   JSON.parse(localStorage.getItem("user_info") as string) || ""
 );
+
+let searchInput = ref("");
+const searchChange = () => {
+  page.value = 1;
+  per_page.value = 20;
+  listData.value = [];
+  handleGetUserData();
+};
 const listData: any = ref([]);
 const handleGetUserData = () => {
   let params: any = {
@@ -344,6 +359,9 @@ const handleGetUserData = () => {
   };
   if (theme.value !== 0) {
     params.topic = themeText.value;
+  }
+  if (searchInput.value !== "") {
+    params.keyword = searchInput.value;
   }
   const fetchDataFunc = menuActive.value === 1 ? getUserLikes : getUserData;
   fetchDataFunc(params)

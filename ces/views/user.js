@@ -9,10 +9,21 @@ exports.userList = (req, res) => {
     const beiyong2 = req.query.beiyong2; // 获取前端传递的user_id
     const topic = req.query.topic; // 命题筛选
     const top = req.query.top; // 1收藏数最多的 //0最新作品
+    const keyword = req.query.keyword; // 关键词搜索
 
     let countQuery =
       "SELECT COUNT(*) AS total FROM works_list WHERE beiyong2 = ?";
     let query = "SELECT * FROM works_list WHERE beiyong2 = ?";
+
+    const countParams = [beiyong2];
+    const queryParams = [beiyong2];
+
+    if (keyword) {
+      countQuery += " AND title LIKE ?";
+      query += " AND title LIKE ?";
+      countParams.push(`%${keyword}%`);
+      queryParams.push(`%${keyword}%`);
+    }
 
     if (top === "1") {
       query += " ORDER BY created_at DESC";
@@ -21,8 +32,7 @@ exports.userList = (req, res) => {
     }
 
     query += " LIMIT ?, ?";
-    let countParams = [beiyong2];
-    let queryParams = [beiyong2, offset, pageSize];
+    queryParams.push(offset, pageSize);
 
     if (topic) {
       countQuery += " AND topic = ?";
@@ -77,6 +87,7 @@ exports.userList = (req, res) => {
             totalCount: totalCount,
             totalPages: Math.ceil(totalCount / pageSize),
             currentPage: page,
+            keywordTotalCount: result.length, // 添加关键词搜索的总数
           });
         });
       });
@@ -99,6 +110,7 @@ exports.userlinkList = (req, res) => {
     const beiyong2 = req.query.beiyong2; // 获取前端传递的user_id
     const topic = req.query.topic; // 命题筛选
     const top = req.query.top; // 1收藏数最多的 //0最新作品
+    const keyword = req.query.keyword; // 获取前端传递的关键词
 
     // 构建查询collect表的语句
     let query = "SELECT * FROM collect";
@@ -135,6 +147,12 @@ exports.userlinkList = (req, res) => {
       let worksQuery = "SELECT * FROM works_list WHERE id IN (?)";
       let worksParams = [itemIds];
 
+      // 添加关键词搜索条件
+      if (keyword) {
+        worksQuery += " AND title LIKE ?";
+        worksParams.push(`%${keyword}%`);
+      }
+
       // 添加top排序条件
       if (top === "1") {
         worksQuery += " ORDER BY collect_number DESC";
@@ -169,13 +187,13 @@ exports.userlinkList = (req, res) => {
           // 处理查询结果
           const userData = userResults[0];
           worksResults.forEach((element, index) => {
-            if(element.cover !== '') {
+            if (element.cover !== "") {
               let chuli = JSON.parse(element.cover.replace(/'/g, '"'));
               element.cover = chuli.map(function (match) {
                 return "http://127.0.0.1:12134/upload/" + match;
               });
             }
-            if(element.beiyong1 !== '') {
+            if (element.beiyong1 !== "") {
               let chuli1 = JSON.parse(element.beiyong1.replace(/'/g, '"'));
               element.beiyong1 = chuli1.map(function (match) {
                 return "http://127.0.0.1:12134/upload/" + match;
