@@ -38,7 +38,6 @@
                 tips="图片不能超出2m"
                 accept="image/*"
                 :auto-upload="true"
-                :upload-all-files-in-one-request="true"
                 :size-limit="{ size: 2, unit: 'MB' }"
                 :max="1"
                 :abridge-name="[6, 6]"

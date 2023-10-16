@@ -10,12 +10,6 @@ exports.uploadimg = (req, res) => {
   const filePath = "http://127.0.0.1:12134/upload/" + newName;
 
   fs.access(filePath, fs.constants.F_OK, (err) => {
-    if (err) {
-      console.log(err)
-      // console.error(`文件不存在: ${filePath}`);
-    } else {
-      // console.log(`文件存在: ${filePath}`);
-    }
   });
   res.send({
     err: 0,

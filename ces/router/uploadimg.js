@@ -201,7 +201,6 @@ router.post("/login", (req, res) => {
           data: {
             id: result[0].id,
             username: result[0].username,
-            password: result[0].password,
             domian: "http://127.0.0.1:12134/upload/",
             identity: identity,
             token: token,

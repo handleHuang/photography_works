@@ -54,7 +54,6 @@
               tips="图片不能超出2m"
               accept="image/*"
               :auto-upload="true"
-              :upload-all-files-in-one-request="true"
               :size-limit="{ size: 2, unit: 'MB' }"
               :max="5"
               multiple
@@ -112,7 +111,6 @@
               tips="图片不能超出2m"
               accept="image/*"
               :auto-upload="true"
-              :upload-all-files-in-one-request="true"
               :size-limit="{ size: 2, unit: 'MB' }"
               :max="9"
               multiple
@@ -249,6 +247,7 @@ const handleFail1 = (file: any) => {
   MessagePlugin.error(`文件 ${file.name} 上传失败`);
 };
 const changeUpdata1 = (item: any) => {
+  console.log(item)
   let worksList = [];
   for (let i = 0; i < item.length; i++) {
     worksList.push(item[i].url.replace("http://127.0.0.1:12134/upload/", ""));

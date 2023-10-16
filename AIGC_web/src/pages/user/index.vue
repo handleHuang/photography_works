@@ -16,7 +16,7 @@
         <!-- <div class="user_position">TEG技术工程事业群/用户体验与研究设计部/设计中心/颐和工作室</div> -->
       </div>
       <div class="user_header_right">
-        <div class="right_title">AIGC设计大赛成就</div>
+        <div class="right_title">young摄影网成就</div>
         <!-- <div class="look_details">查看详情</div> -->
         <div class="right_item">
           <div class="right_list">
