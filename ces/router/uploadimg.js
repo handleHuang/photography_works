@@ -46,6 +46,8 @@ router.get("/rankList", verifyToken, collect.collectList);
 // 用户作品列表
 router.get("/userWorkList", verifyToken, user.userList);
 router.get("/userlinkList", verifyToken, user.userlinkList);
+// 首页推荐作品
+router.get("/randomWorks", work.random);
 
 // 获取数据列表
 router.get("/userList", verifyToken, (req, res) => {

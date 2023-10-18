@@ -43,3 +43,11 @@ export function postText(params: any) {
     data: params,
   });
 }
+
+// 推荐
+export function getRandom() {
+  return http({
+    url: "/api/randomWorks", //此处为自己请求地址
+    method: "get",
+  });
+}

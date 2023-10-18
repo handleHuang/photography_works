@@ -352,3 +352,29 @@ exports.edit = (req, res) => {
     });
   }
 };
+
+// 推荐
+
+exports.random = (req, res) => {
+  // 在数据库中查询表works_list的所有数据
+  connection.query("SELECT * FROM works_list", (err, works) => {
+    if (err) {
+      // 处理错误
+      console.error(err);
+      res.status(500).json({ error: "Internal Server Error" });
+      return;
+    }
+
+    // 随机选择4条数据
+    const randomWorks = getRandomElements(works, 4);
+
+    // 将结果发送给客户端
+    res.json(randomWorks);
+  });
+};
+
+// 辅助函数，用于从数组中随机选择指定数量的元素
+function getRandomElements(arr, count) {
+  const shuffled = arr.sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, count);
+}
