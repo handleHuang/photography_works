@@ -40,6 +40,17 @@
             </t-input>
           </t-form-item>
 
+          <t-form-item name="code">
+            <t-input
+              v-model="sidentifyMode"
+              clearable
+              placeholder="请输入验证码"
+            />
+            <div class="code" @click="refreshCode">
+              <SIdentify :identifyCode="identifyCode"></SIdentify>
+            </div>
+          </t-form-item>
+
           <t-form-item>
             <t-button theme="primary" type="submit" block>登录</t-button>
             <t-button theme="default" @click="handle(2)">注册</t-button>
@@ -73,7 +84,7 @@
             <t-input v-model="formData.newEmail"></t-input>
           </t-form-item>
 
-          <t-form-item  label="头像" name="userCover" help="请上传头像">
+          <t-form-item label="头像" name="userCover" help="请上传头像">
             <t-upload
               ref="uploadRef1"
               v-model="file1"
@@ -96,6 +107,17 @@
             </t-upload>
           </t-form-item>
 
+          <t-form-item name="code">
+            <t-input
+              v-model="sidentifyMode"
+              clearable
+              placeholder="请输入验证码"
+            />
+            <div class="code" @click="refreshCode">
+              <SIdentify :identifyCode="identifyCode"></SIdentify>
+            </div>
+          </t-form-item>
+
           <t-form-item>
             <t-space size="small">
               <t-button theme="primary" type="submit">注册</t-button>
@@ -108,12 +130,16 @@
   </div>
 </template>
 <script setup>
-import { reactive, ref } from 'vue'
+import { reactive, ref, onMounted } from 'vue'
 // import HelloWorld from "./components/HelloWorld.vue";
 import { login, register } from '../../api/index'
 import { MessagePlugin } from 'tdesign-vue-next'
 import { useRouter } from 'vue-router'
+import SIdentify from '@/components/Sidentify'
 const router = useRouter()
+const sidentifyMode = ref('') // 输入框验证码
+const identifyCode = ref('') // 图形验证码
+const identifyCodes = ref('1234567890abcdefjhijklinopqrsduvwxyz') // 验证码出现的数字和字母
 
 const formData = reactive({
   username: '',
@@ -143,11 +169,22 @@ const handleLogin = () => {
 }
 // 登录
 const onSubmit = ({ validateResult, firstError }) => {
-  if (validateResult === true) {
-    handleLogin()
+  // 验证验证码不为空
+  if (!sidentifyMode.value) {
+    MessagePlugin.error('验证码不能为空！')
+    return
+  }
+  // 验证验证码是否正确
+  if (sidentifyMode.value !== identifyCode.value) {
+    MessagePlugin.error('验证码错误')
+    refreshCode()
   } else {
-    console.log('Validate Errors: ', firstError, validateResult)
-    MessagePlugin.warning(firstError)
+    if (validateResult === true) {
+      handleLogin()
+    } else {
+      console.log('Validate Errors: ', firstError, validateResult)
+      MessagePlugin.warning(firstError)
+    }
   }
 }
 
@@ -222,9 +259,7 @@ const rules = {
     { required: true, message: '密码必填', type: 'error' },
     { validator: rePassword, message: '两次密码不一致' }
   ],
-  newEmail: [
-    { required: true, message: '', type: 'error' }
-  ]
+  newEmail: [{ required: true, message: '', type: 'error' }]
 }
 
 // 注册、返回按钮
@@ -251,6 +286,28 @@ const changeUpdata = (item) => {
   formData.cover = item[0].url
   console.log(item)
 }
+
+// 生成随机数
+const randomNum = (min, max) => {
+  max = max + 1
+  return Math.floor(Math.random() * (max - min) + min)
+}
+// 随机生成验证码字符串
+const makeCode = (o, l) => {
+  for (let i = 0; i < l; i++) {
+    identifyCode.value += o[randomNum(0, o.length)]
+  }
+}
+// 更新验证码
+const refreshCode = () => {
+  identifyCode.value = ''
+  makeCode(identifyCodes.value, 4)
+}
+
+onMounted(() => {
+  identifyCode.value = ''
+  makeCode(identifyCodes.value, 4)
+})
 </script>
 <style lang="less">
 .login {
