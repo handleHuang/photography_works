@@ -11,6 +11,7 @@ export default defineConfig(() => {
     },
     plugins: [vue()],
     base: "./",
+    publicPath: "./",
     build: {
       chunkSizeWarningLimit: 1500,
       rollupOptions: {

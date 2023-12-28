@@ -7,6 +7,7 @@ const classify = require("../views/classify");
 const work = require("../views/worklist");
 const collect = require("../views/collect");
 const user = require("../views/user")
+const comment = require("../views/comment")
 const jwt = require("jsonwebtoken");
 const verifyToken = require("../fun/verify_token")
 
@@ -26,6 +27,7 @@ connection.connect((err) => {
 // 上传图片
 router.post("/uploadimg", handle.uploadimg);
 router.post("/upUserImg", handle.upUserImg);
+router.post("/upimage", handle.upimage);
 //命题接口
 router.post("/addLabel", verifyToken, classify.addLabel);
 router.get("/labelList", classify.labelList);
@@ -48,6 +50,8 @@ router.get("/userWorkList", verifyToken, user.userList);
 router.get("/userlinkList", verifyToken, user.userlinkList);
 // 首页推荐作品
 router.get("/randomWorks", work.random);
+// 作品评论
+router.post("/addComment", verifyToken, comment.addComment);
 
 // 获取数据列表
 router.get("/userList", verifyToken, (req, res) => {
