@@ -354,7 +354,6 @@ exports.edit = (req, res) => {
 };
 
 // 推荐
-
 exports.random = (req, res) => {
   // 在数据库中查询表works_list的所有数据
   connection.query("SELECT * FROM works_list", (err, works) => {
