@@ -164,6 +164,11 @@ const menu = ref([
     title: "查看作品",
     getStatusList: true,
   },
+  {
+    url: "teaching",
+    title: "摄影教学",
+    getStatusList: true,
+  },
 ]);
 
 const visible = ref(false);

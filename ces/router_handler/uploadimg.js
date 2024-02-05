@@ -9,8 +9,7 @@ exports.uploadimg = (req, res) => {
   fs.renameSync("./public/upload/" + oldName, "./public/upload/" + newName); //改图片的名字注意此处一定是一个路径，而不是只有文件名
   const filePath = "http://127.0.0.1:12134/upload/" + newName;
 
-  fs.access(filePath, fs.constants.F_OK, (err) => {
-  });
+  fs.access(filePath, fs.constants.F_OK, (err) => {});
   res.send({
     err: 0,
     url: "http://127.0.0.1:12134/upload/" + newName,
@@ -28,7 +27,7 @@ exports.upUserImg = (req, res) => {
   const filePath = "http://127.0.0.1:12134/user/" + newName;
   fs.access(filePath, fs.constants.F_OK, (err) => {
     if (err) {
-      console.log(err)
+      console.log(err);
       // console.error(`文件不存在: ${filePath}`);
     } else {
       // console.log(`文件存在: ${filePath}`);

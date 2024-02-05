@@ -5,6 +5,7 @@ import Detail from '../pages/detail/index.vue'
 import WorkList from '../pages/workList/index.vue'
 import User from '../pages/user/index.vue'
 import Login from '../pages/login/index.vue'
+import Teaching from '../pages/teaching/index.vue'
 
 const routes: RouteRecordRaw[] = [
   // {
@@ -46,6 +47,11 @@ const routes: RouteRecordRaw[] = [
         path: 'user',
         name: 'user',
         component: User,
+      },
+      {
+        path: 'teaching',
+        name: 'teaching',
+        component: Teaching,
       },
     ]
   }

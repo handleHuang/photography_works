@@ -120,7 +120,7 @@ exports.workDetails = (req, res) => {
           return;
         }
 
-        // 执行查询语句
+        // 执行查询works_list表的语句
         connection.query(
           "SELECT * FROM works_list WHERE id = ?",
           [id],
@@ -159,8 +159,64 @@ exports.workDetails = (req, res) => {
               rows[0].collect = 0;
             }
 
-            connection.release(); // 释放连接
-            res.json(rows[0]);
+            // 查询comment表的语句
+            connection.query(
+              "SELECT c1.*, c2.username, c2.cover FROM comment c1 LEFT JOIN user_list c2 ON c1.user_id = c2.id WHERE c1.blog_id = ?",
+              [id],
+              (error, commentRows) => {
+                if (error) {
+                  connection.release(); // 释放连接
+                  res.status(500).json({ error: "查询失败" });
+                  return;
+                }
+
+                const comments = [];
+                const commentMap = {};
+
+                // 构建评论的树形结构
+                for (const comment of commentRows) {
+                  comment.children = [];
+                  commentMap[comment.id] = comment;
+
+                  if (comment.parent_id === 0) {
+                    // 如果父ID为0，表示是顶级评论
+                    comments.push(comment);
+                  } else {
+                    // 如果存在父评论ID，则找到父评论
+                    const parentComment = commentMap[comment.parent_id];
+                    if (parentComment) {
+                      // 如果父评论是顶级评论，直接将当前评论作为子评论
+                      if (parentComment.parent_id === 0) {
+                        parentComment.children.push(comment);
+                      } else {
+                        // 如果父评论不是顶级评论，则当前评论是回复给子评论的
+                        // 需要找到顶级评论，并将当前评论加入到顶级评论的子评论列表中
+                        const topLevelParentComment =
+                          commentMap[parentComment.parent_id];
+                        if (topLevelParentComment) {
+                          topLevelParentComment.children.push(comment);
+                        }
+                      }
+                    }
+                  }
+
+                  // 添加被回复人的username到评论对象中（仅在level为3时添加）
+                  if (comment.level === 3) {
+                    const repliedUser = commentMap[comment.parent_id]; // level为3时，被回复的是父评论
+                    if (repliedUser) {
+                      comment.replied_username = repliedUser.username;
+                    }
+                  }
+                }
+
+                if (connection._pool._closed) {
+                  return; // 连接已经被释放，不执行后续代码
+                }
+                connection.release(); // 释放连接
+                rows[0].comments = comments;
+                res.json(rows[0]);
+              }
+            );
           }
         );
       }

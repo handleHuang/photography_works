@@ -16,3 +16,12 @@ export function postlike(params: any) {
     data: params
   });
 }
+
+// 评论
+export function postComment(params: any) {
+  return http({
+    url: '/api/addComment',
+    method: "post",
+    data: params
+  });
+}
