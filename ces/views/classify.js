@@ -206,3 +206,44 @@ exports.labelDel = (req, res) => {
     });
   });
 };
+
+exports.classifyData = (req, res) => {
+  const query =
+    "SELECT topic, COUNT(*) AS count FROM works_list GROUP BY topic";
+
+  connection.query(query, (error, results) => {
+    if (error) throw error;
+
+    // 生成列表
+    const list = results.map((result) => `${result.topic}: ${result.count}`);
+    const fieldNames = list.map((item) => item.split(":")[0]);
+
+    res.status(200).json({
+      status: 200,
+      data: {
+        list: list,
+        fieldNames: fieldNames,
+      },
+    });
+  });
+};
+
+exports.classifyDatayuan = (req, res) => {
+  const sqlQuery = `
+  SELECT 
+  SUM(CASE WHEN online = 1 THEN 1 ELSE 0 END) AS count_1,
+  SUM(CASE WHEN online = 2 THEN 1 ELSE 0 END) AS count_2
+  FROM 
+  classify;
+  `;
+  connection.query(sqlQuery, (error, results) => {
+    if (error) {
+      console.error("查询出错：", error);
+      res.status(500).json({ error: "查询出错" });
+    } else {
+      const count1 = results[0].count_1;
+      const count2 = results[0].count_2;
+      res.json({ online: count1, notlive: count2 });
+    }
+  });
+};

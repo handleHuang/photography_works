@@ -11,6 +11,12 @@
             alt="logo"
           /> -->
         </template>
+        <t-menu-item value="/largedata" to="/largedata">
+          <template #icon>
+            <t-icon name="app" />
+          </template>
+          数据大屏
+        </t-menu-item>
         <t-menu-item value="/project" to="/project">
           <template #icon>
             <t-icon name="layers" />
@@ -32,9 +38,7 @@
         <template #operations>
           <div class="t-demo-menu--dark">
             <t-dropdown
-              :options="[
-                { content: '退出登录', value: 0 },
-              ]"
+              :options="[{ content: '退出登录', value: 0 }]"
               @click="handleOutlogin"
             >
               <t-button variant="text" shape="square">
@@ -56,28 +60,28 @@
 </template>
 
 <script setup>
-import { watch, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-const router = useRouter()
-const route = useRoute()
-const menuValue = ref(route.path)
+import { watch, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
+const router = useRouter();
+const route = useRoute();
+const menuValue = ref(route.path);
 
 const handleOutlogin = () => {
-  localStorage.clear()
+  localStorage.clear();
   router.push({
-    path: '/login'
-  })
-}
+    path: "/login",
+  });
+};
 
 watch(
   () => route.path,
   (to, from) => {
     // 在这里处理路由信息的变化
-    menuValue.value = to
-    console.log('路由发生变化', menuValue.value)
-    console.log(from)
+    menuValue.value = to;
+    console.log("路由发生变化", menuValue.value);
+    console.log(from);
   }
-)
+);
 </script>
 
 <style lang="less" scoped>

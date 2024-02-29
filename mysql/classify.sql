@@ -1,7 +1,7 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : localhost_3306
+ Source Server         : ces
  Source Server Type    : MySQL
  Source Server Version : 80034
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 80034
  File Encoding         : 65001
 
- Date: 27/09/2023 16:46:40
+ Date: 29/02/2024 16:10:48
 */
 
 SET NAMES utf8mb4;
@@ -34,8 +34,8 @@ CREATE TABLE `classify`  (
 -- Records of classify
 -- ----------------------------
 INSERT INTO `classify` VALUES (2, 'qweqwe', 'qweqwe', 'http://127.0.0.1:12134/upload/shutterstock_553651330.jpg_1140x855.png', 1);
-INSERT INTO `classify` VALUES (4, 'ces', 'ces', 'http://127.0.0.1:12134/upload/shutterstock_553651330.jpg_1140x855.png', 1);
-INSERT INTO `classify` VALUES (5, '123', '23', 'http://127.0.0.1:12134/upload/testpic.png', 1);
+INSERT INTO `classify` VALUES (4, 'ces', 'ces', 'http://127.0.0.1:12134/upload/shutterstock_553651330.jpg_1140x855.png', 2);
+INSERT INTO `classify` VALUES (5, '123', '23', 'http://127.0.0.1:12134/upload/testpic.png', 2);
 INSERT INTO `classify` VALUES (6, '123123', '123123', 'http://127.0.0.1:12134/upload/9588.jpg_wh300.png', 1);
 INSERT INTO `classify` VALUES (7, '123123', '123123', 'http://127.0.0.1:12134/upload/9588.jpg_wh300.png', 1);
 

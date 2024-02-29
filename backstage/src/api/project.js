@@ -24,3 +24,16 @@ export function projectUpdate (params) {
 export function projectDetail (params) {
   return axios.get('labelDetails', params)
 }
+
+// 分类数据大屏
+export function classifyData (params) {
+  return axios.get('classifyData', params)
+}
+
+export function classifyDatayuan (params) {
+  return axios.get('classifyDatayuan', params)
+}
+
+export function rankList (params) {
+  return axios.get('rankList', params)
+}

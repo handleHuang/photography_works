@@ -16,6 +16,11 @@ const routes = [
         component: () => import('../page/login/index.vue')
       },
       {
+        path: '/largedata',
+        name: 'largedata',
+        component: () => import('../page/largedata/index.vue')
+      },
+      {
         path: '/project',
         name: 'project',
         component: () => import('../page/project/project.vue')

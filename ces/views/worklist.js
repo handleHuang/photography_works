@@ -410,7 +410,6 @@ exports.edit = (req, res) => {
 };
 
 // 推荐
-
 exports.random = (req, res) => {
   // 在数据库中查询表works_list的所有数据
   connection.query("SELECT * FROM works_list", (err, works) => {
@@ -434,3 +433,23 @@ function getRandomElements(arr, count) {
   const shuffled = arr.sort(() => 0.5 - Math.random());
   return shuffled.slice(0, count);
 }
+
+exports.workOlineState = (req, res) => {
+  const sqlQuery = `
+  SELECT 
+  SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS count_1,
+  SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS count_2
+  FROM 
+  works_list;
+  `;
+  connection.query(sqlQuery, (error, results) => {
+    if (error) {
+      console.error("查询出错：", error);
+      res.status(500).json({ error: "查询出错" });
+    } else {
+      const count1 = results[0].count_1;
+      const count2 = results[0].count_2;
+      res.json({ online: count1, notlive: count2 });
+    }
+  });
+};

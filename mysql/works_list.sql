@@ -1,7 +1,7 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : localhost_3306
+ Source Server         : ces
  Source Server Type    : MySQL
  Source Server Version : 80034
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 80034
  File Encoding         : 65001
 
- Date: 12/10/2023 17:07:43
+ Date: 29/02/2024 16:11:27
 */
 
 SET NAMES utf8mb4;
@@ -50,7 +50,7 @@ INSERT INTO `works_list` VALUES (9, 'Miura Momoe', 1, 61, '[\'shutterstock_55365
 INSERT INTO `works_list` VALUES (10, 'Ying Yu Ling', 0, 602, '[\'shutterstock_553651330.jpg_1140x855.png\',\'shutterstock_553651330.jpg_1140x855.png\']', 'Miss.', '4FxUrE3xBS', 'GmvMn8iIHP', 2, '[\"userimg.jpg\",\"testpic.png\"]', 0, '2023-10-06 17:02:04', NULL, NULL);
 INSERT INTO `works_list` VALUES (11, 'admin', 0, 0, '[\"ä¸è½½.jpg\",\"userimg.jpg\"]', 'qwe', 'qweqwe', 'qweqwe', 2, '[\"userimg.jpg\",\"testpic.png\"]', NULL, '2023-10-12 11:08:57', 'qweqwe', NULL);
 INSERT INTO `works_list` VALUES (12, 'admin', 0, 1, '[\"testpic.png\"]', '123123', '123', '123123123', 1, '[\"asdf.jpg\"]', NULL, '2023-10-11 16:17:27', '123123', NULL);
-INSERT INTO `works_list` VALUES (15, 'admin', 0, 1, '[\"2.jpg\"]', '测试头像', 'qweqwe', '123123', 2, '[\"asdf.jpg\"]', 5, '2023-10-12 17:05:54', '123', NULL);
+INSERT INTO `works_list` VALUES (15, 'admin', 0, 1, '[\"2.jpg\"]', '测试头像', 'qweqwe', '123123', 1, '[\"asdf.jpg\"]', 5, '2023-12-27 17:54:36', '123', NULL);
 INSERT INTO `works_list` VALUES (16, 'admin', 0, 0, '[\"userimg.jpg\"]', '测试头像2', 'qweqwe', '123213', 1, '[\"ä¸è½½.jpg\"]', 5, '2023-10-11 16:54:44', '123123', NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;

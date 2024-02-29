@@ -6,10 +6,10 @@ const handle = require("../router_handler/uploadimg");
 const classify = require("../views/classify");
 const work = require("../views/worklist");
 const collect = require("../views/collect");
-const user = require("../views/user")
-const comment = require("../views/comment")
+const user = require("../views/user");
+const comment = require("../views/comment");
 const jwt = require("jsonwebtoken");
-const verifyToken = require("../fun/verify_token")
+const verifyToken = require("../fun/verify_token");
 
 // 创建MySQL数据库连接
 const connection = mysql.createConnection({
@@ -35,6 +35,10 @@ router.get("/labelDetails", verifyToken, classify.labelDetails);
 router.post("/labelOline", verifyToken, classify.labelOline);
 router.post("/labelAnemd", verifyToken, classify.labelAnemd);
 router.delete("/labelDel", verifyToken, classify.labelDel);
+//数据大屏 分类
+router.get("/classifyData", verifyToken, classify.classifyData);
+router.get("/classifyDatayuan", verifyToken, classify.classifyDatayuan);
+router.get("/workOlineState", verifyToken, work.workOlineState);
 //作品管理
 router.get("/workList", work.workList);
 router.get("/workDetails", verifyToken, work.workDetails);
@@ -156,7 +160,9 @@ router.post("/register", function (req, res) {
           user.domian = "http://127.0.0.1:12134/upload/";
 
           // 生成token
-          const token = jwt.sign({ username: user.username }, "hon71234", { expiresIn: "2h" });
+          const token = jwt.sign({ username: user.username }, "hon71234", {
+            expiresIn: "2h",
+          });
 
           // 返回响应给前端，包括注册信息和token
           res.status(200).json({
@@ -199,8 +205,10 @@ router.post("/login", (req, res) => {
     if (result.length > 0) {
       const identity = result[0].identity;
       if (identity === 0 || identity === 1) {
-        const token = jwt.sign({ username: result[0].username }, "hon71234", { expiresIn: "2h" });
-        console.log(result[0])
+        const token = jwt.sign({ username: result[0].username }, "hon71234", {
+          expiresIn: "2h",
+        });
+        console.log(result[0]);
         res.status(200).send({
           status: 200,
           message: "登录成功",
@@ -210,7 +218,7 @@ router.post("/login", (req, res) => {
             domian: "http://127.0.0.1:12134/upload/",
             identity: identity,
             token: token,
-            cover: result[0].cover
+            cover: result[0].cover,
           },
         });
       } else {

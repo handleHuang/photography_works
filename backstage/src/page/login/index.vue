@@ -274,7 +274,7 @@ const handle = (index) => {
 // 跳转
 const jump = () => {
   router.push({
-    path: '/project'
+    path: '/largedata'
   })
 }
 
