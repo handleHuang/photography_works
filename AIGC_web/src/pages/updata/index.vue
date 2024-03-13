@@ -11,12 +11,12 @@
           @submit="onSubmit"
         >
           <t-form-item
-            label="参赛命题"
+            label="参赛分类"
             name="topic"
             v-if="propositionData.length !== 0"
             class="flex3"
           >
-            <t-select v-model="formData.topic" placeholder="请选择命题">
+            <t-select v-model="formData.topic" placeholder="请选择分类">
               <t-option
                 v-for="item in propositionData"
                 :key="item.id"
@@ -140,7 +140,7 @@
     <div class="submit_box" v-show="popSubmit">
       <icon name="check-circle-filled" style="color: green" />
       <div class="submit_box_title">提交成功</div>
-      <div class="submit_box_tips">你可以为自己拉票，或继续参加其他命题</div>
+      <div class="submit_box_tips">你可以为自己拉票，或继续参加其他分类</div>
       <div class="submit_box_btn">
         <t-button theme="primary" @click="handleCloseConfirm"
           >返回首页</t-button
@@ -218,12 +218,12 @@ let formData: any = reactive({
 const rules = {
   title: [{ required: true, message: "作品名称必填" }],
   cont: [{ required: true, message: "生成关键描述必填" }],
-  topic: [{ required: true, message: "命题为必填" }],
+  topic: [{ required: true, message: "分类为必填" }],
   process: [{ required: true, message: "创作过程描述" }],
 };
 
-// 命题列表
-const propositionData: any = ref([]); //命题列表
+// 分类列表
+const propositionData: any = ref([]); //分类列表
 let params = {
   online_status: 1,
 };
@@ -282,6 +282,7 @@ const onSubmit = (validateResult: any) => {
 const handleclose = () => {
   visibleSubmit.value = false;
 };
+// 确定上传
 const handleConfirm = () => {
   if (route.query.id) {
     formData.id = +route.query.id;

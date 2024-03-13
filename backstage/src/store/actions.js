@@ -1,4 +1,4 @@
-// 命题
+// 分类
 import {
   projectList,
   setProjectStatus,
@@ -10,6 +10,16 @@ import {
   classifyDatayuan,
   rankList,
 } from "@/api/project";
+// 赛事
+import {
+  competitionList,
+  setcompetitionStatus,
+  delcompetition,
+  competitionRowDel,
+  competitionCreate,
+  competitionUpdate,
+  competitionDetail,
+} from "@/api/competition";
 // 作品
 import {
   articleList,
@@ -50,29 +60,58 @@ export default {
     return await workOlineState(params);
   },
 
-  // 命题列表
+  // 分类列表
   async projectList(store, params) {
     return await projectList(params);
   },
-  // 设置命题上下架状态
+  // 设置分类上下架状态
   async setProjectStatus(store, params) {
     return await setProjectStatus(params);
   },
-  // 删除命题
+  // 删除分类
   async delProject(store, params) {
     return await delProject(params);
   },
-  // 命题上传
+  // 分类上传
   async projectCreate(store, params) {
     return await projectCreate(params);
   },
-  // 命题编辑
+  // 分类编辑
   async projectUpdate(store, params) {
     return await projectUpdate(params);
   },
-  // 命题详情
+  // 分类详情
   async projectDetail(store, params) {
     return await projectDetail(params);
+  },
+
+  // 赛事列表
+  async competitionList(store, params) {
+    return await competitionList(params);
+  },
+  // 设置赛事上下架状态
+  async setcompetitionStatus(store, params) {
+    return await setcompetitionStatus(params);
+  },
+  // 删除赛事
+  async delcompetition(store, params) {
+    return await delcompetition(params);
+  },
+  // 删除赛事作品
+  async competitionRowDel(store, params) {
+    return await competitionRowDel(params);
+  },
+  // 赛事上传
+  async competitionCreate(store, params) {
+    return await competitionCreate(params);
+  },
+  // 赛事编辑
+  async competitionUpdate(store, params) {
+    return await competitionUpdate(params);
+  },
+  // 赛事详情
+  async competitionDetail(store, params) {
+    return await competitionDetail(params);
   },
 
   // 数据大屏

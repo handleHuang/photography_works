@@ -12,7 +12,7 @@
           <span>用户列表</span>
         </div>
         <div class="header_right">
-          <!-- <t-button @click="router.push('/project/create')">+ 新增命题</t-button> -->
+          <!-- <t-button @click="router.push('/project/create')">+ 新增分类</t-button> -->
         </div>
       </div>
       <div class="search">
@@ -176,7 +176,7 @@ const userIdentity = JSON.parse(localStorage.getItem('user_info')).identity
 // 删除
 function dodelete (id) {
   const confirmDia = DialogPlugin.confirm({
-    header: '确定删除此命题吗？',
+    header: '确定删除此分类吗？',
     body: '删除后不可恢复',
     theme: 'warning',
     onConfirm: () => {

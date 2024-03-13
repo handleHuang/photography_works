@@ -57,7 +57,7 @@
         <div class="body_right">
           <div class="right_item">作品名称</div>
           <div class="right_item">{{ detailData.obj.title }}</div>
-          <div class="right_item">参赛命题</div>
+          <div class="right_item">参赛分类</div>
           <div class="right_item">
             {{ detailData.obj.topic }}
           </div>

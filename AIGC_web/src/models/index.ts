@@ -28,7 +28,7 @@ export function register (params: any) {
   });
 }
 
-// 命题列表
+// 分类列表
 export function getProjectsList(params: any) {
   return http({
     url: "/api/labelList?online=1", //此处为自己请求地址

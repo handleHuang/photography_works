@@ -7,7 +7,7 @@ exports.userList = (req, res) => {
     const pageSize = parseInt(req.query.per_page) || 5;
     const offset = (page - 1) * pageSize;
     const beiyong2 = req.query.beiyong2; // 获取前端传递的user_id
-    const topic = req.query.topic; // 命题筛选
+    const topic = req.query.topic; // 分类筛选
     const top = req.query.top; // 1收藏数最多的 //0最新作品
     const keyword = req.query.keyword; // 关键词搜索
 
@@ -108,7 +108,7 @@ exports.userlinkList = (req, res) => {
     const pageSize = parseInt(req.query.per_page) || 5;
     const offset = (page - 1) * pageSize;
     const beiyong2 = req.query.beiyong2; // 获取前端传递的user_id
-    const topic = req.query.topic; // 命题筛选
+    const topic = req.query.topic; // 分类筛选
     const top = req.query.top; // 1收藏数最多的 //0最新作品
     const keyword = req.query.keyword; // 获取前端传递的关键词
 

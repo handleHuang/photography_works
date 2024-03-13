@@ -9,7 +9,7 @@
     <div class="continer_box">
       <div class="header">
         <div class="header_left">
-          <span>命题详情</span>
+          <span>分类详情</span>
         </div>
       </div>
       <div class="body">
@@ -79,7 +79,7 @@ const getDetail = () => {
     detailData.obj = res
   })
 }
-// 设置命题状态
+// 设置分类状态
 function setProjectStatus (params) {
   store
     .dispatch('setProjectStatus', params)
@@ -94,7 +94,7 @@ function setProjectStatus (params) {
 // 删除
 function dodelete (id) {
   const confirmDia = DialogPlugin.confirm({
-    header: '确定删除此命题吗？',
+    header: '确定删除此分类吗？',
     body: '删除后不可恢复',
     theme: 'warning',
     onConfirm: () => {

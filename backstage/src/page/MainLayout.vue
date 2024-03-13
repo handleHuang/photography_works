@@ -21,7 +21,7 @@
           <template #icon>
             <t-icon name="layers" />
           </template>
-          命题管理
+          分类管理
         </t-menu-item>
         <t-menu-item value="/article" to="/article">
           <template #icon>
@@ -34,6 +34,12 @@
             <t-icon name="user-talk" />
           </template>
           用户管理
+        </t-menu-item>
+        <t-menu-item value="/competition" to="/competition">
+          <template #icon>
+            <t-icon name="relativity" />
+          </template>
+          赛事管理
         </t-menu-item>
         <template #operations>
           <div class="t-demo-menu--dark">

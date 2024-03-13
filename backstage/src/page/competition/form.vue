@@ -9,7 +9,7 @@
     <div class="continer_box">
       <div class="header">
         <div class="header_left">
-          <span>{{ route.query.id ? "编辑分类" : "新增分类" }}</span>
+          <span>{{ route.query.id ? "编辑赛事" : "新增赛事" }}</span>
         </div>
       </div>
       <div class="body">
@@ -20,12 +20,19 @@
           @submit="onSubmit"
         >
           <div class="form_wrap">
-            <t-form-item label="标题" name="title">
+            <t-form-item label="赛事标题" name="title">
               <t-input v-model="formData.title" type="text"></t-input>
             </t-form-item>
             <t-form-item label="描述" name="cont">
               <t-textarea
                 v-model="formData.cont"
+                type="text"
+                :autosize="{ minRows: 4, maxRows: 4 }"
+              ></t-textarea>
+            </t-form-item>
+            <t-form-item label="描述2" name="cont2">
+              <t-textarea
+                v-model="formData.cont2"
                 type="text"
                 :autosize="{ minRows: 4, maxRows: 4 }"
               ></t-textarea>
@@ -86,7 +93,7 @@
             <t-button
               theme="default"
               variant="outline"
-              @click="router.push('/project')"
+              @click="router.push('/competition')"
               >取消</t-button
             >
             <t-button type="submit">{{
@@ -112,6 +119,7 @@ const route = useRoute()
 const formData = ref({
   title: '',
   cont: '',
+  cont2: '',
   cover: null,
   online: 1
 })
@@ -122,6 +130,7 @@ const formData = ref({
 const rules = {
   title: [{ required: true, message: '名称必填' }],
   cont: [{ required: true, message: '描述必填' }],
+  cont2: [{ required: true, message: '描述必填' }],
   cover: [{ required: true, message: '封面必传' }]
 }
 const onSubmit = ({ validateResult, firstError, e }) => {
@@ -129,13 +138,13 @@ const onSubmit = ({ validateResult, firstError, e }) => {
     console.log(formData)
     store
       .dispatch(
-        formData.value.id ? 'projectUpdate' : 'projectCreate',
+        formData.value.id ? 'competitionUpdate' : 'competitionCreate',
         formData.value
       )
       .then((res) => {
         console.log(res)
         MessagePlugin.success(formData.value.id ? '修改成功' : '上传成功')
-        router.push('/project')
+        router.push('/competition')
       })
       .catch((err) => {
         MessagePlugin.warning(err.response.data.message)
@@ -147,7 +156,7 @@ const onSubmit = ({ validateResult, firstError, e }) => {
 // 详情
 const detailData = () => {
   store
-    .dispatch('projectDetail', { id: route.query.id })
+    .dispatch('competitionDetail', { id: route.query.id })
     .then((res) => {
       console.log(res)
       formData.value = res

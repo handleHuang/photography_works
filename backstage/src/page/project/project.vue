@@ -9,10 +9,10 @@
     <div class="continer_box">
       <div class="header">
         <div class="header_left">
-          <span>命题列表</span>
+          <span>分类列表</span>
         </div>
         <div class="header_right">
-          <t-button @click="router.push('/project/create')">+ 新增命题</t-button>
+          <t-button @click="router.push('/project/create')">+ 新增分类</t-button>
         </div>
       </div>
       <div class="search">
@@ -266,7 +266,7 @@ const columns = reactive([
   },
   {
     colKey: 'cover',
-    title: '命题封面',
+    title: '分类封面',
     width: '180'
   },
   {
@@ -314,7 +314,7 @@ const projectList = () => {
     MessagePlugin.warning(err.response.data.message)
   })
 }
-// 设置命题状态
+// 设置分类状态
 function setProjectStatus (params) {
   store.dispatch('setProjectStatus', params).then(res => {
     MessagePlugin.success('操作成功')
@@ -331,7 +331,7 @@ const handleChange = () => {
 // 删除
 function dodelete (id) {
   const confirmDia = DialogPlugin.confirm({
-    header: '确定删除此命题吗？',
+    header: '确定删除此分类吗？',
     body: '删除后不可恢复',
     theme: 'warning',
     onConfirm: () => {

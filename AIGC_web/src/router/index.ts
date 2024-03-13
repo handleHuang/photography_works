@@ -6,6 +6,8 @@ import WorkList from '../pages/workList/index.vue'
 import User from '../pages/user/index.vue'
 import Login from '../pages/login/index.vue'
 import Teaching from '../pages/teaching/index.vue'
+import Competition from '../pages/competition/index.vue'
+import CompetitionDetail from '../pages/competition/detail.vue'
 
 const routes: RouteRecordRaw[] = [
   // {
@@ -52,6 +54,16 @@ const routes: RouteRecordRaw[] = [
         path: 'teaching',
         name: 'teaching',
         component: Teaching,
+      },
+      {
+        path: 'competition',
+        name: 'competition',
+        component: Competition,
+      },
+      {
+        path: 'competition/detail',
+        name: 'competition_detail',
+        component: CompetitionDetail,
       },
     ]
   }

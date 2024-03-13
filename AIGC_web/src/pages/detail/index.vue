@@ -48,7 +48,7 @@
         </div>
         <div class="top_item">
           <div class="top_list" v-show="detailsData.project?.title">
-            <div class="top_list_title">参赛命题</div>
+            <div class="top_list_title">参赛分类</div>
             <div class="top_list_text">{{ detailsData.project?.title }}</div>
           </div>
         </div>
@@ -159,7 +159,7 @@
         </div>
         <div class="detail_wrap_right">
           <div class="wrap_list">
-            <div class="list_title">参赛命题</div>
+            <div class="list_title">参赛分类</div>
             <div class="list_text">{{ detailsData.topic }}</div>
           </div>
           <div class="wrap_list">

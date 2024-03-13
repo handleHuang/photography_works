@@ -43,7 +43,7 @@
         <div class="max-content">
           <div class="copyright">
             Copyright © 1998-{{ new Date().getFullYear() }} Tencent. All Rights
-            Reserved. 腾讯公司 版权所有
+            Reserved. 公司 版权所有
           </div>
         </div>
       </div>
@@ -169,6 +169,11 @@ const menu = ref([
     title: "摄影教学",
     getStatusList: true,
   },
+  {
+    url: "competition",
+    title: "赛事活动",
+    getStatusList: true,
+  },
 ]);
 
 const visible = ref(false);
@@ -204,17 +209,17 @@ const handleMenuList = (url: string) => {
     if (localStorage.getItem("user_info")) {
       router.push({ path: url });
     } else {
-      router.push({ path: "login" });
+      router.push({ path: "/login" });
     }
   }else {
-    router.push({ path: url });
+    router.push({ path: '/' + url });
   }
 };
 const handleHeaderPhoto = () => {
   if (localStorage.getItem("user_info")) {
-    router.push({ path: "user" });
+    router.push({ path: "/user" });
   } else {
-    router.push({ path: "login" });
+    router.push({ path: "/login" });
   }
 };
 </script>

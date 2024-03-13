@@ -28,11 +28,11 @@
         <div class="banner_btn" @click="handleWorks">全部作品</div>
       </div> -->
     </div>
-    <img
+    <!-- <img
       class="banner_logo"
       src="../../assets/img/index/banner_logo2.png"
       alt=""
-    />
+    /> -->
     <div class="banner_bg_wrap">
       <div class="banner_bg"></div>
     </div>
@@ -47,18 +47,18 @@
         活动介绍
       </div>
       <div class="purpose_text">
-        随着人工智能技术的迅猛进步，互联网科技也经历了飞速的演变，智能设计与智能绘图成为了当前科技领域的焦点议题。为了激发人们对人工智能技术的热忱，积极投身AI创作，并提升AI运用技巧与创新水平，腾讯举办了一场针对全体员工的AI绘图大赛。本次大赛由腾讯设计技术委员会、腾讯AI实验室及AIDesignOteam联合主办，作为一场面向企业全体员工的AI绘图作品收集活动。大赛旨在激励大家发挥才能，在竞赛中互相合作与学习，共同提升。让我们拥抱变革，迎接AI浪潮，共同探寻AI之旅，并通过智能技术创造更多的可能性。
+        随着人工智能技术的迅猛进步，互联网科技也经历了飞速的演变，智能设计与智能绘图成为了当前科技领域的焦点议题。为了激发人们对人工智能技术的热忱，积极投身AI创作，并提升AI运用技巧与创新水平，举办了一场针对全体员工的AI绘图大赛。本次大赛由设计技术委员会、AI实验室及AIDesignOteam联合主办，作为一场面向企业全体员工的AI绘图作品收集活动。大赛旨在激励大家发挥才能，在竞赛中互相合作与学习，共同提升。让我们拥抱变革，迎接AI浪潮，共同探寻AI之旅，并通过智能技术创造更多的可能性。
       </div>
     </div>
     <div class="introduce max-content" v-if="introduceData.length !== 0">
       <div class="introduce_title flex_title">
         <div class="title_pic ball-2"></div>
-        命题介绍
+        分类介绍
       </div>
       <div class="introduce_text">
         本次大赛提供{{
           introduceData.length
-        }}个大赛命题，鼓励参赛者通过关键词、图象等方式进行AI绘图创意设计。
+        }}个大赛分类，鼓励参赛者通过关键词、图象等方式进行AI绘图创意设计。
       </div>
       <div class="introduce_item">
         <div class="introduce_list" v-for="(item, index) in introduceData">
@@ -81,12 +81,8 @@
       </div>
       <div class="notice_item">
         <div class="notice_list">
-          <div class="notice_list_title">参赛对象</div>
-          <div class="notice_list_text">公司内部所有员工</div>
-        </div>
-        <div class="notice_list">
           <div class="notice_list_title">作品要求</div>
-          <div class="notice_list_text">1、参赛者可以提交一个或多个作品</div>
+          <div class="notice_list_text">1、可以提交一个或多个作品</div>
           <div class="notice_list_text">2、可以单人参加也可以组队参加</div>
           <div class="notice_list_text">
             3、作品需要使用AI Generated Content技术生成，例如Stable
@@ -110,7 +106,7 @@
           <ui>
             <li class="notice_list_text">最受关注奖：前20名</li>
             <li class="notice_list_text">最具潜力奖：20-50名</li>
-            <li class="notice_list_text">激励：腾讯AIGC创作人证书</li>
+            <li class="notice_list_text">激励：AIGC创作人证书</li>
           </ui>
           <div class="notice_list_picItem">
             <div class="notice_list_pic_list pic-4"></div>
@@ -122,7 +118,7 @@
         <div class="notice_list">
           <div class="notice_list_title">活动说明</div>
           <div class="notice_list_text">
-            1.本次AIGC绘图大赛为腾讯内部活动，所有活动信息，包括但不限于海报、规则、网站、社群聊天等，不得以任何形式对外公开，包括但不限于口头，文字，截图等形式，若有违规，需承担相应责任。
+            1.所有活动信息，包括但不限于海报、规则、网站、社群聊天等，不得以任何形式对外公开，包括但不限于口头，文字，截图等形式，若有违规，需承担相应责任。
           </div>
           <div class="notice_list_text">
             2.参赛作品，应以正向、积极的内容为导向，严禁包含但不限于低俗、色情、违反宗教活动的内容。
@@ -213,7 +209,7 @@ onMounted(() => {
   // }
 });
 
-const leftList = reactive(["大赛宗旨", "命题介绍", "参赛须知", "奖项设置"]);
+const leftList = reactive(["大赛宗旨", "分类介绍", "参赛须知", "奖项设置"]);
 
 const introduceIndex = ref(0);
 function handleIntroduce(index: number) {

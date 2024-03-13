@@ -59,7 +59,27 @@ const routes = [
         path: '/userList/updata',
         name: 'userList_updata',
         component: () => import('../page/userList/form.vue')
-      }
+      },
+      {
+        path: '/competition',
+        name: 'competition',
+        component: () => import('../page/competition/index.vue')
+      },
+      {
+        path: '/competition/detail',
+        name: 'competition_detail',
+        component: () => import('../page/competition/detail.vue')
+      },
+      {
+        path: '/competition/create',
+        name: 'competition_create',
+        component: () => import('../page/competition/form.vue')
+      },
+      {
+        path: '/competition/update',
+        name: 'competition_update',
+        component: () => import('../page/competition/form.vue')
+      },
     ]
   }
 ]

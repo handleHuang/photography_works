@@ -1,6 +1,6 @@
 import axios from "axios";
 import router from '../router';
-import { Message } from "tdesign-vue-next";
+import { MessagePlugin } from 'tdesign-vue-next';
 
 export const http = (options: any) => {
   return new Promise((resolve, reject) => {
@@ -36,14 +36,17 @@ export const http = (options: any) => {
         return response.data;
       },
       (error) => {
+        console.log(error.response.data)
         if (error.response.status === 401) {
           router.push('/login'); // 跳转到登录页面
-          Message.error("登录过期，请重新登录");
+          MessagePlugin.error("登录过期，请重新登录");
           localStorage.clear()
         } else if (error.response.status === 403) {
-          Message.error("错了");
+          MessagePlugin.error("登录失败，用户身份不符合要求");
+        }else if (error.response.status === 405) {
+          MessagePlugin.error("登录失败，用户名或密码错误");
         } else {
-          Message.error("服务器请求错误，请稍后再试");
+          MessagePlugin.error("服务器请求错误，请稍后再试");
         }
         return Promise.reject(error);
       }

@@ -1,6 +1,6 @@
 const connection = require("../db/index");
 const mysql = require("mysql");
-// 新建命题
+// 新建分类
 exports.addLabel = (req, res) => {
   try {
     const { title, cont, cover, online } = req.body;
@@ -34,7 +34,7 @@ exports.addLabel = (req, res) => {
   }
 };
 
-// 命题列表
+// 分类列表
 exports.labelList = (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
@@ -100,7 +100,7 @@ const pool = mysql.createPool({
   database: "test",
   connectionLimit: 10,
 });
-// 命题详情
+// 分类详情
 exports.labelDetails = (req, res) => {
   const id = req.query.id;
 
@@ -166,7 +166,7 @@ exports.labelOline = (req, res) => {
   });
 };
 
-// 修改命题信息
+// 修改分类信息
 exports.labelAnemd = (req, res) => {
   const { id, online, title, cont, cover } = req.body;
 

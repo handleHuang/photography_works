@@ -122,8 +122,9 @@ const formData = reactive({
   newEmail: "",
   identity: 2,
   cover: "",
+  like_number: 0,
 });
-// 登录
+// 登录接口
 const handleLogin = () => {
   login(formData)
     .then((res: any) => {
@@ -138,13 +139,14 @@ const handleLogin = () => {
       jump();
     })
     .catch((err: any) => {
-      MessagePlugin.warning(err.response.data.message);
+      console.log(err)
+      // MessagePlugin.warning(err.response.data.message);
     });
 };
 // 登录
 const onSubmit = (validateResult:any, firstError:any) => {
+  console.log(validateResult)
   if (validateResult.validateResult) {
-    console.log(123123)
     handleLogin();
   } else {
     console.log("Validate Errors: ", firstError, validateResult);
@@ -154,7 +156,6 @@ const onSubmit = (validateResult:any, firstError:any) => {
 
 // 注册
 const onSubmit1 = (validateResult:any, firstError:any, e:any) => {
-  e.preventDefault();
   if (validateResult.validateResult) {
     register(formData)
       .then((res: any) => {

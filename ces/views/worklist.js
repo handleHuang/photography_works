@@ -10,7 +10,7 @@ exports.workList = (req, res) => {
     const keyword = req.query.title || "";
     const state = req.query.state || ""; // 是否发布 1/2 1已发布、2未发布
     const top = parseInt(req.query.top) || 0; // 1收藏数最多的 //0最新作品
-    const topic = req.query.topic; // 命题筛选
+    const topic = req.query.topic; // 分类筛选
 
     let countQueryBase =
       "SELECT COUNT(*) AS total FROM works_list WHERE title LIKE ?";

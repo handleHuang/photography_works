@@ -1,102 +1,76 @@
 <template>
   <div class="continer">
-    <div class="page__breadcrumb back__breadcrumb"></div>
+    <div class="page__breadcrumb back__breadcrumb">
+        <!-- <div class="goback">
+          <t-icon name="chevron-left" />
+          返回上一级
+        </div> -->
+      </div>
     <div class="continer_box">
       <div class="header">
         <div class="header_left">
-          <span>作品列表</span>
+          <span>赛事列表</span>
         </div>
         <div class="header_right">
-          <t-switch v-model="checked" size="large" :label="['收藏数最多', '正常']" @change="handleSwitch"></t-switch>
+          <t-button @click="router.push('/competition/create')">+ 新增赛事</t-button>
         </div>
       </div>
       <div class="search">
         <div class="search_left">
-          <t-input
-            type="text"
-            placeholder="请输入作品名称搜索"
-            v-model="title"
-            @change="handleChange"
-          >
+          <t-input type="text" placeholder="请输入标题搜索" v-model="keyword" @change="handleChange">
             <template #prefix-icon>
               <t-icon name="search" />
             </template>
           </t-input>
         </div>
         <div class="search_right">
-          <t-radio-group
-            size="large"
-            v-model="showValue"
-            @change="handleChange"
-          >
+          <t-radio-group size="large" v-model="showValue" @change="handleChange">
             <t-radio-button value="all">全部</t-radio-button>
             <t-radio-button :value="1">已发布</t-radio-button>
             <t-radio-button :value="2">未发布</t-radio-button>
           </t-radio-group>
         </div>
       </div>
-      <t-table
-        row-key="id"
-        :data="tabelData.arr"
-        :columns="columns"
-        :selected-row-keys="selected.arr"
-        @select-change="rehandleSelectChange"
-      >
+      <t-table row-key="id" :data="tabelData.arr" :columns="columns" :max-height="619">
         <template #cover="{ row }">
           <img
-            style="width: 100%; height: 100%; object-fit: cover"
-            :src="row.cover[0]"
+          v-if="row.cover"
+            style="width: 183px; height: 96px; object-fit: cover"
+            :src="row.cover"
             alt=""
           />
         </template>
-        <template #title="{ row }">
-          <t-tooltip :content="row.title" theme="light">
-            <span>{{ ellipsis(row.title) }}</span>
-          </t-tooltip>
-        </template>
-        <template #topic="{ row }">
-          {{ row.topic }}
-        </template>
-        <template #cont="{ row }">
-          <t-tooltip :content="row.cont" theme="light">
-            <span>{{ ellipsis(row.cont) }}</span>
-          </t-tooltip>
-        </template>
-        <template #user_name="{ row }">
-          {{ row.user_name && row.user_name }}
-        </template>
-        <template #state="{ row }">
-          <span :class="`status showStatus${row.state}`">{{
-            row.state == 2 ? "未发布" : "已发布"
+        <template #online="{ row }">
+          <span :class="`status showStatus${row.online}`">{{
+            row.online == 2 ? '未发布' : '已发布'
           }}</span>
         </template>
         <template #operat="{ row }">
           <span class="operat__btn" @click="docheck(row.id)">查看</span>
+          <span class="operat__btn"  @click="doeditor(row.id)">编辑</span>
           <span
             class="operat__btn"
-            v-if="row.state === 2"
+            v-if="row.online === 2"
             @click="
-              setArticleStatus({
+              setcompetitionStatus({
                 id: row.id,
-                state: 1,
+                online: 1
               })
             "
             >上架</span
           >
           <span
             class="operat__btn operat__btn_del"
-            v-if="row.state === 1"
+            v-if="row.online === 1"
             @click="
-              setArticleStatus({
+              setcompetitionStatus({
                 id: row.id,
-                state: 2,
+                online: 2
               })
             "
             >下架</span
           >
-          <span class="operat__btn operat__btn_del" @click="dodelete(row.id)"
-            >删除</span
-          >
+          <span class="operat__btn operat__btn_del"  @click="dodelete(row.id)">删除</span>
         </template>
       </t-table>
       <div class="pagination_box">
@@ -120,7 +94,7 @@ const router = useRouter()
 const store = useStore()
 // const domain = 'https://aigc-1311564431.cos.ap-guangzhou.myqcloud.com/'
 const showValue = ref('all')
-const title = ref('')
+const keyword = ref('')
 // 分页
 const pagination = reactive({
   obj: {
@@ -132,7 +106,7 @@ const pagination = reactive({
 function rehandleChange (changeParams) {
   pagination.obj.pageSize = changeParams.pageSize
   pagination.obj.current = changeParams.current
-  articleList()
+  competitionList()
 }
 const tabelData = reactive({
   arr: []
@@ -141,49 +115,31 @@ const tabelData = reactive({
 // 表头
 const columns = reactive([
   {
-    colKey: 'row-select',
-    type: 'multiple',
-    width: '40',
-    fixed: 'left'
-  },
-  {
     colKey: 'id',
     title: 'ID',
-    fixed: 'left',
-    width: '80'
+    width: '60'
   },
   {
     colKey: 'cover',
-    title: '作品封面',
+    title: '分类封面',
     width: '180'
   },
   {
     colKey: 'title',
-    title: '作品名称',
-    width: '240'
-  },
-  {
-    colKey: 'topic',
-    title: '参赛分类',
-    width: '140'
+    title: '标题',
+    fixed: 'left',
+    width: '140',
+    ellipsis: {
+      theme: 'light'
+    }
   },
   {
     colKey: 'cont',
-    title: '关键词描述',
-    width: '200'
+    title: '描述',
+    width: '240'
   },
   {
-    colKey: 'collect_number',
-    title: '收藏数',
-    width: '140'
-  },
-  {
-    colKey: 'user_name',
-    title: '创建人',
-    width: '140'
-  },
-  {
-    colKey: 'state',
+    colKey: 'online',
     title: '状态',
     width: '100'
   },
@@ -194,47 +150,51 @@ const columns = reactive([
     width: '184'
   }
 ])
-const articleList = () => {
+const competitionList = () => {
   const params = {
     per_page: pagination.obj.pageSize,
     page: pagination.obj.current
   }
-  if (title.value) {
-    params.title = title.value
+  if (keyword.value) {
+    params.keyword = keyword.value
   }
   if (showValue.value !== 'all') {
-    params.state = showValue.value
+    params.online = showValue.value
   }
-  if (checked.value) {
-    params.top = 1
-  }
-  store.dispatch('articleList', params).then((res) => {
+  store.dispatch('competitionList', params).then(res => {
     tabelData.arr = res.data
     pagination.obj.total = res.totalCount
+  }).catch((err) => {
+    console.log(err)
+    MessagePlugin.warning(err.response.data.message)
   })
 }
 // 设置分类状态
-function setArticleStatus (params) {
-  store.dispatch('setArticleStatus', params).then((res) => {
+function setcompetitionStatus (params) {
+  store.dispatch('setcompetitionStatus', params).then(res => {
     MessagePlugin.success('操作成功')
-    articleList()
+    competitionList()
+  }).catch(err => {
+    MessagePlugin.warning(err.response.data.message)
   })
 }
 // 筛选
 const handleChange = () => {
   pagination.obj.current = 1
-  articleList()
+  competitionList()
 }
 // 删除
 function dodelete (id) {
   const confirmDia = DialogPlugin.confirm({
-    header: '确定删除此作品吗？',
+    header: '确定删除此分类吗？',
     body: '删除后不可恢复',
     theme: 'warning',
     onConfirm: () => {
-      store.dispatch('delArticle', { id: id }).then((res) => {
+      store.dispatch('delcompetition', { id: id }).then(res => {
         MessagePlugin.success('删除成功')
-        articleList()
+        competitionList()
+      }).catch(err => {
+        MessagePlugin.warning(err.response.data.message)
       })
       confirmDia.destroy()
     },
@@ -246,34 +206,23 @@ function dodelete (id) {
 // 查看
 function docheck (id) {
   router.push({
-    path: '/article/detail',
+    path: '/competition/detail',
     query: {
       id: id
     }
   })
 }
-// 批量
-const selected = reactive({
-  arr: []
-})
-const rehandleSelectChange = (value) => {
-  selected.arr = value
-}
-
-// 开关
-const checked = ref(true)
-const handleSwitch = () => {
-  articleList()
-}
-const ellipsis = (value) => {
-  if (!value) return ''
-  if (value.length > 25) {
-    return value.slice(0, 25) + '...'
-  }
-  return value
+// 编辑
+function doeditor (id) {
+  router.push({
+    path: '/competition/update',
+    query: {
+      id: id
+    }
+  })
 }
 onMounted(() => {
-  articleList()
+  competitionList()
 })
 </script>
 <style lang="less" scoped src="../../assets/style/manage/manage.less"></style>
