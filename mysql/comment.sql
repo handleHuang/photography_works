@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : ces
+ Source Server         : localhost_3306
  Source Server Type    : MySQL
- Source Server Version : 80034
+ Source Server Version : 80031
  Source Host           : localhost:3306
  Source Schema         : test
 
  Target Server Type    : MySQL
- Target Server Version : 80034
+ Target Server Version : 80031
  File Encoding         : 65001
 
- Date: 29/02/2024 16:11:11
+ Date: 13/03/2024 23:39:34
 */
 
 SET NAMES utf8mb4;
@@ -22,15 +22,15 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `comment`;
 CREATE TABLE `comment`  (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '评论id',
+  `id` int(0) NOT NULL AUTO_INCREMENT COMMENT '评论id',
   `content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '评论内容',
-  `level` int NOT NULL COMMENT '评论层级，分三层，0为针对博文的评论，1为针对0的评论，2为针对1的评论',
-  `parent_id` int NULL DEFAULT NULL COMMENT '回复的评论id，没有为0',
-  `blog_id` int NOT NULL COMMENT '作品id',
-  `user_id` int NOT NULL COMMENT '发表评论的用户id',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '评论创建时间',
+  `level` int(0) NOT NULL COMMENT '评论层级，分三层，0为针对博文的评论，1为针对0的评论，2为针对1的评论',
+  `parent_id` int(0) NULL DEFAULT NULL COMMENT '回复的评论id，没有为0',
+  `blog_id` int(0) NOT NULL COMMENT '作品id',
+  `user_id` int(0) NOT NULL COMMENT '发表评论的用户id',
+  `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '评论创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of comment

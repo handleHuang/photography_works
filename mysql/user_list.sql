@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : ces
+ Source Server         : localhost_3306
  Source Server Type    : MySQL
- Source Server Version : 80034
+ Source Server Version : 80031
  Source Host           : localhost:3306
  Source Schema         : test
 
  Target Server Type    : MySQL
- Target Server Version : 80034
+ Target Server Version : 80031
  File Encoding         : 65001
 
- Date: 29/02/2024 16:11:20
+ Date: 13/03/2024 23:39:53
 */
 
 SET NAMES utf8mb4;
@@ -22,15 +22,15 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `user_list`;
 CREATE TABLE `user_list`  (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '用户id',
+  `id` int(0) NOT NULL AUTO_INCREMENT COMMENT '用户id',
   `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '用户账号',
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '用户密码',
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '邮箱',
-  `identity` int NULL DEFAULT NULL COMMENT '身份类型：0/1/2   超级管理员/管理员/普通用户',
+  `identity` int(0) NULL DEFAULT NULL COMMENT '身份类型：0/1/2   超级管理员/管理员/普通用户',
   `cover` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '头像',
-  `like_number` int NOT NULL COMMENT '多少人收藏',
+  `like_number` int(0) NOT NULL COMMENT '多少人收藏',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user_list
@@ -45,5 +45,7 @@ INSERT INTO `user_list` VALUES (10, 'cesanemd', 'qweqwe', 'qweqwe', 2, NULL, 0);
 INSERT INTO `user_list` VALUES (11, 'ceshizhuce', '123123', '123123', 2, NULL, 0);
 INSERT INTO `user_list` VALUES (19, 'zxc', 'admin', '123123', 0, NULL, 0);
 INSERT INTO `user_list` VALUES (26, 'ces123123', '123123', '123123', 1, 'http://127.0.0.1:12134/user/ä¸è½½.jpg', 2);
+INSERT INTO `user_list` VALUES (27, 'hon', '123123', '123123', 2, 'http://127.0.0.1:12134/user/asdf.jpg', 0);
+INSERT INTO `user_list` VALUES (28, 'ceshon', '123123', '123123', 2, 'http://127.0.0.1:12134/user/asdf.jpg', 0);
 
 SET FOREIGN_KEY_CHECKS = 1;

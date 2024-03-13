@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : ces
+ Source Server         : localhost_3306
  Source Server Type    : MySQL
- Source Server Version : 80034
+ Source Server Version : 80031
  Source Host           : localhost:3306
  Source Schema         : test
 
  Target Server Type    : MySQL
- Target Server Version : 80034
+ Target Server Version : 80031
  File Encoding         : 65001
 
- Date: 29/02/2024 16:10:56
+ Date: 13/03/2024 23:39:27
 */
 
 SET NAMES utf8mb4;
@@ -22,13 +22,13 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `collect`;
 CREATE TABLE `collect`  (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '收藏id',
-  `user_id` int NOT NULL COMMENT '用户id',
-  `item_id` int NOT NULL COMMENT '作品id',
-  `author_id` int NULL DEFAULT NULL COMMENT '作者id',
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '收藏时间',
+  `id` int(0) NOT NULL AUTO_INCREMENT COMMENT '收藏id',
+  `user_id` int(0) NOT NULL COMMENT '用户id',
+  `item_id` int(0) NOT NULL COMMENT '作品id',
+  `author_id` int(0) NULL DEFAULT NULL COMMENT '作者id',
+  `created_at` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '收藏时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 30 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of collect

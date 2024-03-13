@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : ces
+ Source Server         : localhost_3306
  Source Server Type    : MySQL
- Source Server Version : 80034
+ Source Server Version : 80031
  Source Host           : localhost:3306
  Source Schema         : test
 
  Target Server Type    : MySQL
- Target Server Version : 80034
+ Target Server Version : 80031
  File Encoding         : 65001
 
- Date: 29/02/2024 16:11:27
+ Date: 13/03/2024 23:40:00
 */
 
 SET NAMES utf8mb4;
@@ -22,18 +22,18 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `works_list`;
 CREATE TABLE `works_list`  (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '列表id',
+  `id` int(0) NOT NULL AUTO_INCREMENT COMMENT '列表id',
   `user_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '用户name',
-  `collect` int NOT NULL COMMENT '是否收藏1/0 已收藏/未收藏',
-  `collect_number` int NOT NULL COMMENT '多少人收藏',
+  `collect` int(0) NOT NULL COMMENT '是否收藏1/0 已收藏/未收藏',
+  `collect_number` int(0) NOT NULL COMMENT '多少人收藏',
   `cover` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '封面图最多九张，mysql只存名称，前缀自己拼接',
   `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '作品名称',
   `topic` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '命题名字',
   `cont` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '描述',
-  `state` int NOT NULL COMMENT '是否上架，1/2，已上架/未上架，只有上架了才能在前端展示',
+  `state` int(0) NOT NULL COMMENT '是否上架，1/2，已上架/未上架，只有上架了才能在前端展示',
   `beiyong1` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备用 图片',
-  `beiyong2` int NULL DEFAULT NULL COMMENT '备用 发布者id',
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+  `beiyong2` int(0) NULL DEFAULT NULL COMMENT '备用 发布者id',
+  `created_at` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '创建时间',
   `process` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '控制手段',
   `user_img` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '用户头像',
   PRIMARY KEY (`id`) USING BTREE
