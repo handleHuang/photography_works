@@ -1,13 +1,14 @@
 <template>
     <div class="competition_detail">
-        <div class="detail_neat max-content">
+        <div class="detail_neat" style="max-width: 1024px;margin: 0 auto;">
             <div class="container-middle">
-                <div class="offset-lg-1 col-lg-10">
+                <div class="col-lg-10">
                     <h5 class="title title--20 title--gray">
                         {{ createdData(detailData.create_time) }}</h5>
                     <div class="generic-page__content">
                         <div class="text-widget">
                             <h1>{{ detailData.title }}</h1>
+                            <a class="title_tips" @click="handleCheck()">查看查赛作品></a>
                         </div>
                         <div class="teaser-widget">
                             <img :src='detailData.cover' class="teaser-widget__image js-img-with-txt js-bg-color-el" />
@@ -156,11 +157,18 @@ function createdData(value: any) {
 
 const file1: any = ref([]);
 const handleFail1 = (file: any) => {
-  MessagePlugin.error(`文件 ${file.name} 上传失败`);
+    MessagePlugin.error(`文件 ${file.name} 上传失败`);
 };
 const changeUpdata1 = (item: any) => {
-  formData.cover = item[0].url;
+    formData.cover = item[0].url;
 };
+
+const handleCheck = () => {
+    router.push({
+        name: "competition_list",
+        query: { id: route.query.id },
+    });
+}
 
 onMounted(() => {
     getDetail()

@@ -8,6 +8,7 @@ import Login from '../pages/login/index.vue'
 import Teaching from '../pages/teaching/index.vue'
 import Competition from '../pages/competition/index.vue'
 import CompetitionDetail from '../pages/competition/detail.vue'
+import CompetitionList from '../pages/competition/list.vue'
 
 const routes: RouteRecordRaw[] = [
   // {
@@ -64,6 +65,11 @@ const routes: RouteRecordRaw[] = [
         path: 'competition/detail',
         name: 'competition_detail',
         component: CompetitionDetail,
+      },
+      {
+        path: 'competition/list',
+        name: 'competition_list',
+        component: CompetitionList,
       },
     ]
   }

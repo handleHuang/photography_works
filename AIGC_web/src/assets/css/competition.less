@@ -85,6 +85,19 @@
         .text-widget {
             margin-bottom: 60px;
 
+            h1 {
+                margin-bottom: 16px;
+            }
+
+            a {
+                cursor: pointer;
+            }
+
+            // .title_tips {
+            //     margin-top: 16px;
+            //     cursor: pointer;
+            // }
+
             li {
                 padding-left: 10px;
             }
@@ -176,8 +189,119 @@
             font-weight: bold;
             margin-bottom: 8px;
         }
-        & + .pup_list {
+
+        &+.pup_list {
             margin-top: 20px;
+        }
+    }
+}
+
+.competition_list {
+    padding-top: 82px;
+    color: #000;
+
+    .const {
+        width: 1024px;
+        margin: 0 auto;
+    }
+
+    .rich_media_title {
+        font-size: 22px;
+        line-height: 1.4;
+        margin-bottom: 14px;
+    }
+
+    .rich_media_meta_list {
+        margin-bottom: 22px;
+        line-height: 20px;
+        font-size: 0;
+        display: inline-block;
+        vertical-align: middle;
+        margin: 0 10px 10px 0;
+        font-size: 15px;
+        color: rgba(0, 0, 0, .3);
+    }
+
+    .rich_media_cover {
+        width: 100%;
+        height: auto;
+        background: #000;
+        margin-bottom: 24px;
+    }
+
+    .somid_title {
+        font-size: 20px;
+        font-family: Optima-Regular, PingFangTC-light;
+        visibility: visible;
+        letter-spacing: 1px;
+        color: rgb(38, 38, 38);
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+
+    .somid_title1 {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .dateil {
+        white-space: normal;
+        line-height: 2em;
+        letter-spacing: 2px;
+        text-align: justify;
+        text-indent: 2em;
+        margin-bottom: 8px;
+        visibility: visible;
+    }
+
+    .works_item {
+        .works_list {
+            .works_list_title {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 10px;
+
+                .left {
+                    font-size: 32px;
+                    color: rgba(101, 116, 186, 1);
+                    font-weight: bold;
+                }
+
+                .right {
+                    color: rgba(149, 149, 149, 1);
+                    font-size: 28px;
+                }
+            }
+
+            .works_pic {
+                width: 100%;
+                height: auto;
+            }
+
+            .works_box {
+                margin-top: 10px;
+                background: #fff;
+                padding: 24px;
+
+                .flex {
+                    display: flex;
+                    justify-content: space-between;
+                }
+
+                .works_box_list {
+                    font-size: 28px;
+                    margin-top: 10px;
+
+                    .works_box_list_left {
+                        color: rgba(140, 140, 140, 1);
+                    }
+
+                    .works_box_list_right {
+                        color: #000;
+                    }
+                }
+            }
         }
     }
 }

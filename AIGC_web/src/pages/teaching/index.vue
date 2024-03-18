@@ -2,7 +2,7 @@
     <div class="teaching">
 
 
-        <div class="max-content">
+        <div style="max-width: 1024px;margin: 0 auto;">
             <div class="item">
                 <div class="list" v-for="(itemData, index) in item">
                     <img class="img_2" :src="itemData.corver">
