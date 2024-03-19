@@ -6,11 +6,11 @@ const handle = require("../router_handler/uploadimg");
 const classify = require("../views/classify");
 const work = require("../views/worklist");
 const collect = require("../views/collect");
-const user = require("../views/user")
-const comment = require("../views/comment")
-const competition = require("../views/competition")
+const user = require("../views/user");
+const comment = require("../views/comment");
+const competition = require("../views/competition");
 const jwt = require("jsonwebtoken");
-const verifyToken = require("../fun/verify_token")
+const verifyToken = require("../fun/verify_token");
 
 // 创建MySQL数据库连接
 const connection = mysql.createConnection({
@@ -33,6 +33,9 @@ router.post("/upUserImg", handle.upUserImg);
 router.post("/addLabel", verifyToken, classify.addLabel);
 router.get("/labelList", classify.labelList);
 router.get("/labelDetails", verifyToken, classify.labelDetails);
+router.get("/classifyData", verifyToken, classify.classifyData);
+router.get("/classifyDatayuan", verifyToken, classify.classifyDatayuan);
+router.get("/workOlineState", verifyToken, work.workOlineState);
 router.post("/labelOline", verifyToken, classify.labelOline);
 router.post("/labelAnemd", verifyToken, classify.labelAnemd);
 router.delete("/labelDel", verifyToken, classify.labelDel);
@@ -107,7 +110,8 @@ router.get("/userList", verifyToken, (req, res) => {
 // 注册
 router.post("/register", function (req, res) {
   try {
-    const { username, password, newEmail, identity, cover, like_number } = req.body; // 获取前端传递的数据
+    const { username, password, newEmail, identity, cover, like_number } =
+      req.body; // 获取前端传递的数据
 
     // 数据有效性验证
     if (!username || !password || !newEmail) {
@@ -140,7 +144,14 @@ router.post("/register", function (req, res) {
       // 可以插入新用户
       const insertSql =
         "INSERT INTO `user_list` (`username`, `password`, `email`, `identity`, `cover`, `like_number`) VALUES (?,?,?,?,?,?);";
-      const insertValues = [username, password, newEmail, identity, cover, like_number];
+      const insertValues = [
+        username,
+        password,
+        newEmail,
+        identity,
+        cover,
+        like_number,
+      ];
 
       connection.query(insertSql, insertValues, function (err) {
         if (err) {
@@ -168,7 +179,9 @@ router.post("/register", function (req, res) {
           user.domian = "http://127.0.0.1:12134/upload/";
 
           // 生成token
-          const token = jwt.sign({ username: user.username }, "hon71234", { expiresIn: "2h" });
+          const token = jwt.sign({ username: user.username }, "hon71234", {
+            expiresIn: "2h",
+          });
 
           // 返回响应给前端，包括注册信息和token
           res.status(200).json({
@@ -211,8 +224,10 @@ router.post("/login", (req, res) => {
     if (result.length > 0) {
       const identity = result[0].identity;
       if (identity === 0 || identity === 1) {
-        const token = jwt.sign({ username: result[0].username }, "hon71234", { expiresIn: "2h" });
-        console.log(result[0])
+        const token = jwt.sign({ username: result[0].username }, "hon71234", {
+          expiresIn: "2h",
+        });
+        console.log(result[0]);
         res.status(200).send({
           status: 200,
           message: "登录成功",
@@ -222,7 +237,7 @@ router.post("/login", (req, res) => {
             domian: "http://127.0.0.1:12134/upload/",
             identity: identity,
             token: token,
-            cover: result[0].cover
+            cover: result[0].cover,
           },
         });
       } else {
