@@ -5,7 +5,7 @@
       <div class="workList_screen">
         <div class="screen_left">
           <div class="screen_left_small">
-            <div class="workList_title">参赛作品</div>
+            <div class="workList_title">作品列表</div>
             <!-- <div class="down">
             <t-dropdown :options="optionsYear" @click="clickHandlerYear" trigger="click">
               <t-space>
@@ -190,8 +190,6 @@ import { _debounce } from "../../utils/throttle";
 import { useRouter, useRoute } from "vue-router";
 import {
   getArticles,
-  getArticlesTime,
-  getArticlesYears,
   getUsers,
 } from "../../models/worksList";
 import { getProjectsList } from "../../models/index";
@@ -199,46 +197,6 @@ import { postlike } from "../../models/detail";
 const router = useRouter();
 const route = useRoute();
 const domain = "https://aigc-1311564431.cos.ap-guangzhou.myqcloud.com/";
-// 年份
-let year = ref<string>("");
-const optionsYear: any = [{ content: "全部年份", value: 0 }];
-const clickHandlerYear = (data: any) => {
-  year.value = data.content;
-  getArticlesTime()
-    .then((res: any) => {
-      for (let i = 0; i < res.length; i++) {
-        optionsMonth[i + 1] = {
-          content: res[i],
-          value: i + 1,
-        };
-      }
-    })
-    .catch((error: any) => {
-      console.log("获取失败！");
-    });
-  // MessagePlugin.success(`选中【${data.content}】`);
-};
-
-// 月份
-let month = ref<string>("");
-const optionsMonth = [{ content: "全部月份", value: 0 }];
-const clickHandlerMonth = (data: any) => {
-  month.value = data.content;
-  // MessagePlugin.success(`选中【${data.content}】`);
-};
-getArticlesYears()
-  .then((res: any) => {
-    for (let i = 0; i < res.length; i++) {
-      optionsYear[i + 1] = {
-        content: res[i],
-        value: i + 1,
-      };
-    }
-  })
-  .catch((error: any) => {
-    console.log("获取失败！");
-  });
-
 // 主题
 let theme = ref<number>(0);
 let themeText = ref<string>("");

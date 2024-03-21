@@ -1,11 +1,11 @@
 <template>
   <div class="continer">
     <div class="page__breadcrumb back__breadcrumb">
-        <!-- <div class="goback">
+      <!-- <div class="goback">
           <t-icon name="chevron-left" />
           返回上一级
         </div> -->
-      </div>
+    </div>
     <div class="continer_box">
       <div class="header">
         <div class="header_left">
@@ -33,12 +33,12 @@
       </div>
       <t-table row-key="id" :data="tabelData.arr" :columns="columns" :max-height="619">
         <template #cover="{ row }">
-          <img
-          v-if="row.cover"
-            style="width: 183px; height: 96px; object-fit: cover"
-            :src="row.cover"
-            alt=""
-          />
+          <img v-if="row.cover" style="width: 183px; height: 96px; object-fit: cover" :src="row.cover" alt="" />
+        </template>
+        <template #cont="{ row }">
+          <span
+            style="display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; text-overflow: ellipsis;">{{
+              row.cont }}</span>
         </template>
         <template #online="{ row }">
           <span :class="`status showStatus${row.online}`">{{
@@ -47,40 +47,25 @@
         </template>
         <template #operat="{ row }">
           <span class="operat__btn" @click="docheck(row.id)">查看</span>
-          <span class="operat__btn"  @click="doeditor(row.id)">编辑</span>
-          <span
-            class="operat__btn"
-            v-if="row.online === 2"
-            @click="
-              setcompetitionStatus({
-                id: row.id,
-                online: 1
-              })
-            "
-            >上架</span
-          >
-          <span
-            class="operat__btn operat__btn_del"
-            v-if="row.online === 1"
-            @click="
-              setcompetitionStatus({
-                id: row.id,
-                online: 2
-              })
-            "
-            >下架</span
-          >
-          <span class="operat__btn operat__btn_del"  @click="dodelete(row.id)">删除</span>
+          <span class="operat__btn" @click="doeditor(row.id)">编辑</span>
+          <span class="operat__btn" v-if="row.online === 2" @click="
+            setcompetitionStatus({
+              id: row.id,
+              online: 1
+            })
+            ">上架</span>
+          <span class="operat__btn operat__btn_del" v-if="row.online === 1" @click="
+            setcompetitionStatus({
+              id: row.id,
+              online: 2
+            })
+            ">下架</span>
+          <span class="operat__btn operat__btn_del" @click="dodelete(row.id)">删除</span>
         </template>
       </t-table>
       <div class="pagination_box">
-        <t-pagination
-          v-model="pagination.obj.current"
-          :total="pagination.obj.total"
-          v-model:page-size="pagination.obj.pageSize"
-          show-jumper
-          @change="rehandleChange"
-        />
+        <t-pagination v-model="pagination.obj.current" :total="pagination.obj.total"
+          v-model:page-size="pagination.obj.pageSize" show-jumper @change="rehandleChange" />
       </div>
     </div>
   </div>
@@ -103,7 +88,7 @@ const pagination = reactive({
     pageSize: 20
   }
 })
-function rehandleChange (changeParams) {
+function rehandleChange(changeParams) {
   pagination.obj.pageSize = changeParams.pageSize
   pagination.obj.current = changeParams.current
   competitionList()
@@ -170,7 +155,7 @@ const competitionList = () => {
   })
 }
 // 设置分类状态
-function setcompetitionStatus (params) {
+function setcompetitionStatus(params) {
   store.dispatch('setcompetitionStatus', params).then(res => {
     MessagePlugin.success('操作成功')
     competitionList()
@@ -184,7 +169,7 @@ const handleChange = () => {
   competitionList()
 }
 // 删除
-function dodelete (id) {
+function dodelete(id) {
   const confirmDia = DialogPlugin.confirm({
     header: '确定删除此分类吗？',
     body: '删除后不可恢复',
@@ -204,7 +189,7 @@ function dodelete (id) {
   })
 }
 // 查看
-function docheck (id) {
+function docheck(id) {
   router.push({
     path: '/competition/detail',
     query: {
@@ -213,7 +198,7 @@ function docheck (id) {
   })
 }
 // 编辑
-function doeditor (id) {
+function doeditor(id) {
   router.push({
     path: '/competition/update',
     query: {

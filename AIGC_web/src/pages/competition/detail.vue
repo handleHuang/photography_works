@@ -14,8 +14,7 @@
                             <img :src='detailData.cover' class="teaser-widget__image js-img-with-txt js-bg-color-el" />
                         </div>
 
-                        <div class="text-widget">
-                            {{ detailData.cont }}
+                        <div class="text-widget" v-html="detailData.cont">
                         </div>
                     </div>
                 </div>
@@ -27,8 +26,7 @@
                         <div class="text-widget">
                             <div>
                                 <h3>Prizes</h3>
-                                <div>
-                                    {{ detailData.cont2 }}
+                                <div v-html="detailData.cont2">
                                 </div>
                             </div>
                             <!-- <div>
