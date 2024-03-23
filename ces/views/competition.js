@@ -226,13 +226,13 @@ exports.labelDel = (req, res) => {
 
 exports.compList = (req, res) => {
     try {
-      const { item_id, title, name, cover, cont } = req.body;
+      const { item_id, title, name, cover, cont, iphone } = req.body;
   
       // 准备插入数据的SQL查询语句
-      const query = `INSERT INTO competition_list (item_id, title, name, cover, cont) VALUES (?, ?, ?, ?, ?)`;
+      const query = `INSERT INTO competition_list (item_id, title, name, cover, cont, iphone) VALUES (?, ?, ?, ?, ?, ?)`;
   
       // 执行SQL查询，插入数据
-      connection.query(query, [item_id, title, name, cover, cont], (error, results) => {
+      connection.query(query, [item_id, title, name, cover, cont, iphone], (error, results) => {
         if (error) {
           console.error(error);
           return res.status(500).json({

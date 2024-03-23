@@ -67,6 +67,10 @@
                     <div class="content"><t-input v-model="formData.name" placeholder="请输入作者名字" /></div>
                 </div>
                 <div class="pup_list">
+                    <div class="label">联系方式</div>
+                    <div class="content"><t-input v-model="formData.iphone" placeholder="请输入联系方式" /></div>
+                </div>
+                <div class="pup_list">
                     <div class="label">作品</div>
                     <div class="content">
                         <t-upload ref="uploadRef1" v-model="file1" action="http://127.0.0.1:12134/api/uploadimg"
@@ -105,6 +109,7 @@ const formData: any = reactive({
     title: '',
     name: '',
     cont: '',
+    iphone: '',
 })
 
 const detailData: any = ref({})
@@ -135,6 +140,7 @@ const handleConfirm = () => {
         formData.title = ''
         formData.name = ''
         formData.cont = ''
+        formData.iphone = ''
         MessagePlugin.success('报名成功');
         visibleShow.value = false;
     })
