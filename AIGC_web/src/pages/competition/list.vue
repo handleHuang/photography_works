@@ -5,8 +5,8 @@
             <div class="rich_media_meta_list"> {{ createdData(listData.create_time) }} 广东</div>
             <div class="rich_media_cover"></div>
             <div class="somid_title">关于摄影大赛</div>
-            <div class="dateil">{{ listData.cont }}</div>
-            <div class="dateil">{{ listData.cont2 }}</div>
+            <div class="dateil" v-html="listData.cont"></div>
+            <div class="dateil" v-html="listData.cont2"></div>
             <div class="somid_title somid_title1">本组参赛作品</div>
             <div class="works_item">
                 <div class="works_list" v-for="(item, index) in listData.item_list" :key="index">
