@@ -121,7 +121,7 @@
         </div>
         <div class="workList_rank">
           <div class="rank_header">
-            <div class="rank_header_left">AIGC绘图人气榜</div>
+            <div class="rank_header_left">用户人气榜</div>
           </div>
           <div class="rank_title_list">
             <div class="rank_title_list_left">

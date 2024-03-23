@@ -11,13 +11,7 @@
           </div>
         </div>
 
-        <div class="text-widget">
-          <p>
-            {{ item.cont }}
-            <a href="">
-              {{ item.cont2 }}
-            </a>.
-          </p>
+        <div class="text-widget" v-html="item.cont">
         </div>
       </div>
     </div>
@@ -35,6 +29,7 @@ const getCompetitionData = () => {
   let param: any = {
     page: 1,
     per_page: 100,
+    online: 1
   };
   competitionList(param)
     .then((res: any) => {

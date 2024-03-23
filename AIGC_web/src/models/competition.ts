@@ -3,7 +3,7 @@ import { http } from "../utils/http";
 // 赛事活动
 export function competitionList(params: any) {
     return http({
-        url: `/api/competitionList?per_page=${params.per_page}&page=${params.page}`,
+        url: `/api/competitionList?per_page=${params.per_page}&page=${params.page}&online=${params.online}`,
         method: "get",
     });
 }

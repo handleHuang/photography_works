@@ -13,15 +13,8 @@
         <div class="banner_pic"></div>
       </div>
       <div class="banner_href_box">
-        <a
-          href="https://aidesign.woa.com/aigc/#/workList"
-          target="_blank"
-          class="banner_href href1"
-          >一期作品查看>></a
-        >
-        <a href="#" class="banner_href href2"
-          >二期游戏主题征集赛 即将开始，敬请期待</a
-        >
+        <a href="http://localhost:8016/#/workList" target="_blank" class="banner_href href1">一期作品查看>></a>
+        <a href="#" class="banner_href href2">二期游戏主题征集赛 即将开始，敬请期待</a>
       </div>
       <!-- <div class="banner_btn_box">
         <div class="banner_btn active" @click="handleUpdata">立即参加</div>
@@ -37,34 +30,31 @@
       <div class="banner_bg"></div>
     </div>
     <div class="banner_bg-1"></div>
-    <div
-      class="banner_bg-2"
-      :class="{ newTop: introduceData.length === 0 }"
-    ></div>
+    <div class="banner_bg-2" :class="{ newTop: introduceData.length === 0 }"></div>
     <div class="purpose max-content">
       <div class="purpose_title flex_title">
         <div class="title_pic ball-1"></div>
         活动介绍
       </div>
       <div class="purpose_text">
-        随着人工智能技术的迅猛进步，互联网科技也经历了飞速的演变，智能设计与智能绘图成为了当前科技领域的焦点议题。为了激发人们对人工智能技术的热忱，积极投身AI创作，并提升AI运用技巧与创新水平，举办了一场针对全体员工的AI绘图大赛。本次大赛由设计技术委员会、AI实验室及AIDesignOteam联合主办，作为一场面向企业全体员工的AI绘图作品收集活动。大赛旨在激励大家发挥才能，在竞赛中互相合作与学习，共同提升。让我们拥抱变革，迎接AI浪潮，共同探寻AI之旅，并通过智能技术创造更多的可能性。
+        我们无法猜透下一秒会是怎么样，我觉得现实美好就美好在这里，人们无法规划现实，所以现实永远会带给人惊喜。最好要一心一意去捕捉感受，要体味的愿望越强烈，捕捉的力度也就越大，等事后再让想象力将当时的醉意照搬过来，以便描述。
       </div>
     </div>
     <div class="introduce max-content" v-if="introduceData.length !== 0">
       <div class="introduce_title flex_title">
         <div class="title_pic ball-2"></div>
-        分类介绍
+        分类预览
       </div>
-      <div class="introduce_text">
+      <!-- <div class="introduce_text">
         本次大赛提供{{
           introduceData.length
         }}个大赛分类，鼓励参赛者通过关键词、图象等方式进行AI绘图创意设计。
-      </div>
+      </div> -->
       <div class="introduce_item">
         <div class="introduce_list" v-for="(item, index) in introduceData">
           <div class="introduce_list_title">
             <span>{{ index < 10 ? "0" + (index + 1) : index + 1 }}</span>
-            {{ item.title }}
+                {{ item.title }}
           </div>
           <div class="introduce_list_box">
             <img class="introduce_list_pic" :src="item.cover" />
@@ -82,31 +72,30 @@
       <div class="notice_item">
         <div class="notice_list">
           <div class="notice_list_title">作品要求</div>
-          <div class="notice_list_text">1、可以提交一个或多个作品</div>
-          <div class="notice_list_text">2、可以单人参加也可以组队参加</div>
+          <div class="notice_list_text">1、每位参赛者最多可提交1张作品。</div>
+          <div class="notice_list_text">2、与主题契合度：作品是否与活动主题相关。
+            创意与表现力：作品的创意和表现力。</div>
           <div class="notice_list_text">
-            3、作品需要使用AI Generated Content技术生成，例如Stable
-            Diffusion、Midjourney、Dall-E 2、Kandinsky等
+            3、技术水平：作品的摄影技术和后期处理水平。
+            故事性与感染力：作品背后的故事性和感染力。<br />
+            参赛作品必须为原创作品，不得抄袭、盗用他人作品。
           </div>
           <div class="notice_list_text">
-            4、作品需要包括图像、视频等内容物，以展示参赛者的创意和技术水平。
+            4、参赛者需保证作品的版权归属，并同意活动主办方在活动宣传和展示中使用作品。
           </div>
           <div class="notice_list_text">
-            5、作品需要提交作品说明以及AI创作过程文件，以便评审团了解作品的创意和技术细节。
+            5、活动主办方有权对参赛作品进行展示、宣传和出版等。
           </div>
           <div class="notice_list_text">
-            6、作品可以在ai生成图片/视频基础上进行二次加工优化，但必须同时提交原始生成效果素材和优化后的素材
+            6、如有违规行为，主办方有权取消参赛资格并追究责任。
           </div>
         </div>
         <div class="notice_list">
           <div class="notice_list_title">奖项</div>
-          <div class="notice_list_text">
-            本次大赛将依据“点赞数“评选出各类奖项
-          </div>
           <ui>
             <li class="notice_list_text">最受关注奖：前20名</li>
             <li class="notice_list_text">最具潜力奖：20-50名</li>
-            <li class="notice_list_text">激励：AIGC创作人证书</li>
+            <li class="notice_list_text">激励：荣誉证书</li>
           </ui>
           <div class="notice_list_picItem">
             <div class="notice_list_pic_list pic-4"></div>
@@ -118,17 +107,14 @@
         <div class="notice_list">
           <div class="notice_list_title">活动说明</div>
           <div class="notice_list_text">
-            1.所有活动信息，包括但不限于海报、规则、网站、社群聊天等，不得以任何形式对外公开，包括但不限于口头，文字，截图等形式，若有违规，需承担相应责任。
+            1.参赛作品，应以正向、积极的内容为导向，严禁包含但不限于低俗、色情、违反宗教活动的内容。
           </div>
           <div class="notice_list_text">
-            2.参赛作品，应以正向、积极的内容为导向，严禁包含但不限于低俗、色情、违反宗教活动的内容。
+            2.参赛作品所涉及的著作权（包含但不限于知识产权、版权）不得侵犯第三人的合法权利。
           </div>
-          <div class="notice_list_text">
-            3.参赛作品所涉及的著作权（包含但不限于知识产权、版权）不得侵犯第三人的合法权利。
-          </div>
-          <div class="notice_list_text">4.参赛作品不得作为商业用途。</div>
+          <div class="notice_list_text">3.参赛作品不得作为商业用途。</div>
         </div>
-        <div class="notice_qdcode">
+        <!-- <div class="notice_qdcode">
           <div class="qdcode"></div>
           <div class="qdcode_text">
             企业微信群：<br />
@@ -136,8 +122,8 @@
 
             <div class="qdcode_span">咨询/合作请联系企微：janeren<br /></div>
           </div>
-        </div>
-        <div class="notice_btn" @click="handleUpdata">立即参加</div>
+        </div> -->
+        <div class="notice_btn" @click="handleUpdata">立即上传作品</div>
         <!-- <div class="notice_list">
           <div class="notice_list_title">赛程安排</div>
           <div class="notice_list_pic arrange"></div>

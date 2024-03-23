@@ -38,7 +38,7 @@
     <div class="content">
       <router-view :key="menuIndex" />
     </div>
-    <div class="footer_wrap">
+    <!-- <div class="footer_wrap">
       <div class="footer" v-if="menuIndex === 'index'">
         <div class="max-content">
           <div class="copyright">
@@ -47,7 +47,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
