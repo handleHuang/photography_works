@@ -2,7 +2,7 @@
   <div class="login">
     <div>
       <img class="login_logo" src="../../assets/svg/login-box-bg.svg" />
-      <div class="title white">young摄影网</div>
+      <div class="title white">摄影作品展示平台摄影网</div>
     </div>
     <div>
       <!-- 登录 -->

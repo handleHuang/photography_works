@@ -295,22 +295,31 @@ const columns = reactive([
     width: '184'
   }
 ])
+// 定义一个名为projectList的函数
 const projectList = () => {
+  // 设置请求参数
   const params = {
-    per_page: pagination.obj.pageSize,
-    page: pagination.obj.current
+    per_page: pagination.obj.pageSize, // 每页显示数量
+    page: pagination.obj.current // 当前页数
   }
+  // 如果有关键字，则添加到请求参数中
   if (keyword.value) {
     params.keyword = keyword.value
   }
+  // 如果显示值不为'all'，则添加到请求参数中
   if (showValue.value !== 'all') {
     params.online = showValue.value
   }
+  // 发起项目列表请求
   store.dispatch('projectList', params).then(res => {
+    // 将返回的数据赋值给表格数据数组
     tabelData.arr = res.data
+    // 更新分页总数
     pagination.obj.total = res.totalCount
   }).catch((err) => {
+    // 捕获错误并输出到控制台
     console.log(err)
+    // 弹出警告消息
     MessagePlugin.warning(err.response.data.message)
   })
 }

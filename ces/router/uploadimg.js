@@ -28,6 +28,7 @@ connection.connect((err) => {
 // 上传图片
 router.post("/uploadimg", handle.uploadimg);
 router.post("/upUserImg", handle.upUserImg);
+router.post("/signature", handle.signature);
 // router.post("/upimage", handle.upimage);
 //分类接口
 router.post("/addLabel", verifyToken, classify.addLabel);

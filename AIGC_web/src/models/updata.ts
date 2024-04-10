@@ -8,3 +8,12 @@ export function postArticle(params: any) {
     data: params,
   });
 }
+
+// 上传图片
+export function signature(params: any) {
+  return http({
+    url: "/api/signature",
+    method: "post",
+    data: params,
+  });
+}
