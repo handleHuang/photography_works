@@ -53,11 +53,17 @@
               <img class="item" :key="index" :src="cover" />
             </div>
           </div>
+          <div class="course_title" v-if="detailData.obj.signature">
+            作者签名
+          </div>
+          <div class="article_course" v-if="detailData.obj.signature">
+            <img class="item" :key="index" :src="detailData.obj.signature" />
+          </div>
         </div>
         <div class="body_right">
           <div class="right_item">作品名称</div>
           <div class="right_item">{{ detailData.obj.title }}</div>
-          <div class="right_item">参赛分类</div>
+          <div class="right_item">作品分类</div>
           <div class="right_item">
             {{ detailData.obj.topic }}
           </div>
@@ -107,87 +113,89 @@
   </div>
 </template>
 <script setup>
-import { MessagePlugin, DialogPlugin } from 'tdesign-vue-next'
-import { ref, reactive, onMounted } from 'vue'
-import { useStore } from 'vuex'
-import { useRouter, useRoute } from 'vue-router'
-const router = useRouter()
-const route = useRoute()
-const store = useStore()
+import { MessagePlugin, DialogPlugin } from "tdesign-vue-next";
+import { ref, reactive, onMounted } from "vue";
+import { useStore } from "vuex";
+import { useRouter, useRoute } from "vue-router";
+const router = useRouter();
+const route = useRoute();
+const store = useStore();
 // const domain = 'https://aigc-1311564431.cos.ap-guangzhou.myqcloud.com/'
-const userId = JSON.parse(localStorage.getItem('user_info')).id
-const articleId = route.query.id
+const userId = JSON.parse(localStorage.getItem("user_info")).id;
+const articleId = route.query.id;
 // 详情
-const detailData = reactive({ obj: {} })
+const detailData = reactive({ obj: {} });
 const getDetail = () => {
-  store.dispatch('articleDetail', { id: articleId, user_id: userId }).then((res) => {
-    detailData.obj = res
-  })
-}
+  store
+    .dispatch("articleDetail", { id: articleId, user_id: userId })
+    .then((res) => {
+      detailData.obj = res;
+    });
+};
 // 设置作品状态
-function setArticleStatus (params) {
-  store.dispatch('setArticleStatus', params).then((res) => {
-    MessagePlugin.success('操作成功')
-    getDetail()
-  })
+function setArticleStatus(params) {
+  store.dispatch("setArticleStatus", params).then((res) => {
+    MessagePlugin.success("操作成功");
+    getDetail();
+  });
 }
 // 删除
-function dodelete (id) {
+function dodelete(id) {
   const confirmDia = DialogPlugin.confirm({
-    header: '确定删除此作品吗？',
-    body: '删除后不可恢复',
-    theme: 'warning',
+    header: "确定删除此作品吗？",
+    body: "删除后不可恢复",
+    theme: "warning",
     onConfirm: () => {
-      store.dispatch('delArticle', { id: id }).then((res) => {
-        MessagePlugin.success('删除成功')
-        router.push('/article')
-      })
-      confirmDia.destroy()
+      store.dispatch("delArticle", { id: id }).then((res) => {
+        MessagePlugin.success("删除成功");
+        router.push("/article");
+      });
+      confirmDia.destroy();
     },
     onClose: () => {
-      confirmDia.hide()
-    }
-  })
+      confirmDia.hide();
+    },
+  });
 }
 const formattedDate = (dateStr) => {
-  const date = new Date(dateStr)
+  const date = new Date(dateStr);
   const newDateStr = date
-    .toLocaleDateString('zh-Hans-CN', {
-      year: 'numeric',
-      month: 'numeric',
-      day: 'numeric'
+    .toLocaleDateString("zh-Hans-CN", {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
     })
-    .replace(/\//g, '.')
-  return newDateStr
-}
-const videoUrl = ref('')
-const videoShow = ref(false)
+    .replace(/\//g, ".");
+  return newDateStr;
+};
+const videoUrl = ref("");
+const videoShow = ref(false);
 const handleVideoShow = () => {
-  videoShow.value = false
-}
+  videoShow.value = false;
+};
 
 // 收藏
 const handleCollect = (id) => {
   store
-    .dispatch('postCollect', {
+    .dispatch("postCollect", {
       user_id: userId,
-      item_id: +id
+      item_id: +id,
     })
     .then((res) => {
-      console.log(res)
-      getDetail()
-      MessagePlugin.success(res.message)
+      console.log(res);
+      getDetail();
+      MessagePlugin.success(res.message);
     })
     .catch((err) => {
-      MessagePlugin.warning(err.response.data.message)
-    })
-}
+      MessagePlugin.warning(err.response.data.message);
+    });
+};
 // const handleVideo = (url) => {
 //   videoUrl.value = url
 //   videoShow.value = true
 // }
 onMounted(() => {
-  getDetail()
-})
+  getDetail();
+});
 </script>
 <style lang="less" scoped src="../../assets/style/manage/manage.less"></style>

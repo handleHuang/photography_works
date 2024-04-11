@@ -7,7 +7,12 @@
           <span>作品列表</span>
         </div>
         <div class="header_right">
-          <t-switch v-model="checked" size="large" :label="['收藏数最多', '正常']" @change="handleSwitch"></t-switch>
+          <t-switch
+            v-model="checked"
+            size="large"
+            :label="['收藏数最多', '正常']"
+            @change="handleSwitch"
+          ></t-switch>
         </div>
       </div>
       <div class="search">
@@ -112,168 +117,168 @@
   </div>
 </template>
 <script setup>
-import { MessagePlugin, DialogPlugin } from 'tdesign-vue-next'
-import { reactive, onMounted, ref } from 'vue'
-import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
-const router = useRouter()
-const store = useStore()
+import { MessagePlugin, DialogPlugin } from "tdesign-vue-next";
+import { reactive, onMounted, ref } from "vue";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+const router = useRouter();
+const store = useStore();
 // const domain = 'https://aigc-1311564431.cos.ap-guangzhou.myqcloud.com/'
-const showValue = ref('all')
-const title = ref('')
+const showValue = ref("all");
+const title = ref("");
 // 分页
 const pagination = reactive({
   obj: {
     total: 0,
     current: 1,
-    pageSize: 20
-  }
-})
-function rehandleChange (changeParams) {
-  pagination.obj.pageSize = changeParams.pageSize
-  pagination.obj.current = changeParams.current
-  articleList()
+    pageSize: 20,
+  },
+});
+function rehandleChange(changeParams) {
+  pagination.obj.pageSize = changeParams.pageSize;
+  pagination.obj.current = changeParams.current;
+  articleList();
 }
 const tabelData = reactive({
-  arr: []
-})
+  arr: [],
+});
 
 // 表头
 const columns = reactive([
   {
-    colKey: 'row-select',
-    type: 'multiple',
-    width: '40',
-    fixed: 'left'
+    colKey: "row-select",
+    type: "multiple",
+    width: "40",
+    fixed: "left",
   },
   {
-    colKey: 'id',
-    title: 'ID',
-    fixed: 'left',
-    width: '80'
+    colKey: "id",
+    title: "ID",
+    fixed: "left",
+    width: "80",
   },
   {
-    colKey: 'cover',
-    title: '作品封面',
-    width: '180'
+    colKey: "cover",
+    title: "作品封面",
+    width: "180",
   },
   {
-    colKey: 'title',
-    title: '作品名称',
-    width: '240'
+    colKey: "title",
+    title: "作品名称",
+    width: "240",
   },
   {
-    colKey: 'topic',
-    title: '参赛分类',
-    width: '140'
+    colKey: "topic",
+    title: "作品分类",
+    width: "140",
   },
   {
-    colKey: 'cont',
-    title: '关键词描述',
-    width: '200'
+    colKey: "cont",
+    title: "关键词描述",
+    width: "200",
   },
   {
-    colKey: 'collect_number',
-    title: '收藏数',
-    width: '140'
+    colKey: "collect_number",
+    title: "收藏数",
+    width: "140",
   },
   {
-    colKey: 'user_name',
-    title: '创建人',
-    width: '140'
+    colKey: "user_name",
+    title: "创建人",
+    width: "140",
   },
   {
-    colKey: 'state',
-    title: '状态',
-    width: '100'
+    colKey: "state",
+    title: "状态",
+    width: "100",
   },
   {
-    colKey: 'operat',
-    title: '操作',
-    fixed: 'right',
-    width: '184'
-  }
-])
+    colKey: "operat",
+    title: "操作",
+    fixed: "right",
+    width: "184",
+  },
+]);
 const articleList = () => {
   const params = {
     per_page: pagination.obj.pageSize,
-    page: pagination.obj.current
-  }
+    page: pagination.obj.current,
+  };
   if (title.value) {
-    params.title = title.value
+    params.title = title.value;
   }
-  if (showValue.value !== 'all') {
-    params.state = showValue.value
+  if (showValue.value !== "all") {
+    params.state = showValue.value;
   }
   if (checked.value) {
-    params.top = 1
+    params.top = 1;
   }
-  store.dispatch('articleList', params).then((res) => {
-    tabelData.arr = res.data
-    pagination.obj.total = res.totalCount
-  })
-}
+  store.dispatch("articleList", params).then((res) => {
+    tabelData.arr = res.data;
+    pagination.obj.total = res.totalCount;
+  });
+};
 // 设置分类状态
-function setArticleStatus (params) {
-  store.dispatch('setArticleStatus', params).then((res) => {
-    MessagePlugin.success('操作成功')
-    articleList()
-  })
+function setArticleStatus(params) {
+  store.dispatch("setArticleStatus", params).then((res) => {
+    MessagePlugin.success("操作成功");
+    articleList();
+  });
 }
 // 筛选
 const handleChange = () => {
-  pagination.obj.current = 1
-  articleList()
-}
+  pagination.obj.current = 1;
+  articleList();
+};
 // 删除
-function dodelete (id) {
+function dodelete(id) {
   const confirmDia = DialogPlugin.confirm({
-    header: '确定删除此作品吗？',
-    body: '删除后不可恢复',
-    theme: 'warning',
+    header: "确定删除此作品吗？",
+    body: "删除后不可恢复",
+    theme: "warning",
     onConfirm: () => {
-      store.dispatch('delArticle', { id: id }).then((res) => {
-        MessagePlugin.success('删除成功')
-        articleList()
-      })
-      confirmDia.destroy()
+      store.dispatch("delArticle", { id: id }).then((res) => {
+        MessagePlugin.success("删除成功");
+        articleList();
+      });
+      confirmDia.destroy();
     },
     onClose: () => {
-      confirmDia.hide()
-    }
-  })
+      confirmDia.hide();
+    },
+  });
 }
 // 查看
-function docheck (id) {
+function docheck(id) {
   router.push({
-    path: '/article/detail',
+    path: "/article/detail",
     query: {
-      id: id
-    }
-  })
+      id: id,
+    },
+  });
 }
 // 批量
 const selected = reactive({
-  arr: []
-})
+  arr: [],
+});
 const rehandleSelectChange = (value) => {
-  selected.arr = value
-}
+  selected.arr = value;
+};
 
 // 开关
-const checked = ref(true)
+const checked = ref(true);
 const handleSwitch = () => {
-  articleList()
-}
+  articleList();
+};
 const ellipsis = (value) => {
-  if (!value) return ''
+  if (!value) return "";
   if (value.length > 25) {
-    return value.slice(0, 25) + '...'
+    return value.slice(0, 25) + "...";
   }
-  return value
-}
+  return value;
+};
 onMounted(() => {
-  articleList()
-})
+  articleList();
+});
 </script>
 <style lang="less" scoped src="../../assets/style/manage/manage.less"></style>
