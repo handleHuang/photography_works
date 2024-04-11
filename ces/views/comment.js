@@ -7,7 +7,7 @@ exports.addComment = (req, res) => {
 
     // 插入数据
     const sql = `INSERT INTO comment (content, level, parent_id, blog_id, user_id) VALUES (?,?,?,?,?)`;
-    const values = [ content, level, parent_id, blog_id, user_id ];
+    const values = [content, level, parent_id, blog_id, user_id];
 
     connection.query(sql, values, (error, results) => {
       if (error) {

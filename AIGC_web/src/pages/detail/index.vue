@@ -68,7 +68,7 @@
               />
             </div>
           </div>
-          <div v-if="detailsData.file?.length !== 0">
+          <div v-if="detailsData.file?.length > 0">
             <div class="left_text">创作过程：参考文件，工程文件截图</div>
             <div class="right_pic_item">
               <div
@@ -86,6 +86,10 @@
               </div>
             </div>
           </div>
+          <div>
+            <div class="left_text">作者签名：</div>
+            <img :src="detailsData.signature" style="width: 100%" />
+          </div>
           <div class="comment_box">
             <div class="comment_header">
               <t-input
@@ -94,7 +98,11 @@
                 placeholder="请输入你的评论"
                 clearable
               />
-              <t-button @click="handleComment(1, 0)" type="primary" :disabled="comment_input === ''">
+              <t-button
+                @click="handleComment(1, 0)"
+                type="primary"
+                :disabled="comment_input === ''"
+              >
                 发送
               </t-button>
             </div>
@@ -112,7 +120,8 @@
                       <span>{{ createdData(item.create_time) }}</span>
                     </div>
                     <div class="fu_cont">
-                      {{ item.content }} <span @click="handlehuifu(item.id)">回复</span>
+                      {{ item.content }}
+                      <span @click="handlehuifu(item.id)">回复</span>
                     </div>
                     <div class="fu_pinlun" v-if="huifu_id === item.id">
                       <t-input
@@ -121,21 +130,32 @@
                         :placeholder="`回复${item.username}评论`"
                         clearable
                       />
-                      <t-button @click="handleComment(2, item.id)" type="primary" :disabled="fuhuifu_input === ''">
+                      <t-button
+                        @click="handleComment(2, item.id)"
+                        type="primary"
+                        :disabled="fuhuifu_input === ''"
+                      >
                         发送
                       </t-button>
                     </div>
-                    <div class="zi_box" v-for="(ziItem, i) in item.children" :key="i">
+                    <div
+                      class="zi_box"
+                      v-for="(ziItem, i) in item.children"
+                      :key="i"
+                    >
                       <div class="comment_list_fu">
                         <img :src="ziItem.cover" class="fu_left" />
                         <div class="fu_right">
                           <div class="fu_name">
                             {{ ziItem.username }}
-                            <span v-if="ziItem.replied_username"> @ {{ ziItem.replied_username }}</span>
+                            <span v-if="ziItem.replied_username">
+                              @ {{ ziItem.replied_username }}</span
+                            >
                             <span>{{ createdData(ziItem.create_time) }}</span>
                           </div>
                           <div class="fu_cont">
-                            {{ ziItem.content }} <span @click="handlehuifu(ziItem.id)">回复</span>
+                            {{ ziItem.content }}
+                            <span @click="handlehuifu(ziItem.id)">回复</span>
                           </div>
                           <div class="fu_pinlun" v-if="huifu_id === ziItem.id">
                             <t-input
@@ -144,7 +164,11 @@
                               :placeholder="`回复${ziItem.username}评论`"
                               clearable
                             />
-                            <t-button @click="handleComment(3, ziItem.id)" type="primary" :disabled="fuhuifu_input === ''">
+                            <t-button
+                              @click="handleComment(3, ziItem.id)"
+                              type="primary"
+                              :disabled="fuhuifu_input === ''"
+                            >
                               发送
                             </t-button>
                           </div>
@@ -274,7 +298,7 @@ onMounted(() => {
 
 // 评论
 const comment_input = ref("");
-const fuhuifu_input = ref('');
+const fuhuifu_input = ref("");
 const handleComment = (index: any, comment_id: any) => {
   let params = {
     content: comment_id === 0 ? comment_input.value : fuhuifu_input.value,
@@ -287,17 +311,17 @@ const handleComment = (index: any, comment_id: any) => {
     if (res.status === 200) {
       MessagePlugin.success(`${res.message}`);
       handleDetails();
-      comment_input.value = ''
-      fuhuifu_input.value = ''
-      huifu_id.value = 0
+      comment_input.value = "";
+      fuhuifu_input.value = "";
+      huifu_id.value = 0;
     }
   });
 };
 // 回复评论
-let huifu_id = ref(0)
-const handlehuifu = (index: any) =>{
-  huifu_id.value = index
-}
+let huifu_id = ref(0);
+const handlehuifu = (index: any) => {
+  huifu_id.value = index;
+};
 
 function createdData(value: any) {
   if (value) {

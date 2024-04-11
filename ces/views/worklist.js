@@ -305,10 +305,11 @@ exports.addWork = (req, res) => {
       collect,
       collect_number,
       state,
+      signature,
     } = req.body;
 
     // 插入数据
-    const sql = `INSERT INTO works_list (user_name, user_img, title, topic, cont, process, cover, beiyong1, beiyong2, collect, collect_number, state) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    const sql = `INSERT INTO works_list (user_name, user_img, title, topic, cont, process, cover, beiyong1, beiyong2, collect, collect_number, state, signature) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
     const values = [
       username,
       user_img,
@@ -322,6 +323,7 @@ exports.addWork = (req, res) => {
       collect,
       collect_number,
       state,
+      signature,
     ];
 
     connection.query(sql, values, (error, results) => {
@@ -365,10 +367,11 @@ exports.edit = (req, res) => {
       collect,
       collect_number,
       state,
+      signature,
     } = req.body;
 
     // 更新数据
-    const sql = `UPDATE works_list SET user_name = ?, user_img = ?, title = ?, topic = ?, cont = ?, process = ?, cover = ?, beiyong1 = ?, beiyong2 = ?, collect = ?, collect_number = ?, state = ? WHERE id = ?`;
+    const sql = `UPDATE works_list SET user_name = ?, user_img = ?, title = ?, topic = ?, cont = ?, process = ?, cover = ?, beiyong1 = ?, beiyong2 = ?, collect = ?, collect_number = ?, state = ?, signature = ? WHERE id = ?`;
     const values = [
       username,
       user_img,
@@ -382,6 +385,7 @@ exports.edit = (req, res) => {
       collect,
       collect_number,
       state,
+      signature,
       id,
     ];
 
